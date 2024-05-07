@@ -32,27 +32,67 @@ void ccp_test_build_response_with_body()
     TEST_ASSERT_EQUAL_STRING("MS\r\n2\r\n21\r\nInternal Server Error\r\n", buffer);
 }
 
-void cpp_test_build_request()
+void ccp_test_parse_response_with_unknown_action_type()
 {
+    char raw_response[] = "TR\r\n1\r\n10\r\nHello World\r\n";
+
+    response test_response = ccp_parse_response(raw_response);
+
+    TEST_ASSERT_TRUE(CCP_AT_UNKNOWN == test_response.action_type);
 }
 
-void cpp_test_build_response()
+void ccp_test_parse_response_with_unknown_status_code()
 {
-    char response[] = "MS\r\n1\r\n10\r\nHello\nWorld\r\n";
-    char status_buffer[10];
-    int status_buffer_size = sizeof(status_buffer);
+    char raw_response[] = "MS\r\n9\r\n10\r\nHello World\r\n";
 
-    char *data = ccp_parse_response(response, status_buffer, status_buffer_size);
+    response test_response = ccp_parse_response(raw_response);
 
-    if (data == NULL)
-    {
-        printf("Error\n");
-    }
-    else
-    {
-        printf("Status code: %s\n", status_buffer);
-        printf("Body: %s\n", data);
-    }
+    TEST_ASSERT_TRUE(CCP_STATUS_NUM_STATUS_CODES == test_response.status_code);
+}
+
+void ccp_test_parse_response_without_body()
+{
+    char raw_response[] = "MS\r\n1\r\n";
+
+    response test_response = ccp_parse_response(raw_response);
+
+    TEST_ASSERT_TRUE(NULL == test_response.body);
+}
+
+void ccp_test_parse_response_with_empty_body()
+{
+    char raw_response[] = "MS\r\n1\r\n0\r\n";
+
+    response test_response = ccp_parse_response(raw_response);
+
+    TEST_ASSERT_TRUE(NULL == test_response.body);
+}
+
+void ccp_test_parse_response_with_action_type()
+{
+    char raw_response[] = "MS\r\n1\r\n10\r\nHello World\r\n";
+
+    response test_response = ccp_parse_response(raw_response);
+
+    TEST_ASSERT_TRUE(CCP_AT_MS == test_response.action_type);
+}
+
+void ccp_test_parse_response_with_status_code()
+{
+    char raw_response[] = "MS\r\n1\r\n10\r\nHello World\r\n";
+
+    response test_response = ccp_parse_response(raw_response);
+
+    TEST_ASSERT_TRUE(CCP_STATUS_OK == test_response.status_code);
+}
+
+void ccp_test_parse_response_with_body()
+{
+    char raw_response[] = "MS\r\n1\r\n11\r\nHello World\r\n";
+
+    response test_response = ccp_parse_response(raw_response);
+
+    TEST_ASSERT_EQUAL_STRING("Hello World", test_response.body);
 }
 
 void ccp_test_at_from_str()
