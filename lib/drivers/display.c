@@ -1,12 +1,12 @@
 #include "display.h"
 #include "includes.h"
-//LATCH
+// LATCH
 #define LATCH_BIT PG5
 #define LATCH_DDR DDRG
 #define LATCH_PORT PORTG
 
-//DATA
-#define DATA_BIT PH5  // Serial Data Input.
+// DATA
+#define DATA_BIT PH5 // Serial Data Input.
 #define DATA_DDR DDRH
 #define DATA_PORT PORTH
 
@@ -100,8 +100,8 @@ void pulse_latch();
 void display_init()
 {
     LATCH_DDR |= (1 << LATCH_BIT);
-    DATA_DDR |= (1 << DATA_BIT); 
-    CLOCK_DDR|= (1 << CLOCK_BIT);
+    DATA_DDR |= (1 << DATA_BIT);
+    CLOCK_DDR |= (1 << CLOCK_BIT);
 
     // Set up Timer1 for CTC mode (Clear Timer on Compare Match)
     TCCR1B |= (1 << WGM12);
@@ -118,7 +118,7 @@ void display_init()
     sei();
     display_data[0] = display_data[1] = display_data[2] = display_data[3] = 17;
 }
-#ifndef WINDOWS_TEST
+#ifndef NATIVE_TESTING
 ISR(TIMER1_COMPA_vect)
 {
     uint8_t static current_digit = 0;

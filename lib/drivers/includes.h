@@ -1,4 +1,4 @@
-#ifdef WINDOWS_TEST
+#ifdef NATIVE_TESTING
 #include "mock_avr_io.h"
 #else
 #include <avr/io.h>

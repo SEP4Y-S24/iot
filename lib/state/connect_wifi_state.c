@@ -1,4 +1,4 @@
-#ifndef WINDOWS_TEST
+#ifndef NATIVE_TESTING
 #include <util/delay.h>
 #endif
 
@@ -12,7 +12,6 @@
 #include <state_coordinator.h>
 #include <periodic_task.h>
 #include "logger.h"
-
 
 static char recieveBuffer[128];
 static uint8_t recieveBufferIndex;
