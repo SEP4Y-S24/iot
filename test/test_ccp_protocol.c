@@ -1,6 +1,9 @@
+#ifdef TEST_CCP_PROTOCOL
+
 #include <unity.h>
 #include <ccp_protocol.h>
 #include <stdio.h>
+
 void ccp_test_build_request_without_body()
 {
     char buffer[100];
@@ -63,3 +66,27 @@ void ccp_test_at_from_str2()
     CCP_ACTION_TYPE at = ccp_at_from_str("MS");
     TEST_ASSERT_TRUE(at == CCP_AT_MS);
 }
+
+int main(void)
+{
+    UNITY_BEGIN();
+    RUN_TEST(ccp_test_build_request_without_body);
+    RUN_TEST(ccp_test_build_request_with_body);
+    RUN_TEST(ccp_test_build_response_without_body);
+    RUN_TEST(ccp_test_build_response_with_body);
+    RUN_TEST(cpp_test_build_request);
+    RUN_TEST(cpp_test_build_response);
+    RUN_TEST(ccp_test_at_from_str);
+    RUN_TEST(ccp_test_at_from_str2);
+    return UNITY_END();
+}
+
+void setUp(void)
+{
+}
+
+void tearDown(void)
+{
+}
+
+#endif // TEST_CCP_PROTOCOL

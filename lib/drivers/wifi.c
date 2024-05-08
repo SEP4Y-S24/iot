@@ -1,4 +1,4 @@
-#ifndef WINDOWS_TEST
+#ifndef NATIVE_TESTING
 #include "wifi.h"
 #include "includes.h"
 #include "uart.h"
