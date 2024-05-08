@@ -58,7 +58,7 @@ void external_screen_string(const char *str);
 
 /**
  * @brief Displays a string on the external LCD screen at a specific position.
- * @param row The row number (0 or 1) where the string will be displayed.
+ * @param row The row number (1 or 2) where the string will be displayed.
  * @param pos The starting position of the string on the row.
  * @param str The string to be displayed.
  */

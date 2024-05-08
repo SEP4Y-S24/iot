@@ -1,20 +1,22 @@
 #include "periodic_task.h" // Include the periodic task header
 #include "display.h"       // Include the display header
+#include <stdio.h>
+#include <stdlib.h>
+#include <external_screen.h>
 
 static uint8_t current_hour = 10;   // Current hour (0-23)
 static uint8_t current_minute = 10; // Current minute (0-59)
 
 void clock_display_time()
 {
-    uint8_t seg1 = current_hour / 10;   // First digit of the hour
-    uint8_t seg2 = current_hour % 10;   // Second digit of the hour
-    uint8_t seg3 = current_minute / 10; // First digit of the minute
-    uint8_t seg4 = current_minute % 10; // Second digit of the minute
-
-    display_setValues(seg1, seg2, seg3, seg4); // Display the values
+    char time_str[6]; // Buffer to store the time string
+    // Format the time string as HH:MM
+    sprintf(time_str, "%02d:%02d", current_hour, current_minute);
+    external_screen_string(time_str);
 }
 
-void clock_update_time()
+
+static void clock_update_time()
 {
     current_minute++; // Increment the minute
 
@@ -35,4 +37,10 @@ void clock_update_time()
 void clock_init()
 {
     periodic_task_init_c(clock_update_time, 60000); // Set to call `update_time` every minute (60000 ms)
+}
+
+void clock_set_time(int hours, int minutes)
+{
+    current_hour = hours;
+    current_minute = minutes;
 }

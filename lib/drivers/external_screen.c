@@ -1,6 +1,6 @@
 
 #ifndef NATIVE_TESTING
-#include "lcd.h" /* Include the correct header file */
+#include "external_screen.h" /* Include the correct header file */
 
 /* Send a command to the LCD */
 void external_screen_command(unsigned char cmnd)
@@ -43,6 +43,7 @@ void external_screen_init(void)
 /* Display a string on the LCD */
 void external_screen_string(const char *str)
 {
+    external_screen_clear();
     while (*str)
     {
         external_screen_char(*str++);
