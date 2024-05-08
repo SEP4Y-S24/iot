@@ -7,14 +7,14 @@
 void ccp_test_build_request_without_body()
 {
     char buffer[100];
-    ccp_create_request("TM", "", buffer);
+    ccp_create_request(CCP_AT_TM, "", buffer);
     TEST_ASSERT_EQUAL_STRING("TM\r\n0\r\n\r\n", buffer);
 }
 
 void ccp_test_build_request_with_body()
 {
     char buffer[100];
-    ccp_create_request("MS", "Hello, World!", buffer);
+    ccp_create_request(CCP_AT_MS, "Hello, World!", buffer);
     TEST_ASSERT_EQUAL_STRING("MS\r\n13\r\nHello, World!\r\n", buffer);
 }
 

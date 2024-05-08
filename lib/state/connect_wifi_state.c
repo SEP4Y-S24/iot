@@ -180,7 +180,7 @@ void wifi_check_buffer_callback()
 
 State connect_wifi_state_switch(char *ssid, char *pass)
 {
-    log_debug("Entered connect wifi state");
+    log_info("Entered connect wifi state");
     wifi_init(NULL);
 
     // wifi_command_reset();
