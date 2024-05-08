@@ -1,4 +1,4 @@
-name: PlatformIO Dependabot
+name: Platformio Dependabot
 
 on:
   workflow_dispatch: # option to manually trigger the workflow
@@ -12,7 +12,7 @@ jobs:
     name: run PlatformIO Dependabot
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: run PlatformIO Dependabot
         uses: peterus/platformio_dependabot@v1
         with:
