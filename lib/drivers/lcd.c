@@ -1,5 +1,5 @@
 
-#ifndef WINDOWS_TEST
+#ifndef TESTING
 #include "lcd.h" /* Include the correct header file */
 
 /* Send a command to the LCD */
