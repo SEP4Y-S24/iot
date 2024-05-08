@@ -54,12 +54,14 @@ char *ccp_parse_response(char *response, char *status_buffer, int status_buffer_
 
 const char *status_code_to_string(CCP_STATUS_CODE code);
 
-void ccp_create_request(char *at, char *body, char *request_buffer)
+void ccp_create_request(CCP_ACTION_TYPE at, char *body, char *request_buffer)
 {
     int length_of_message = strlen(body);
+    char at_str[3];
+    ccp_at_to_string(at, at_str);
     char length_string[10];
     sprintf(length_string, "%d", length_of_message);
-    strcpy(request_buffer, at);
+    strcpy(request_buffer, at_str);
     strcat(request_buffer, LINE_TERMINATOR);
     strcat(request_buffer, length_string);
     strcat(request_buffer, LINE_TERMINATOR);
