@@ -15,7 +15,7 @@ typedef enum{
     CCP_AT_UNKNOWN
 } CCP_ACTION_TYPE;
 
-void ccp_create_request(char *at, char *body, char *request_buffer);
+void ccp_create_request(CCP_ACTION_TYPE at, char *body, char *request_buffer);
 
 void ccp_create_response(char *response_buffer, CCP_ACTION_TYPE at, CCP_STATUS_CODE code, char *body);
 
