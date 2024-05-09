@@ -1,5 +1,6 @@
 #include "uart.h"
 #include "ccp_protocol.h"
+#include <util/delay.h>
 #include "buzzer.h"
 #include <stdlib.h>
 #include <string.h>
@@ -27,6 +28,7 @@ void ccp_message_handler_handle(char *message)
         break;
     case CCP_AT_MS:
         ccp_handle_message_at(message);
+        break;
     default:
         log_info("Unknown Action Type...");
         break;
@@ -41,7 +43,7 @@ void ccp_handle_time_at(char *message)
     // Display Time if Status Code is OK
     if (server_response.status_code == CCP_STATUS_OK)
     {
-        int hours, minutes, seconds;
+        int hours, minutes;
         char *token;
         token = strtok(server_response.body, ":");
         hours = atoi(token);
