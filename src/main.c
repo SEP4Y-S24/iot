@@ -6,8 +6,9 @@
 #include <display.h>
 #include <clock.h>
 #include <logger.h>
-#include <lcd.h>
+#include <external_screen.h>
 #include <util/delay.h>
+#include <display_controller.h>
 
 void here()
 {
@@ -15,7 +16,9 @@ void here()
 
 int main()
 {
-	log_init();
+  display_controller_init();
+	external_screen_init();
+  log_init();
 	display_init();
 	external_screen_init();
 	clock_init();
@@ -24,6 +27,7 @@ int main()
 	_delay_ms(5000);
 
 	start();
+  
 
 	while (1)
 	{

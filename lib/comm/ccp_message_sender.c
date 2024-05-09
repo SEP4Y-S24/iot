@@ -2,6 +2,7 @@
 #include "wifi.h"
 #include "string.h"
 #include <stdio.h>
+#include "logger.h"
 
 
 static const int MESSAGE_LENGTH = 110;
@@ -23,5 +24,5 @@ static void send_message(char *message)
 {
     uint8_t data[MESSAGE_LENGTH];
     memcpy(data, message, strlen(message));
-    wifi_command_TCP_transmit(data, sizeof(data) / sizeof(data[0]));
+    wifi_command_TCP_transmit(data, strlen(message));
 }
