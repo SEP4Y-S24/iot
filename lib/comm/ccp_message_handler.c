@@ -64,9 +64,9 @@ void ccp_handle_message_at(char *message)
     {
         buzzer_beep();
         leds_init();
-        leds_turnOn;
+        leds_turnOn(1);
         _delay_ms(3);
-        leds_turnOff();
+        leds_turnOff(1);
         ccp_message_sender_send_response(server_response.action_type, CCP_STATUS_OK, "Message received");
         log_debug("Updating message...");
         message_set_message(server_response.body);
