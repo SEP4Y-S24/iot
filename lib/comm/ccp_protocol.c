@@ -14,20 +14,15 @@ response ccp_parse_response(char *raw_response)
 {
     response response = {CCP_AT_UNKNOWN, CCP_STATUS_BAD_REQUEST, {0}};
     if (raw_response == NULL)
-    {
         return response;
-    }
 
-    char *response_parts[4]; // Array to store message parts (actionType, Response Code, Body length, Body)
+    char *response_parts[4]; // Array to store message parts (Action Type, Response Code, Body Length, Body)
     int num_parts = 0;
     char *token = strtok(raw_response, LINE_TERMINATOR);
 
     while (token != NULL)
     {
-        response_parts[num_parts] = token;
-        log_info(response_parts[num_parts]);
-        log_info("Next one.");
-        num_parts++;
+        response_parts[num_parts++] = token;
         token = strtok(NULL, LINE_TERMINATOR);
     }
 

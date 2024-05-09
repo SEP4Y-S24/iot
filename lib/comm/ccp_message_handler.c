@@ -6,6 +6,7 @@
 #include "logger.h"
 #include "wifi.h"
 #include "clock.h"
+#include "leds.h"
 #include "ccp_message_sender.h"
 #include "message.h"
 
@@ -27,7 +28,7 @@ void ccp_message_handler_handle(char *message)
     case CCP_AT_MS:
         ccp_handle_message_at(message);
     default:
-        log_info("uknown at");
+        log_info("Unknown Action Type...");
         break;
     }
 }
@@ -37,29 +38,38 @@ void ccp_handle_time_at(char *message)
     // extract data from message
     response server_response = ccp_parse_response(message);
 
-    // display_message
-    char device_response[30];
-    ccp_create_response(device_response, CCP_AT_MS, CCP_STATUS_OK, "Message received");
-    uint8_t response_data[30];
-    memcpy(response_data, device_response, strlen(device_response));
-    wifi_command_TCP_transmit(response_data, 30);
-    log_info("updating time");
-    clock_set_time(12, 35); // replace harcoded time with a real one
+    // Display Time if Status Code is OK
+    if (server_response.status_code == CCP_STATUS_OK)
+    {
+        int hours, minutes, seconds;
+        char *token;
+        token = strtok(server_response.body, ":");
+        hours = atoi(token);
+        token = strtok(NULL, ":");
+        minutes = atoi(token);
+
+        ccp_message_sender_send_response(server_response.action_type, CCP_STATUS_OK, "Time received");
+        log_debug("Updating time...");
+        clock_set_time(hours, minutes);
+    }
 }
 
 void ccp_handle_message_at(char *message)
 {
-    buzzer_beep();
-    message_set_message("I love Mark <3"); // replace the harcoded message
-    message_display_message();
-    ccp_message_sender_send_response(CCP_AT_MS, CCP_STATUS_OK, "Message received");
     // extract data from message
     response server_response = ccp_parse_response(message);
 
-    // display_message
-    char device_response[30];
-    ccp_create_response(device_response, CCP_AT_MS, CCP_STATUS_OK, "Message received");
-    uint8_t response_data[30];
-    memcpy(response_data, device_response, strlen(device_response));
-    wifi_command_TCP_transmit(response_data, 30);
+    // Display Message if Status Code is OK
+    if (server_response.status_code == CCP_STATUS_OK)
+    {
+        buzzer_beep();
+        leds_init();
+        leds_turnOn;
+        _delay_ms(3);
+        leds_turnOff();
+        ccp_message_sender_send_response(server_response.action_type, CCP_STATUS_OK, "Message received");
+        log_debug("Updating message...");
+        message_set_message(server_response.body);
+        message_display_message();
+    }
 }
