@@ -50,22 +50,33 @@ void ccp_test_parse_response_with_unknown_status_code()
     TEST_ASSERT_TRUE(CCP_STATUS_NUM_STATUS_CODES == test_response.status_code);
 }
 
-void ccp_test_parse_response_without_body()
-{
-    char raw_response[] = "MS\r\n1\r\n";
-
-    response test_response = ccp_parse_response(raw_response);
-
-    TEST_ASSERT_TRUE(NULL == test_response.body);
-}
-
 void ccp_test_parse_response_with_empty_body()
 {
     char raw_response[] = "MS\r\n1\r\n0\r\n";
 
     response test_response = ccp_parse_response(raw_response);
 
-    TEST_ASSERT_TRUE(NULL == test_response.body);
+    TEST_ASSERT_EQUAL_STRING("", test_response.body);
+}
+
+void ccp_test_parse_response_with_too_long_body()
+{
+    char raw_response[] = "MS\r\n1\r\n100\r\nThis is completely unrelated to limited stack size. The stack typically has far more space than you might think, unless you're writing deeply recursive algorithms. In C and C++, it is common to store significant amounts of data on the stack, and these languages only have value types. But unlike C# they can specify whether a struct is passed by value.\r\n";
+
+    response test_response = ccp_parse_response(raw_response);
+
+    TEST_ASSERT_TRUE(CCP_AT_UNKNOWN == test_response.action_type);
+    TEST_ASSERT_TRUE(CCP_STATUS_NUM_STATUS_CODES == test_response.status_code);
+    TEST_ASSERT_EQUAL_STRING("", test_response.body);
+}
+
+void ccp_test_parse_response_without_body()
+{
+    char raw_response[] = "MS\r\n1\r\n";
+
+    response test_response = ccp_parse_response(raw_response);
+
+    TEST_ASSERT_EQUAL_STRING("", test_response.body);
 }
 
 void ccp_test_parse_response_with_action_type()

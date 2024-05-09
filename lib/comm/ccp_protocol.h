@@ -1,5 +1,7 @@
 #pragma once
 
+#define CCP_MAX_BODY_LENGTH 96
+
 typedef enum
 {
     CCP_STATUS_OK,
@@ -20,7 +22,7 @@ typedef struct
 {
     CCP_ACTION_TYPE action_type;
     CCP_STATUS_CODE status_code;
-    char *body;
+    char body[CCP_MAX_BODY_LENGTH];
 } response;
 
 void ccp_create_request(CCP_ACTION_TYPE at, char *body, char *request_buffer);
