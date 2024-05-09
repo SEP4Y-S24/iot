@@ -1,6 +1,5 @@
 #include "uart.h"
 #include "ccp_protocol.h"
-#include <util/delay.h>
 #include "buzzer.h"
 #include <stdlib.h>
 #include <string.h>
