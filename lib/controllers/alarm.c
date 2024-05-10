@@ -1,10 +1,10 @@
-#include <util/delay.h>
+#include "native.h"
+#include "hc_sr04.h"
+#include "buzzer.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include "alarm.h"
-#include "buzzer.h"
 #include "clock.h"
-#include "hc_sr04.h"
 #include "periodic_task.h"
 #include "logger.h"
 
@@ -90,12 +90,28 @@ void alarm_check()
         {
             alarm_stop();
         }
-        _delay_ms(50);
+
+        native_delay_ms(50);
     }
 
-    if (alarm_is_stoped)
+    if (alarm_is_stoped && clock_hour != shifted_hour && clock_minute != shifted_minute)
     {
         alarm_is_stoped = false;
         alarm_is_active = true;
     }
+}
+
+bool alarm_get_is_active()
+{
+    return alarm_is_active;
+}
+
+bool alarm_get_is_set()
+{
+    return alarm_is_set;
+}
+
+bool alarm_get_is_stoped()
+{
+    return alarm_is_stoped;
 }
