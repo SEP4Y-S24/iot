@@ -9,9 +9,12 @@ typedef enum
     CCP_STATUS_NUM_STATUS_CODES
 } CCP_STATUS_CODE;
 
-typedef enum{
+typedef enum
+{
     CCP_AT_TM,
     CCP_AT_MS,
+    CCP_AT_SA,
+    CCP_AT_DA,
     CCP_AT_UNKNOWN
 } CCP_ACTION_TYPE;
 
