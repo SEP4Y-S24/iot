@@ -33,7 +33,7 @@ void ccp_message_handler_handle(char *message)
         ccp_handle_message_at(message);
         break;
     case CCP_AT_SA:
-        ccp_hanlde_set_alarm(message);
+        ccp_handle_set_alarm(message);
         break;
     case CCP_AT_DA:
         ccp_handle_delete_alarm(message);
