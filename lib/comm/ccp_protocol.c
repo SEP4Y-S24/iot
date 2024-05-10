@@ -2,57 +2,53 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "wifi.h"
+#include "logger.h"
 
 const char *LINE_TERMINATOR = "\r\n";
 void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type);
+const CCP_STATUS_CODE status_code_from_string(char *code);
+const char *status_code_to_string(CCP_STATUS_CODE code);
 
-// char *ccp_create_request(char *at, char *body)
-// {
-//     int length_of_message = strlen(body);
-//     char request[length_of_message];
-//     strcpy(at, request);
-//     strcat(LINE_TERMINATOR, request);
-//     strcat((char *)length_of_message, request);
-//     strcat(LINE_TERMINATOR, request);
-//     strcat(body, request);
-//     strcat(LINE_TERMINATOR, request);
-//     return request;
-// }
-
-// TODO: Check if struct is not better? Do TESTs
-char *ccp_parse_response(char *response, char *status_buffer, int status_buffer_size)
+response ccp_parse_response(char *raw_response)
 {
-    if (response == NULL)
-        return NULL;
+    response response = {CCP_AT_UNKNOWN, CCP_STATUS_BAD_REQUEST, {0}};
+    if (raw_response == NULL)
+        return response;
 
-    char *response_parts[4]; // Array to store message parts (actionType, Response Code, Body length, Body)
+    char *response_parts[4]; // Array to store message parts (Action Type, Response Code, Body Length, Body)
     int num_parts = 0;
-    char *token = strtok(response, LINE_TERMINATOR);
+    char *token = strtok(raw_response, LINE_TERMINATOR);
 
-    while (token != NULL && num_parts < 4)
+    while (token != NULL)
     {
         response_parts[num_parts++] = token;
         token = strtok(NULL, LINE_TERMINATOR);
     }
 
-    char *actionType = response_parts[0];
-    char *status = response_parts[1];
+    if (num_parts != 4)
+        return response;
+
     int body_length = atoi(response_parts[2]);
 
-    char *body = NULL;
-    if (body_length > 0)
-        body = response_parts[3];
-
-    if (status_buffer != NULL && status_buffer_size > strlen(status))
+    if (body_length < 0 || body_length > CCP_MAX_BODY_LENGTH)
     {
-        strncpy(status_buffer, status, status_buffer_size - 1);
-        status_buffer[status_buffer_size - 1] = '\0';
+        char error_response[35];
+        ccp_create_response(error_response, ccp_at_from_str(response_parts[0]), CCP_STATUS_BAD_REQUEST, "Max Body Length is: 96.");
+        uint8_t response_data[35];
+        memcpy(response_data, error_response, strlen(error_response));
+        wifi_command_TCP_transmit(response_data, 35);
+        return response;
     }
 
-    return body;
-}
+    response.action_type = ccp_at_from_str(response_parts[0]);
+    response.status_code = status_code_from_string(response_parts[1]);
 
-const char *status_code_to_string(CCP_STATUS_CODE code);
+    strncpy(response.body, response_parts[3], body_length);
+    response.body[body_length] = '\0';
+
+    return response;
+}
 
 void ccp_create_request(CCP_ACTION_TYPE at, char *body, char *request_buffer)
 {
@@ -71,7 +67,7 @@ void ccp_create_request(CCP_ACTION_TYPE at, char *body, char *request_buffer)
 
 void ccp_create_response(char *response_buffer, CCP_ACTION_TYPE at, CCP_STATUS_CODE code, char *body)
 {
-    char at_str[3];
+    char at_str[9];
     ccp_at_to_string(at, at_str);
     int length_of_message = strlen(body);
     char length_string[10];
@@ -87,9 +83,9 @@ void ccp_create_response(char *response_buffer, CCP_ACTION_TYPE at, CCP_STATUS_C
 }
 
 const char *status_code_strings[] = {
+    [CCP_STATUS_BAD_REQUEST] = "0",
     [CCP_STATUS_OK] = "1",
     [CCP_STATUS_SERVER_ERROR] = "2",
-    [CCP_STATUS_BAD_REQUEST] = "0",
     [CCP_STATUS_UNAUTHENTICATED] = "3",
     [CCP_STATUS_NUM_STATUS_CODES] = "Unknown" // Default string for unknown status codes
 };
@@ -102,16 +98,23 @@ const char *status_code_to_string(CCP_STATUS_CODE code)
         return status_code_strings[CCP_STATUS_NUM_STATUS_CODES]; // Return the default string
 }
 
-CCP_ACTION_TYPE ccp_at_from_str(char *action_type)
+const CCP_STATUS_CODE status_code_from_string(char *code)
 {
-    char at[3];
-    snprintf(at, sizeof at, "%.3s", action_type);
-    at[3] = '\0';
-    if (strcmp(at, "TM") == 0)
+    for (int i = 0; i < CCP_STATUS_NUM_STATUS_CODES; ++i)
+    {
+        if (strcmp(code, status_code_strings[i]) == 0)
+            return (CCP_STATUS_CODE)i;
+    }
+    return CCP_STATUS_NUM_STATUS_CODES; // Return the default status code for unknown strings
+}
+
+CCP_ACTION_TYPE ccp_at_from_str(char *message)
+{
+    if (strncmp(message, "TM", 2) == 0)
     {
         return CCP_AT_TM;
     }
-    else if (strcmp(at, "MS") == 0)
+    else if (strncmp(message, "MS", 2) == 0)
     {
         return CCP_AT_MS;
     }
