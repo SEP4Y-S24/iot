@@ -24,7 +24,7 @@ int main()
 	display_init();
 	scheduler_init();
 	// Can be adjasted to mock time passing quicker. 60s = 1 minute, 1s = 1 second
-	int clock_minute_interval = 5;
+	int clock_minute_interval = 60;
 	scheduler_add_task(clock_update_time, clock_minute_interval);
 	scheduler_add_task(display_time_from_clock, clock_minute_interval);
 
