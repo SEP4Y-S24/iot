@@ -14,6 +14,8 @@
 
 void ccp_handle_time_at(char *message);
 void ccp_handle_message_at(char *message);
+void ccp_handle_set_alarm(char *message);
+void ccp_handle_delete_alarm(char *message);
 
 void ccp_message_handler_handle(char *message)
 {
