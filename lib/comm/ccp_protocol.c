@@ -26,6 +26,9 @@ response ccp_parse_response(char *raw_response)
         token = strtok(NULL, LINE_TERMINATOR);
     }
 
+    if (num_parts != 4)
+        return response;
+
     int body_length = atoi(response_parts[2]);
 
     if (body_length < 0 || body_length > CCP_MAX_BODY_LENGTH)
