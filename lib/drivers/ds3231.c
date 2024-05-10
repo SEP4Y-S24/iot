@@ -163,4 +163,27 @@ void write_year(uint8_t year)
   i2c_write(data);
   i2c_stop();
 }
+
+void set_time(uint8_t hour, uint8_t min, uint8_t sec)
+{
+  write_hour(hour);
+  write_min(min);
+  write_sec(sec);
+}
+
+void set_date(uint8_t date, uint8_t month, uint8_t year)
+{
+  write_date(date);
+  write_month(month);
+  write_year(year);
+}
+
+Time get_time()
+{
+  Time t;
+  t.hour = read_hour();
+  t.min = read_min();
+  t.sec = read_sec();
+  return t;
+}
 #endif
