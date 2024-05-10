@@ -6,7 +6,7 @@
 
 void state_coordinator(State state)
 {
-    char *ip = "192.168.43.130";
+    char *ip = "192.168.43.122";
     int port = 8080;
 
     while (1)
