@@ -19,14 +19,19 @@ void here()
 int main()
 {
 	display_controller_init();
-	external_screen_init(); // ------> makes a weird beeping sound
+	external_screen_init(); // --- NOTICE --- ------> makes a weird beeping sound
 	log_init();
 	display_init();
 	scheduler_init();
-	// Can be adjasted to mock time passing quicker. 60s = 1 minute, 1s = 1 second
+
 	int clock_minute_interval = 60;
+	// --- NOTICE ---
+	// Can be adjasted to mock time passing quicker. 60s = 1 minute, 1s = 1 second
+
 	scheduler_add_task(clock_update_time, clock_minute_interval);
 	scheduler_add_task(display_time_from_clock, clock_minute_interval);
+
+	// --- NOTICE ---
 	// If you want to test the alarm, uncomment the following lines
 	// alarm_init(clock_minute_interval);
 	// alarm_set(10, 11);
