@@ -2,19 +2,9 @@
 #include "display.h"       // Include the display header
 #include <stdio.h>
 #include <stdlib.h>
-// #include <external_screen.h>
 
 static uint8_t current_hour = 10;   // Current hour (0-23)
 static uint8_t current_minute = 10; // Current minute (0-59)
-
-// SHOULD NOT BE HERE -> TO REFACTOR
-void clock_display_time()
-{
-    char time_str[6]; // Buffer to store the time string
-    // Format the time string as HH:MM
-    sprintf(time_str, "%02d:%02d", current_hour, current_minute);
-    // external_screen_string(time_str);
-}
 
 void clock_update_time()
 {

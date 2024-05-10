@@ -5,6 +5,8 @@
 #include "periodic_task.h"
 #include "buttons.h"
 #include "logger.h"
+#include "external_screen.h"
+
 static DISPLAY_CONTROLLER_STATE state = DISPLAY_STATE_TIME;
 
 static void update_display()
@@ -20,7 +22,7 @@ static void update_display()
         message_display_message();
         break;
     case DISPLAY_STATE_TIME:
-        clock_display_time();
+        external_screen_update_time_from_clock();
     }
 }
 
