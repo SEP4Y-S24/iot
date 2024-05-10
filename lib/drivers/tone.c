@@ -119,4 +119,139 @@ void tone_play_starwars()
     tone_play(392, 1000); // G4 for 1000 ms
 }
 
+void tone_play_despacito()
+{
+    // Notes frequencies (Hz)
+    const int C4 = 262;
+    const int D4 = 294;
+    const int E4 = 330;
+    const int F4 = 349;
+    const int G4 = 392;
+    const int A4 = 440;
+    const int B4 = 494;
+    const int C5 = 523;
+    const int D5 = 587;
+
+    // Note durations (ms)
+    const int quarter = 500;
+    const int eighth = quarter / 2;
+    const int dotted_eighth = (int)(eighth * 1.5);
+
+    // Play melody
+    tone_play(E4, dotted_eighth);
+    // _delay_ms(dotted_eighth);
+    tone_play(D4, eighth);
+    // _delay_ms(eighth);
+    tone_play(C4, eighth);
+    // _delay_ms(eighth);
+    tone_play(D4, dotted_eighth);
+    // _delay_ms(dotted_eighth);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(E4, dotted_eighth);
+    // _delay_ms(dotted_eighth);
+    tone_play(D4, eighth);
+    // _delay_ms(eighth);
+    tone_play(D4, eighth);
+    // _delay_ms(eighth);
+    tone_play(D4, dotted_eighth);
+    // _delay_ms(dotted_eighth);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(G4, quarter);
+    // _delay_ms(quarter);
+    tone_play(G4, eighth);
+    // _delay_ms(eighth);
+    tone_play(G4, quarter);
+    // _delay_ms(quarter);
+    tone_play(F4, eighth);
+    // _delay_ms(eighth);
+    tone_play(F4, eighth);
+    // _delay_ms(eighth);
+    tone_play(F4, eighth);
+    // _delay_ms(eighth);
+    tone_play(E4, quarter);
+    // _delay_ms(quarter);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(F4, eighth);
+    // _delay_ms(eighth);
+    tone_play(G4, quarter);
+    // _delay_ms(quarter);
+    tone_play(G4, eighth);
+    // _delay_ms(eighth);
+    tone_play(G4, quarter);
+    // _delay_ms(quarter);
+    tone_play(F4, eighth);
+    // _delay_ms(eighth);
+    tone_play(F4, eighth);
+    // _delay_ms(eighth);
+    tone_play(F4, eighth);
+    // _delay_ms(eighth);
+    tone_play(E4, quarter);
+    // _delay_ms(quarter);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(F4, eighth);
+    // _delay_ms(eighth);
+    tone_play(G4, quarter);
+    // _delay_ms(quarter);
+    tone_play(G4, eighth);
+    // _delay_ms(eighth);
+    tone_play(G4, quarter);
+    // _delay_ms(quarter);
+    tone_play(F4, eighth);
+    // _delay_ms(eighth);
+    tone_play(F4, eighth);
+    // _delay_ms(eighth);
+    tone_play(F4, eighth);
+    // _delay_ms(eighth);
+    tone_play(E4, quarter);
+    // _delay_ms(quarter);
+    tone_play(E4, eighth);
+    // _delay_ms(eighth);
+    tone_play(G4, quarter);
+    // _delay_ms(quarter);
+    tone_play(G4, eighth);
+    // _delay_ms(eighth);
+    tone_play(A4, quarter);
+    // _delay_ms(quarter);
+    tone_play(A4, eighth);
+    // _delay_ms(eighth);
+    tone_play(B4, quarter);
+    // _delay_ms(quarter);
+    tone_play(B4, eighth);
+    // _delay_ms(eighth);
+    tone_play(C5, quarter);
+    // _delay_ms(quarter);
+    tone_play(C5, eighth);
+    // _delay_ms(eighth);
+    tone_play(D5, quarter);
+    // _delay_ms(quarter);
+    tone_play(B4, quarter);
+    // _delay_ms(quarter);
+    tone_play(A4, quarter);
+    // _delay_ms(quarter);
+    tone_play(G4, quarter);
+    // _delay_ms(quarter);
+}
+
 #endif

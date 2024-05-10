@@ -10,3 +10,7 @@ void clock_init();
 void clock_display_time();
 
 void clock_set_time(int hours, int minutes);
+
+void clock_get_time(int *hours, int *minutes);
+
+void clock_update_time();

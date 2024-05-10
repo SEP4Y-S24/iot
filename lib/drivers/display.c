@@ -1,5 +1,6 @@
 #include "display.h"
 #include "includes.h"
+#include "clock.h"
 // LATCH
 #define LATCH_BIT PG5
 #define LATCH_DDR DDRG
@@ -44,6 +45,13 @@ void display_setValues(uint8_t seg1, uint8_t seg2, uint8_t seg3, uint8_t seg4)
     display_data[1] = seg2;
     display_data[2] = seg3;
     display_data[3] = seg4;
+}
+
+void display_from_time_from_clock()
+{
+    uint8_t hours, minutes;
+    clock_get_time(&hours, &minutes);
+    display_int(hours * 100 + minutes);
 }
 
 // Function to update the display_data[] array with the digits of a signed integer value

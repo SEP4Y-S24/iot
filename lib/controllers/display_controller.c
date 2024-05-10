@@ -13,19 +13,19 @@ static void update_display()
     {
         display_controller_switch_state();
     }
-    
 
     switch (state)
     {
     case DISPLAY_STATE_MESSAGE:
-        message_display_message();  
+        message_display_message();
         break;
     case DISPLAY_STATE_TIME:
         clock_display_time();
     }
 }
 
-void display_controller_init(){
+void display_controller_init()
+{
     periodic_task_init_b(update_display, 1000);
 }
 
