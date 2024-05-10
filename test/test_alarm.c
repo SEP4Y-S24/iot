@@ -10,7 +10,7 @@
 #include <logger.h>
 #include <clock.h>
 
-FAKE_VOID_FUNC(periodic_task_init_b, PERIODIC_TASK_CALLBACK, uint32_t);
+FAKE_VOID_FUNC(periodic_task_init_c, PERIODIC_TASK_CALLBACK, uint32_t);
 FAKE_VOID_FUNC(log_debug, char *);
 FAKE_VOID_FUNC(log_info, char *);
 FAKE_VOID_FUNC(hc_sr04_init);

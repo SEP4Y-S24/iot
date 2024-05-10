@@ -19,7 +19,7 @@ void alarm_init(int clock_minute_interval)
 {
     hc_sr04_init();
     log_info("Alarm initialized");
-    periodic_task_init_b(alarm_check, clock_minute_interval * 1000);
+    periodic_task_init_c(alarm_check, clock_minute_interval * 1000);
 }
 
 void alarm_set(int hour, int minute)
