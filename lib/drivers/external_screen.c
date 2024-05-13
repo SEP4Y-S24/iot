@@ -123,4 +123,5 @@ void external_screen_static_with_scroll(const char *static_text, const char *scr
         }
     }
 }
+
 #endif

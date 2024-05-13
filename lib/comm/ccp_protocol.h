@@ -16,6 +16,7 @@ typedef enum
     CCP_AT_TM,
     CCP_AT_MS,
     CCP_AT_CA,
+    CCP_AT_DA,
     CCP_AT_UNKNOWN
 } CCP_ACTION_TYPE;
 
