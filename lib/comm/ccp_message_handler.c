@@ -94,9 +94,11 @@ void ccp_handle_time_at(char *message)
 void ccp_handle_message_at(char *message)
 {
     // extract data from message
-    request server_request = ccp_parse_request(message);
+    request server_request;
+    ccp_parse_request(message, &server_request);
     buzzer_beep();
     ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_OK, "Message received");
-    log_debug("Updating message...");
+    log_info("Updating message...");
+    log_info(server_request.body);
     message_set_message(server_request.body);
 }

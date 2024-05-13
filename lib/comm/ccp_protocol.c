@@ -59,11 +59,11 @@ response ccp_parse_response(char *raw_response)
     return response;
 }
 
-request ccp_parse_request(char *raw_request)
+void ccp_parse_request(char *raw_request, request *request_pointer)
 {
     request request = {CCP_AT_UNKNOWN, {0}};
     if (raw_request == NULL)
-        return request;
+        request_pointer = &request;
 
     char *request_parts[3]; // Array to store message parts (Action Type, Body Length, Body)
     int num_parts = 0;
@@ -78,7 +78,7 @@ request ccp_parse_request(char *raw_request)
     request.action_type = ccp_at_from_str(request_parts[0]);
 
     if (num_parts != 3)
-        return request;
+        request_pointer = &request;
 
     int body_length = atoi(request_parts[1]);
 
@@ -89,13 +89,13 @@ request ccp_parse_request(char *raw_request)
         uint8_t response_data[35];
         memcpy(response_data, error_response, strlen(error_response));
         wifi_command_TCP_transmit(response_data, 35);
-        return request;
+        request_pointer = &request;
     }
 
     strncpy(request.body, request_parts[2], body_length);
     request.body[body_length] = '\0';
 
-    return request;
+    request_pointer = &request;
 }
 
 void ccp_create_request(CCP_ACTION_TYPE at, char *body, char *request_buffer)
