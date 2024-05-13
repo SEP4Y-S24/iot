@@ -38,7 +38,7 @@ void ccp_test_create_response_with_body()
 
 void ccp_test_parse_response_with_unknown_action_type()
 {
-    char raw_response[] = "TR\r\n1\r\n10\r\nHello World\r\n";
+    char raw_response[] = "XX\r\n1\r\n10\r\nHello World\r\n";
 
     response test_response = ccp_parse_response(raw_response);
 
@@ -69,7 +69,7 @@ void ccp_test_parse_response_with_too_long_body()
 
     response test_response = ccp_parse_response(raw_response);
 
-    TEST_ASSERT_TRUE(CCP_AT_UNKNOWN == test_response.action_type);
+    TEST_ASSERT_TRUE(CCP_AT_MS == test_response.action_type);
     TEST_ASSERT_TRUE(CCP_STATUS_BAD_REQUEST == test_response.status_code);
     TEST_ASSERT_EQUAL_STRING("", test_response.body);
 }
@@ -110,6 +110,61 @@ void ccp_test_parse_response_with_body()
     TEST_ASSERT_EQUAL_STRING("Hello World", test_response.body);
 }
 
+void ccp_test_parse_request_with_unknown_action_type()
+{
+    char raw_request[] = "XX\r\n11\r\nHello World\r\n";
+
+    request test_request = ccp_parse_request(raw_request);
+
+    TEST_ASSERT_TRUE(CCP_AT_UNKNOWN == test_request.action_type);
+}
+
+void ccp_test_parse_request_with_empty_body()
+{
+    char raw_request[] = "CA\r\n0\r\n";
+
+    request test_request = ccp_parse_request(raw_request);
+
+    TEST_ASSERT_EQUAL_STRING("", test_request.body);
+}
+
+void ccp_test_parse_request_with_too_long_body()
+{
+    char raw_request[] = "CA\r\n100\r\nHello World\r\n";
+
+    request test_request = ccp_parse_request(raw_request);
+
+    TEST_ASSERT_TRUE(CCP_AT_CA == test_request.action_type);
+    TEST_ASSERT_EQUAL_STRING("", test_request.body);
+}
+
+void ccp_test_parse_request_without_body()
+{
+    char raw_request[] = "CA\r\n";
+
+    request test_request = ccp_parse_request(raw_request);
+
+    TEST_ASSERT_EQUAL_STRING("", test_request.body);
+}
+
+void ccp_test_parse_request_with_action_type()
+{
+    char raw_request[] = "CA\r\n11\r\nHello World\r\n";
+
+    request test_request = ccp_parse_request(raw_request);
+
+    TEST_ASSERT_TRUE(CCP_AT_CA == test_request.action_type);
+}
+
+void ccp_test_parse_request_with_body()
+{
+    char raw_request[] = "CA\r\n11\r\nHello World\r\n";
+
+    request test_request = ccp_parse_request(raw_request);
+
+    TEST_ASSERT_EQUAL_STRING("Hello World", test_request.body);
+}
+
 void ccp_test_at_from_str()
 {
     CCP_ACTION_TYPE at = ccp_at_from_str("TM\r\n........");
@@ -120,6 +175,12 @@ void ccp_test_at_from_str2()
 {
     CCP_ACTION_TYPE at = ccp_at_from_str("MS");
     TEST_ASSERT_TRUE(at == CCP_AT_MS);
+}
+
+void ccp_test_at_from_str3()
+{
+    CCP_ACTION_TYPE at = ccp_at_from_str("CA");
+    TEST_ASSERT_TRUE(at == CCP_AT_CA);
 }
 
 int main(void)
@@ -143,9 +204,19 @@ int main(void)
     RUN_TEST(ccp_test_parse_response_with_unknown_status_code);
     RUN_TEST(ccp_test_parse_response_without_body);
 
+    // TEST PARSE REQUEST
+    RUN_TEST(ccp_test_parse_request_with_action_type);
+    RUN_TEST(ccp_test_parse_request_with_body);
+    RUN_TEST(ccp_test_parse_request_with_empty_body);
+    RUN_TEST(ccp_test_parse_request_with_too_long_body);
+    RUN_TEST(ccp_test_parse_request_with_unknown_action_type);
+    RUN_TEST(ccp_test_parse_request_without_body);
+
     // TEST ACTION TYPE CONVERTION
     RUN_TEST(ccp_test_at_from_str);
     RUN_TEST(ccp_test_at_from_str2);
+    RUN_TEST(ccp_test_at_from_str3);
+
     return UNITY_END();
 }
 

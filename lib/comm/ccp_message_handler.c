@@ -7,7 +7,6 @@
 #include "logger.h"
 #include "wifi.h"
 #include "clock.h"
-#include "leds.h"
 #include "ccp_message_sender.h"
 #include "message.h"
 #include "alarm.h"
