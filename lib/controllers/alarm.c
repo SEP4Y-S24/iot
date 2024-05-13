@@ -45,7 +45,7 @@ void alarm_create(int hour, int minute)
     log_info(time);
 }
 
-void alarm_unset()
+void alarm_delete()
 {
     alarm_is_created = false;
     alarm_is_active = false;

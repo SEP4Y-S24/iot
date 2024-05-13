@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include <clock.h>
 #include <display.h>
+#include "scheduler.h"
 
 void state_coordinator(State state)
 {

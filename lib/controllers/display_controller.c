@@ -44,7 +44,7 @@ void display_controller_switch_state()
     }
 }
 
-static void display_time_from_clock_on_external_screen()
+void display_time_from_clock_on_external_screen()
 {
     int current_hour, current_minute;
     clock_get_time(&current_hour, &current_minute); // Get the current time from the clock

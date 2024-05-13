@@ -31,8 +31,8 @@ void ccp_message_handler_handle(char *message)
     case CCP_AT_MS:
         ccp_handle_message_at(message);
         break;
-    case CCP_AT_SA:
-        ccp_handle_set_alarm(message);
+    case CCP_AT_CA:
+        ccp_handle_create_alarm(message);
         break;
     case CCP_AT_DA:
         ccp_handle_delete_alarm(message);
@@ -43,7 +43,7 @@ void ccp_message_handler_handle(char *message)
     }
 }
 
-void ccp_handle_set_alarm(char *message)
+void ccp_handle_create_alarm(char *message)
 {
     // extract data from message
     response server_response = ccp_parse_response(message);
@@ -59,7 +59,7 @@ void ccp_handle_set_alarm(char *message)
 
         int hour = atoi(hour_str);
         int minute = atoi(minute_str);
-        alarm_set(hour, minute);
+        alarm_create(hour, minute);
     }
 }
 
