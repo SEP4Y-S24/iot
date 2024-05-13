@@ -26,6 +26,8 @@ response ccp_parse_response(char *raw_response)
         token = strtok(NULL, LINE_TERMINATOR);
     }
 
+    response.action_type = ccp_at_from_str(response_parts[0]);
+
     if (num_parts != 4)
         return response;
 
@@ -41,13 +43,51 @@ response ccp_parse_response(char *raw_response)
         return response;
     }
 
-    response.action_type = ccp_at_from_str(response_parts[0]);
     response.status_code = status_code_from_string(response_parts[1]);
 
     strncpy(response.body, response_parts[3], body_length);
     response.body[body_length] = '\0';
 
     return response;
+}
+
+request ccp_parse_request(char *raw_request)
+{
+    request request = {CCP_AT_UNKNOWN, {0}};
+    if (raw_request == NULL)
+        return request;
+
+    char *request_parts[3]; // Array to store message parts (Action Type, Body Length, Body)
+    int num_parts = 0;
+    char *token = strtok(raw_request, LINE_TERMINATOR);
+
+    while (token != NULL)
+    {
+        request_parts[num_parts++] = token;
+        token = strtok(NULL, LINE_TERMINATOR);
+    }
+
+    request.action_type = ccp_at_from_str(request_parts[0]);
+
+    if (num_parts != 3)
+        return request;
+
+    int body_length = atoi(request_parts[1]);
+
+    if (body_length < 0 || body_length > CCP_MAX_BODY_LENGTH)
+    {
+        char error_response[35];
+        ccp_create_response(error_response, ccp_at_from_str(request_parts[0]), CCP_STATUS_BAD_REQUEST, "Max Body Length is: 96.");
+        uint8_t response_data[35];
+        memcpy(response_data, error_response, strlen(error_response));
+        wifi_command_TCP_transmit(response_data, 35);
+        return request;
+    }
+
+    strncpy(request.body, request_parts[2], body_length);
+    request.body[body_length] = '\0';
+
+    return request;
 }
 
 void ccp_create_request(CCP_ACTION_TYPE at, char *body, char *request_buffer)
@@ -111,17 +151,13 @@ const CCP_STATUS_CODE status_code_from_string(char *code)
 CCP_ACTION_TYPE ccp_at_from_str(char *message)
 {
     if (strncmp(message, "TM", 2) == 0)
-    {
         return CCP_AT_TM;
-    }
     else if (strncmp(message, "MS", 2) == 0)
-    {
         return CCP_AT_MS;
-    }
+    else if (strncmp(message, "CA", 2) == 0)
+        return CCP_AT_CA;
     else
-    {
         return CCP_AT_UNKNOWN;
-    }
 }
 
 void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type)
@@ -133,6 +169,9 @@ void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type)
         break;
     case CCP_AT_MS:
         strcpy(action_type, "MS");
+        break;
+    case CCP_AT_CA:
+        strcpy(action_type, "CA");
         break;
     default:
         strcpy(action_type, "Unknown");
