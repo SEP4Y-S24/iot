@@ -2,6 +2,7 @@
 #include <state_coordinator.h>
 #include <wifi.h>
 #include "ccp_message_handler.h"
+#include "humidity_temperature.h"
 #include "uart.h"
 #include "logger.h"
 #include "ccp_message_sender.h"
@@ -35,6 +36,7 @@ State working_state_switch(char *ip, int port)
 static void periodic_requests()
 {
     ccp_message_sender_send_request(CCP_AT_TM, "");
+    humidity_temperature_send();
 }
 
 static void init_periodic_requests()

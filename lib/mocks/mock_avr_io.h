@@ -194,7 +194,6 @@ extern uint8_t OCR3A;
 extern uint8_t TIMSK3;
 extern uint8_t OCR3B;
 extern uint8_t OCR3C;
-extern uint8_t OCR3D;
 
 #define CS32 2
 #define CS30 0
