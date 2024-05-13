@@ -1,3 +1,3 @@
-void message_display_message();
-
 void message_set_message(char *message);
+
+char *message_get_message();
