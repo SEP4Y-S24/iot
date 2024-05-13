@@ -10,13 +10,17 @@ void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type);
 const CCP_STATUS_CODE status_code_from_string(char *code);
 const char *status_code_to_string(CCP_STATUS_CODE code);
 
-response ccp_parse_response(char *raw_response)
+void ccp_parse_response(char *raw_response, response *response_pointer)
 {
+    if (response_pointer == NULL)
+        return;
+
     response response = {CCP_AT_UNKNOWN, CCP_STATUS_BAD_REQUEST, {0}};
+
     if (raw_response == NULL)
     {
-        log_info("Response is NULL");
-        return response;
+        *response_pointer = response;
+        return;
     }
 
     char *response_parts[4]; // Array to store message parts (Action Type, Response Code, Body Length, Body)
@@ -33,37 +37,43 @@ response ccp_parse_response(char *raw_response)
 
     if (num_parts != 4)
     {
-        log_info("Invalid number of parts.");
-        return response;
+        *response_pointer = response;
+        return;
     }
 
     int body_length = atoi(response_parts[2]);
 
     if (body_length < 0 || body_length > CCP_MAX_BODY_LENGTH)
     {
-        log_info("Invalid body length.");
         char error_response[35];
         ccp_create_response(error_response, ccp_at_from_str(response_parts[0]), CCP_STATUS_BAD_REQUEST, "Max Body Length is: 96.");
         uint8_t response_data[35];
         memcpy(response_data, error_response, strlen(error_response));
         wifi_command_TCP_transmit(response_data, 35);
-        return response;
+        *response_pointer = response;
+        return;
     }
 
     response.status_code = status_code_from_string(response_parts[1]);
-    log_info("Response body");
-    log_info(response_parts[3]);
+
     strncpy(response.body, response_parts[3], body_length);
     response.body[body_length] = '\0';
 
-    return response;
+    *response_pointer = response;
 }
 
 void ccp_parse_request(char *raw_request, request *request_pointer)
 {
+    if (request_pointer == NULL)
+        return;
+
     request request = {CCP_AT_UNKNOWN, {0}};
+
     if (raw_request == NULL)
-        request_pointer = &request;
+    {
+        *request_pointer = request;
+        return;
+    }
 
     char *request_parts[3]; // Array to store message parts (Action Type, Body Length, Body)
     int num_parts = 0;
@@ -78,24 +88,28 @@ void ccp_parse_request(char *raw_request, request *request_pointer)
     request.action_type = ccp_at_from_str(request_parts[0]);
 
     if (num_parts != 3)
-        request_pointer = &request;
+    {
+        *request_pointer = request;
+        return;
+    }
 
     int body_length = atoi(request_parts[1]);
 
     if (body_length < 0 || body_length > CCP_MAX_BODY_LENGTH)
     {
-        char error_response[35];
-        ccp_create_response(error_response, ccp_at_from_str(request_parts[0]), CCP_STATUS_BAD_REQUEST, "Max Body Length is: 96.");
-        uint8_t response_data[35];
-        memcpy(response_data, error_response, strlen(error_response));
-        wifi_command_TCP_transmit(response_data, 35);
-        request_pointer = &request;
+        char error_request[35];
+        ccp_create_response(error_request, ccp_at_from_str(request_parts[0]), CCP_STATUS_BAD_REQUEST, "Max Body Length is: 96.");
+        uint8_t request_data[35];
+        memcpy(request_data, error_request, strlen(error_request));
+        wifi_command_TCP_transmit(request_data, 35);
+        *request_pointer = request;
+        return;
     }
 
     strncpy(request.body, request_parts[2], body_length);
     request.body[body_length] = '\0';
 
-    request_pointer = &request;
+    *request_pointer = request;
 }
 
 void ccp_create_request(CCP_ACTION_TYPE at, char *body, char *request_buffer)
