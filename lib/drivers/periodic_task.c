@@ -17,18 +17,22 @@
 static PERIODIC_TASK_CALLBACK user_func_a; // Pointer to first user function
 static void (*user_func_b)(void);          // Pointer to second user function
 static void (*user_func_c)(void);          // Pointer to third user function
+static void (*user_func_d)(void);          // Pointer to third user function
 
 static uint16_t ocr3a_value = 0;
 static uint16_t ocr3b_value = 0;
 static uint16_t ocr3c_value = 0;
+static uint16_t ocr3d_value = 0;
 
 static uint16_t cnt_a = 0;
 static uint16_t cnt_b = 0;
 static uint16_t cnt_c = 0;
+static uint16_t cnt_d = 0;
 
 static uint16_t loops_a = 0;
 static uint16_t loops_b = 0;
 static uint16_t loops_c = 0;
+static uint16_t loops_d = 0;
 
 // Timer0 Compare Match A interrupt service routine
 #ifndef NATIVE_TESTING
