@@ -11,7 +11,8 @@
 static uint8_t alarm_hour = 0;
 static uint8_t alarm_minute = 0;
 static uint8_t alarm_delay = 0;
-static bool alarm_is_set = false;
+
+static bool alarm_is_created = false;
 static bool alarm_is_active = false;
 static bool alarm_is_stoped = false;
 
@@ -22,13 +23,13 @@ void alarm_init(int clock_minute_interval)
     periodic_task_init_c(alarm_check, clock_minute_interval * 1000);
 }
 
-void alarm_set(int hour, int minute)
+void alarm_create(int hour, int minute)
 {
 
     log_info("Alarm set to: ");
     alarm_hour = hour;
     alarm_minute = minute;
-    alarm_is_set = true;
+    alarm_is_created = true;
     alarm_is_active = true;
 
     char time[9];
@@ -38,7 +39,7 @@ void alarm_set(int hour, int minute)
     time[3] = alarm_minute / 10 + '0';
     time[4] = alarm_minute % 10 + '0';
     time[5] = '|';
-    time[6] = alarm_is_set + '0';
+    time[6] = alarm_is_created + '0';
     time[7] = alarm_is_active + '0';
     time[8] = '\0';
     log_info(time);
@@ -46,9 +47,9 @@ void alarm_set(int hour, int minute)
 
 void alarm_unset()
 {
-    alarm_is_set = false;
+    alarm_is_created = false;
     alarm_is_active = false;
-    log_info("Alarm unset");
+    log_info("Alarm deleted");
 }
 
 void alarm_stop()
@@ -60,7 +61,7 @@ void alarm_stop()
 
 void alarm_check()
 {
-    // log_info("Checking alarm");
+    log_info("Checking alarm");
 
     int clock_hour;
     int clock_minute;
@@ -76,9 +77,9 @@ void alarm_check()
     }
     shifted_hour = shifted_hour % 24;
 
-    while (alarm_is_set && alarm_is_active && clock_hour == shifted_hour && clock_minute == shifted_minute)
+    while (alarm_is_created && alarm_is_active && clock_hour == shifted_hour && clock_minute == shifted_minute)
     {
-        // log_info("Alarm is now");
+        log_info("Alarm is now");
         buzzer_beep();
         int distance = hc_sr04_takeMeasurement();
 
@@ -106,9 +107,9 @@ bool alarm_get_is_active()
     return alarm_is_active;
 }
 
-bool alarm_get_is_set()
+bool alarm_get_is_created()
 {
-    return alarm_is_set;
+    return alarm_is_created;
 }
 
 bool alarm_get_is_stoped()

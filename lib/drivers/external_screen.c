@@ -3,7 +3,6 @@
 #include "external_screen.h" /* Include the correct header file */
 #include <avr/io.h>
 #include <util/delay.h>
-#include "clock.h"
 
 /* LCD Port and Pin Definitions */
 #define LCD_Data_Dir DDRA    /* Define LCD data port direction */
@@ -125,13 +124,4 @@ void external_screen_static_with_scroll(const char *static_text, const char *scr
     }
 }
 
-void external_screen_update_time_from_clock()
-{
-    int current_hour, current_minute;
-    clock_get_time(&current_hour, &current_minute); // Get the current time from the clock
-    char time_str[6];                               // Buffer to store the time string
-    // Format the time string as HH:MM
-    sprintf(time_str, "%02d:%02d", current_hour, current_minute);
-    external_screen_string(time_str);
-}
 #endif

@@ -3,6 +3,8 @@
 #include "connect_server_state.h"
 #include "working_state.h"
 #include <stddef.h>
+#include <clock.h>
+#include <display.h>
 
 void state_coordinator(State state)
 {
@@ -28,6 +30,17 @@ void state_coordinator(State state)
 
 void start()
 {
+    // --- NOTICE ---
+    // If you want to test the alarm, uncomment the following lines
+    // alarm_init(clock_minute_interval);
+    // alarm_set(10, 11);
+
+    int clock_minute_interval = 60;
+    // --- NOTICE ---
+    // Can be adjasted to mock time passing quicker. 60s = 1 minute, 1s = 1 second
+
+    scheduler_add_task(clock_update_time, clock_minute_interval);
+    scheduler_add_task(display_time_from_clock, clock_minute_interval);
     // clock_display_time();
     state_coordinator(WIFI_CONNECT_STATE);
 }

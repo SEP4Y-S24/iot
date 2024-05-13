@@ -69,10 +69,3 @@ void external_screen_two_rows(const char *row1_text, char row1_pos, const char *
  * @param cycles The number of times the scrolling text should be repeated.
  */
 void external_screen_static_with_scroll(const char *static_text, const char *scroll_text, int delay, int cycles);
-
-/* LCD Control */
-
-/**
- * @brief Updates the external screen with a time from a clock.
- */
-void external_screen_update_time_from_clock();

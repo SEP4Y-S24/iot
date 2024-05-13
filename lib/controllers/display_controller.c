@@ -22,7 +22,7 @@ static void update_display()
         message_display_message();
         break;
     case DISPLAY_STATE_TIME:
-        external_screen_update_time_from_clock();
+        display_time_from_clock_on_external_screen();
     }
 }
 
@@ -42,4 +42,14 @@ void display_controller_switch_state()
     case DISPLAY_STATE_TIME:
         state = DISPLAY_STATE_MESSAGE;
     }
+}
+
+static void display_time_from_clock_on_external_screen()
+{
+    int current_hour, current_minute;
+    clock_get_time(&current_hour, &current_minute); // Get the current time from the clock
+    char time_str[6];                               // Buffer to store the time string
+    // Format the time string as HH:MM
+    sprintf(time_str, "%02d:%02d", current_hour, current_minute);
+    external_screen_string(time_str);
 }
