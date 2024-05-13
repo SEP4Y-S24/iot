@@ -54,8 +54,8 @@ void ccp_handle_create_alarm(char *message)
 
         ccp_message_sender_send_response(server_response.action_type, CCP_STATUS_OK, "Alarm received");
         log_debug("Setting alarm...");
-        char *hour_str[2] = {server_response.body[0], server_response.body[1]};
-        char *minute_str[2] = {server_response.body[3], server_response.body[4]};
+        char hour_str[3] = {server_response.body[0], server_response.body[1], '\0'};
+        char minute_str[3] = {server_response.body[3], server_response.body[4], '\0'};
 
         int hour = atoi(hour_str);
         int minute = atoi(minute_str);
@@ -72,35 +72,31 @@ void ccp_handle_time_at(char *message)
 {
     // extract data from message
     response server_response = ccp_parse_response(message);
+    log_info("Updating time...");
 
-    // Display Time if Status Code is OK
-    if (server_response.status_code == CCP_STATUS_OK)
+    log_info(server_response.body);
+    int hours, minutes;
+    char hours_str[3], minutes_str[3];
+
+    // Extract hours and minutes from server response
+    for (int i = 0; i < 2; i++)
     {
-        int hours, minutes;
-        char *token;
-        token = strtok(server_response.body, ":");
-        hours = atoi(token);
-        token = strtok(NULL, ":");
-        minutes = atoi(token);
-
-        ccp_message_sender_send_response(server_response.action_type, CCP_STATUS_OK, "Time received");
-        log_debug("Updating time...");
-        clock_set_time(hours, minutes);
+        hours_str[i] = server_response.body[i];
+        minutes_str[i] = server_response.body[i + 2];
     }
+    hours_str[2] = minutes_str[2] = '\0';
+    hours = atoi(hours_str);
+    minutes = atoi(minutes_str);
+
+    clock_set_time(hours, minutes);
 }
 
 void ccp_handle_message_at(char *message)
 {
     // extract data from message
-    response server_response = ccp_parse_response(message);
-
-    // Display Message if Status Code is OK
-    if (server_response.status_code == CCP_STATUS_OK)
-    {
-        buzzer_beep();
-        ccp_message_sender_send_response(server_response.action_type, CCP_STATUS_OK, "Message received");
-        log_debug("Updating message...");
-        message_set_message(server_response.body);
-        message_display_message();
-    }
+    request server_request = ccp_parse_request(message);
+    buzzer_beep();
+    ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_OK, "Message received");
+    log_debug("Updating message...");
+    message_set_message(server_request.body);
 }

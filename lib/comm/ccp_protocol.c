@@ -5,7 +5,7 @@
 #include "wifi.h"
 #include "logger.h"
 
-const char *LINE_TERMINATOR = "\r\n";
+const char *LINE_TERMINATOR = "|";
 void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type);
 const CCP_STATUS_CODE status_code_from_string(char *code);
 const char *status_code_to_string(CCP_STATUS_CODE code);
@@ -14,7 +14,10 @@ response ccp_parse_response(char *raw_response)
 {
     response response = {CCP_AT_UNKNOWN, CCP_STATUS_BAD_REQUEST, {0}};
     if (raw_response == NULL)
+    {
+        log_info("Response is NULL");
         return response;
+    }
 
     char *response_parts[4]; // Array to store message parts (Action Type, Response Code, Body Length, Body)
     int num_parts = 0;
@@ -29,12 +32,16 @@ response ccp_parse_response(char *raw_response)
     response.action_type = ccp_at_from_str(response_parts[0]);
 
     if (num_parts != 4)
+    {
+        log_info("Invalid number of parts.");
         return response;
+    }
 
     int body_length = atoi(response_parts[2]);
 
     if (body_length < 0 || body_length > CCP_MAX_BODY_LENGTH)
     {
+        log_info("Invalid body length.");
         char error_response[35];
         ccp_create_response(error_response, ccp_at_from_str(response_parts[0]), CCP_STATUS_BAD_REQUEST, "Max Body Length is: 96.");
         uint8_t response_data[35];
@@ -44,7 +51,8 @@ response ccp_parse_response(char *raw_response)
     }
 
     response.status_code = status_code_from_string(response_parts[1]);
-
+    log_info("Response body");
+    log_info(response_parts[3]);
     strncpy(response.body, response_parts[3], body_length);
     response.body[body_length] = '\0';
 
