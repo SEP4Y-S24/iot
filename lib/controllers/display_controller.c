@@ -9,7 +9,8 @@
 #include "external_screen.h"
 
 static DISPLAY_CONTROLLER_STATE state = DISPLAY_STATE_TIME;
-void display_time_from_clock_on_external_screen();
+static void display_time_from_clock_on_external_screen();
+static void display_message();
 static void update_display()
 {
     if (buttons_2_pressed())
@@ -20,7 +21,7 @@ static void update_display()
     switch (state)
     {
     case DISPLAY_STATE_MESSAGE:
-        message_display_message();
+        display_message();
         break;
     case DISPLAY_STATE_TIME:
         display_time_from_clock_on_external_screen();
@@ -45,7 +46,7 @@ void display_controller_switch_state()
     }
 }
 
-void display_time_from_clock_on_external_screen()
+static void display_time_from_clock_on_external_screen()
 {
     int current_hour, current_minute;
     clock_get_time(&current_hour, &current_minute); // Get the current time from the clock
@@ -54,4 +55,9 @@ void display_time_from_clock_on_external_screen()
 
     sprintf(time_str, "%02d:%02d", current_hour, current_minute);
     external_screen_string(time_str);
+}
+
+static void display_message(){
+    char *message = message_get_message();
+    external_screen_string(message);
 }

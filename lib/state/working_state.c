@@ -35,12 +35,11 @@ State working_state_switch(char *ip, int port)
 
 
 static void periodic_requests(){
-    log_info("sending periodic requests");
     ccp_request_maker_tm();
 }
 
 
 
 static void init_periodic_requests(){
-    periodic_task_init_a(periodic_requests, 300000);   
+    periodic_task_init_a(periodic_requests, 10000);   
 }
