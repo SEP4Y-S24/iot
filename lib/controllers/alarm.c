@@ -27,6 +27,7 @@ void alarm_log_time(int h, int m)
 void alarm_init(int clock_minute_interval)
 {
     buzzer_init();
+    buttons_init();
     hc_sr04_init();
     log_info("Alarm initialized");
     periodic_task_init_c(alarm_check, clock_minute_interval * 1000);
@@ -50,6 +51,7 @@ void alarm_delete()
     alarm_time_minute = 0;
     alarm_time_delay = 0;
     alarm_is_created = false;
+    alarm_is_active = false;
 }
 
 void alarm_check()
