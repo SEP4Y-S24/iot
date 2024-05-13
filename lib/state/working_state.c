@@ -32,25 +32,12 @@ State working_state_switch(char *ip, int port)
     return WORKING_STATE;
 }
 
-<<<<<<< HEAD
 static void periodic_requests()
 {
-    log_info("sending periodic requests");
-    ccp_request_maker_tm();
+    ccp_message_sender_send_request(CCP_AT_TM, "");
 }
 
 static void init_periodic_requests()
 {
-    // periodic_task_init_c(periodic_requests, 300000); // uncommented for now since periodic task limit is reached
-=======
-
-static void periodic_requests(){
-    ccp_message_sender_send_request(CCP_AT_TM, "");
-}
-
-
-
-static void init_periodic_requests(){
-    periodic_task_init_b(periodic_requests, 10000);   
->>>>>>> main
+    periodic_task_init_b(periodic_requests, 10000);
 }
