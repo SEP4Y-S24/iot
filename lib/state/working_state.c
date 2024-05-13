@@ -11,7 +11,6 @@ static void init_periodic_requests();
 
 static char message_buffer[128];
 
-
 static void tcp_callback()
 {
     ccp_message_handler_handle(message_buffer);
@@ -33,13 +32,12 @@ State working_state_switch(char *ip, int port)
     return WORKING_STATE;
 }
 
-
-static void periodic_requests(){
+static void periodic_requests()
+{
     ccp_message_sender_send_request(CCP_AT_TM, "");
 }
 
-
-
-static void init_periodic_requests(){
-    periodic_task_init_b(periodic_requests, 10000);   
+static void init_periodic_requests()
+{
+    periodic_task_init_b(periodic_requests, 10000);
 }

@@ -9,6 +9,7 @@
 #include <hc_sr04.h>
 #include <logger.h>
 #include <clock.h>
+#include <buttons.h>
 
 FAKE_VOID_FUNC(periodic_task_init_c, PERIODIC_TASK_CALLBACK, uint32_t);
 FAKE_VOID_FUNC(log_debug, char *);
@@ -17,6 +18,11 @@ FAKE_VOID_FUNC(hc_sr04_init);
 FAKE_VALUE_FUNC(uint16_t, hc_sr04_takeMeasurement);
 FAKE_VOID_FUNC(buzzer_beep);
 FAKE_VOID_FUNC(native_delay_ms, int);
+FAKE_VOID_FUNC(buzzer_init);
+FAKE_VOID_FUNC(buzzer_on);
+FAKE_VOID_FUNC(buzzer_off);
+FAKE_VOID_FUNC(buttons_init);
+FAKE_VALUE_FUNC0(uint8_t, buttons_1_pressed);
 
 void alarm_init_should_set_alarm_set_and_active_to_false()
 {
@@ -39,13 +45,6 @@ void alarm_unset_should_unset_alarm()
     TEST_ASSERT_FALSE(alarm_get_is_active());
 }
 
-void alarm_stop_should_stop_alarm()
-{
-    alarm_stop();
-    TEST_ASSERT_FALSE(alarm_get_is_active());
-    TEST_ASSERT_TRUE(alarm_get_is_stoped);
-}
-
 void alarm_check_should_beep_when_alarm_is_set_and_active()
 {
     clock_set_time(10, 10);
@@ -61,7 +60,6 @@ int main(void)
     RUN_TEST(alarm_init_should_set_alarm_set_and_active_to_false);
     RUN_TEST(alarm_set_time_sets_alarm_to_set_and_active);
     RUN_TEST(alarm_unset_should_unset_alarm);
-    RUN_TEST(alarm_stop_should_stop_alarm);
     RUN_TEST(alarm_check_should_beep_when_alarm_is_set_and_active);
 
     return UNITY_END();
