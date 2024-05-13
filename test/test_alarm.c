@@ -10,6 +10,7 @@
 #include <logger.h>
 #include <clock.h>
 #include <buttons.h>
+#include <ds3231.h>
 
 FAKE_VOID_FUNC(periodic_task_init_c, PERIODIC_TASK_CALLBACK, uint32_t);
 FAKE_VOID_FUNC(log_debug, char *);
@@ -23,6 +24,11 @@ FAKE_VOID_FUNC(buzzer_on);
 FAKE_VOID_FUNC(buzzer_off);
 FAKE_VOID_FUNC(buttons_init);
 FAKE_VALUE_FUNC0(uint8_t, buttons_1_pressed);
+
+FAKE_VALUE_FUNC(uint8_t, read_hour);
+FAKE_VALUE_FUNC(uint8_t, read_min);
+FAKE_VOID_FUNC(write_hour, uint8_t);
+FAKE_VOID_FUNC(write_min, uint8_t);
 
 void alarm_init_should_set_alarm_set_and_active_to_false()
 {
@@ -67,6 +73,8 @@ int main(void)
 
 void setUp(void)
 {
+    read_hour_fake.return_val = 10;
+    read_min_fake.return_val = 10;
 }
 
 void tearDown(void)

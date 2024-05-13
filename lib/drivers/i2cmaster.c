@@ -10,7 +10,6 @@
 
 #ifndef NATIVE_TESTING
 
-#pragma once
 #include <inttypes.h>
 #include <compat/twi.h>
 
