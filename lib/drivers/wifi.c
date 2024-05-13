@@ -297,7 +297,7 @@ WIFI_ERROR_MESSAGE_t wifi_command_create_TCP_connection(char *IP, uint16_t port,
     sprintf(portString, "%u", port);
     strcat(sendbuffer, portString);
 
-    WIFI_ERROR_MESSAGE_t errorMessage = wifi_command(sendbuffer, 20);
+    WIFI_ERROR_MESSAGE_t errorMessage = wifi_command(sendbuffer, 7);
     if (errorMessage != WIFI_OK)
         return errorMessage;
     else

@@ -5,40 +5,46 @@
 #include <stdio.h>
 #include <fff.h>
 #include <wifi.h>
+#include <uart.h>
 
 FAKE_VALUE_FUNC(WIFI_ERROR_MESSAGE_t, wifi_command_TCP_transmit, uint8_t *, uint16_t);
+FAKE_VOID_FUNC(uart_init, USART_t, uint32_t, UART_Callback_t);
+FAKE_VOID_FUNC(uart_send_blocking, USART_t, uint8_t);
+FAKE_VOID_FUNC(uart_send_array_nonBlocking, USART_t, uint8_t *, uint16_t);
+FAKE_VOID_FUNC(uart_send_array_blocking, USART_t, uint8_t *, uint16_t);
+FAKE_VOID_FUNC(uart_send_string_blocking, USART_t, char *);
 
 void ccp_test_create_request_without_body()
 {
     char buffer[100];
     ccp_create_request(CCP_AT_TM, "", buffer);
-    TEST_ASSERT_EQUAL_STRING("TM\r\n0\r\n\r\n", buffer);
+    TEST_ASSERT_EQUAL_STRING("TM|0||", buffer);
 }
 
 void ccp_test_create_request_with_body()
 {
     char buffer[100];
     ccp_create_request(CCP_AT_MS, "Hello, World!", buffer);
-    TEST_ASSERT_EQUAL_STRING("MS\r\n13\r\nHello, World!\r\n", buffer);
+    TEST_ASSERT_EQUAL_STRING("MS|13|Hello, World!|", buffer);
 }
 
 void ccp_test_create_response_without_body()
 {
     char buffer[100];
     ccp_create_response(buffer, CCP_AT_TM, CCP_STATUS_OK, "");
-    TEST_ASSERT_EQUAL_STRING("TM\r\n1\r\n0\r\n\r\n", buffer);
+TEST_ASSERT_EQUAL_STRING("TM|1|0||", buffer);
 }
 
 void ccp_test_create_response_with_body()
 {
     char buffer[100];
     ccp_create_response(buffer, CCP_AT_MS, CCP_STATUS_SERVER_ERROR, "Internal Server Error");
-    TEST_ASSERT_EQUAL_STRING("MS\r\n2\r\n21\r\nInternal Server Error\r\n", buffer);
+    TEST_ASSERT_EQUAL_STRING("MS|2|21|Internal Server Error|", buffer);
 }
 
 void ccp_test_parse_response_with_unknown_action_type()
 {
-    char raw_response[] = "XX\r\n1\r\n10\r\nHello World\r\n";
+    char raw_response[] = "XX|1|10|Hello World|";
 
     response test_response = ccp_parse_response(raw_response);
 
@@ -47,7 +53,7 @@ void ccp_test_parse_response_with_unknown_action_type()
 
 void ccp_test_parse_response_with_unknown_status_code()
 {
-    char raw_response[] = "MS\r\n9\r\n10\r\nHello World\r\n";
+    char raw_response[] = "MS|9|10|Hello World|";
 
     response test_response = ccp_parse_response(raw_response);
 
@@ -56,7 +62,7 @@ void ccp_test_parse_response_with_unknown_status_code()
 
 void ccp_test_parse_response_with_empty_body()
 {
-    char raw_response[] = "MS\r\n1\r\n0\r\n";
+    char raw_response[] = "MS|1|0|";
 
     response test_response = ccp_parse_response(raw_response);
 
@@ -65,7 +71,7 @@ void ccp_test_parse_response_with_empty_body()
 
 void ccp_test_parse_response_with_too_long_body()
 {
-    char raw_response[] = "MS\r\n1\r\n100\r\nBody length is set to bee too long.\r\n";
+    char raw_response[] = "MS|1|100|Body length is set to bee too long.|";
 
     response test_response = ccp_parse_response(raw_response);
 
@@ -76,7 +82,7 @@ void ccp_test_parse_response_with_too_long_body()
 
 void ccp_test_parse_response_without_body()
 {
-    char raw_response[] = "MS\r\n1\r\n";
+    char raw_response[] = "MS|1|";
 
     response test_response = ccp_parse_response(raw_response);
 
@@ -85,7 +91,7 @@ void ccp_test_parse_response_without_body()
 
 void ccp_test_parse_response_with_action_type()
 {
-    char raw_response[] = "MS\r\n1\r\n10\r\nHello World\r\n";
+    char raw_response[] = "MS|1|10|Hello World|";
 
     response test_response = ccp_parse_response(raw_response);
 
@@ -94,7 +100,7 @@ void ccp_test_parse_response_with_action_type()
 
 void ccp_test_parse_response_with_status_code()
 {
-    char raw_response[] = "MS\r\n1\r\n10\r\nHello World\r\n";
+    char raw_response[] = "MS|1|10|Hello World|";
 
     response test_response = ccp_parse_response(raw_response);
 
@@ -103,7 +109,7 @@ void ccp_test_parse_response_with_status_code()
 
 void ccp_test_parse_response_with_body()
 {
-    char raw_response[] = "MS\r\n1\r\n11\r\nHello World\r\n";
+    char raw_response[] = "MS|1|11|Hello World|";
 
     response test_response = ccp_parse_response(raw_response);
 
@@ -112,7 +118,7 @@ void ccp_test_parse_response_with_body()
 
 void ccp_test_parse_request_with_unknown_action_type()
 {
-    char raw_request[] = "XX\r\n11\r\nHello World\r\n";
+    char raw_request[] = "XX|11|Hello World|";
 
     request test_request = ccp_parse_request(raw_request);
 
@@ -121,7 +127,7 @@ void ccp_test_parse_request_with_unknown_action_type()
 
 void ccp_test_parse_request_with_empty_body()
 {
-    char raw_request[] = "CA\r\n0\r\n";
+    char raw_request[] = "CA|0|";
 
     request test_request = ccp_parse_request(raw_request);
 
@@ -130,7 +136,7 @@ void ccp_test_parse_request_with_empty_body()
 
 void ccp_test_parse_request_with_too_long_body()
 {
-    char raw_request[] = "CA\r\n100\r\nHello World\r\n";
+    char raw_request[] = "CA|100|Hello World|";
 
     request test_request = ccp_parse_request(raw_request);
 
@@ -140,7 +146,7 @@ void ccp_test_parse_request_with_too_long_body()
 
 void ccp_test_parse_request_without_body()
 {
-    char raw_request[] = "CA\r\n";
+    char raw_request[] = "CA|";
 
     request test_request = ccp_parse_request(raw_request);
 
@@ -149,7 +155,7 @@ void ccp_test_parse_request_without_body()
 
 void ccp_test_parse_request_with_action_type()
 {
-    char raw_request[] = "CA\r\n11\r\nHello World\r\n";
+    char raw_request[] = "CA|11|Hello World|";
 
     request test_request = ccp_parse_request(raw_request);
 
@@ -158,7 +164,7 @@ void ccp_test_parse_request_with_action_type()
 
 void ccp_test_parse_request_with_body()
 {
-    char raw_request[] = "CA\r\n11\r\nHello World\r\n";
+    char raw_request[] = "CA|11|Hello World|";
 
     request test_request = ccp_parse_request(raw_request);
 
@@ -167,7 +173,7 @@ void ccp_test_parse_request_with_body()
 
 void ccp_test_at_from_str()
 {
-    CCP_ACTION_TYPE at = ccp_at_from_str("TM\r\n........");
+    CCP_ACTION_TYPE at = ccp_at_from_str("TM|........");
     TEST_ASSERT_TRUE(at == CCP_AT_TM);
 }
 
