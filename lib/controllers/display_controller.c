@@ -6,6 +6,7 @@
 #include "periodic_task.h"
 #include "buttons.h"
 #include "logger.h"
+#include "scheduler.h"
 #include "external_screen.h"
 
 static DISPLAY_CONTROLLER_STATE state = DISPLAY_STATE_TIME;
@@ -30,7 +31,7 @@ static void update_display()
 
 void display_controller_init()
 {
-    periodic_task_init_b(update_display, 1000);
+    scheduler_add_task(update_display, 1);
 }
 
 void display_controller_switch_state()

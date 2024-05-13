@@ -4,7 +4,7 @@
 #include "ccp_message_handler.h"
 #include "uart.h"
 #include "logger.h"
-#include "ccp_request_maker.h"
+#include "ccp_message_sender.h"
 #include "periodic_task.h"
 
 static void init_periodic_requests();
@@ -35,11 +35,11 @@ State working_state_switch(char *ip, int port)
 
 
 static void periodic_requests(){
-    ccp_request_maker_tm();
+    ccp_message_sender_send_request(CCP_AT_TM, "");
 }
 
 
 
 static void init_periodic_requests(){
-    periodic_task_init_a(periodic_requests, 10000);   
+    periodic_task_init_b(periodic_requests, 10000);   
 }
