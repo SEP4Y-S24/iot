@@ -8,7 +8,7 @@
 #include "external_screen.h"
 
 static DISPLAY_CONTROLLER_STATE state = DISPLAY_STATE_TIME;
-
+void display_time_from_clock_on_external_screen();
 static void update_display()
 {
     if (buttons_2_pressed())
