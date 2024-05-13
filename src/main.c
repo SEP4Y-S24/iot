@@ -7,7 +7,7 @@
 #include <external_screen.h>
 #include <util/delay.h>
 #include <display_controller.h>
-#include "display.h"
+#include <i2cmaster.h>
 
 void here()
 {
@@ -19,6 +19,7 @@ int main()
 	external_screen_init();
 	log_init();
 	display_init();
+	i2c_init();
 
 	wifi_init(NULL);
 	wifi_command_reset(); // reset the module. Because sometimes it just makes it work -_('o')_-  Software development at its best.
