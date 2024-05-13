@@ -1,6 +1,7 @@
 #include "humidity_temperature.h"
 #include "ccp_message_sender.h"
 #include "dht11.h"
+#include "logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,6 +9,7 @@
 void humidity_temperature_send()
 {
     char request_message[16];
+    log_info("Temperature");
     humidity_temperature_get(request_message);
     ccp_message_sender_send_request(CCP_AT_TH, request_message);
 }
@@ -20,16 +22,18 @@ void humidity_temperature_get(char *message_buffer)
     {
         sprintf(number_stringified, "%d.%d", temperature_int, temperature_dec);
         strcpy(message_buffer, "T");
-        strcat(message_buffer, number_stringified);
+        strcat(message_buffer, &number_stringified);
 
         strcat(message_buffer, "-");
 
         sprintf(number_stringified, "%d.%d", humidity_int, humidity_dec);
         strcat(message_buffer, "H");
-        strcat(message_buffer, number_stringified);
+        strcat(message_buffer, &number_stringified);
+        log_info(message_buffer);
     }
     else
     {
-        strcpy(message_buffer, "Error occured while getting the Humidity and Temperature data.");
+        strcpy(message_buffer, "Failed attempt");
+        log_info(message_buffer);
     }
 }
