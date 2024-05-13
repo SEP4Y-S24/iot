@@ -34,4 +34,4 @@ void periodic_task_init_a(PERIODIC_TASK_CALLBACK, uint32_t interval_ms_a);
 void periodic_task_init_b(void (*user_function_b)(void), uint32_t interval_ms_b);
 
 void periodic_task_init_c(void (*user_function_c)(void), uint32_t interval_ms_c);
-
+void periodic_task_init_d(void (*user_function_d)(void), uint32_t interval_ms_d);

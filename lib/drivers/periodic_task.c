@@ -72,6 +72,19 @@ ISR(TIMER3_COMPC_vect)
         cnt_c--;
     }
 }
+ISR(TIMER3_COMPD_vect)
+{
+    if (cnt_d == 0)
+    {
+        OCR3D = OCR3D + ocr3d_value;
+        cnt_d = loops_d;
+        user_func_d();
+    }
+    else
+    {
+        cnt_d--;
+    }
+}
 #endif
 
 static void init_timer3()
@@ -133,6 +146,21 @@ void periodic_task_init_c(void (*user_function_c)(void), uint32_t interval_ms_c)
 
     // Enable Timer0 Compare Match C interrupt
     TIMSK3 |= (1 << OCIE3C);
+}
+
+void periodic_task_init_d(void (*user_function_d)(void), uint32_t interval_ms_d)
+{
+    user_func_d = user_function_d;
+    init_timer3();
+
+    cnt_d = (interval_ms_d / 1000 * (F_CPU / 1024)) / 0xFFFF; //(interval_ms_a*125)>>19;
+    loops_d = cnt_d;
+    ocr3d_value = (uint32_t)interval_ms_d * (F_CPU / 1024) / 1000 - (uint32_t)cnt_d * 0xFFFF;
+
+    OCR3D = ocr3d_value;
+
+    // Enable Timer0 Compare Match C interrupt
+    TIMSK3 |= (1 << OCIE3D);
 }
 
 // not done yet...
