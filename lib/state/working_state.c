@@ -11,7 +11,6 @@ static void init_periodic_requests();
 
 static char message_buffer[128];
 
-
 static void tcp_callback()
 {
     ccp_message_handler_handle(message_buffer);
@@ -33,14 +32,13 @@ State working_state_switch(char *ip, int port)
     return WORKING_STATE;
 }
 
-
-static void periodic_requests(){
+static void periodic_requests()
+{
     log_info("sending periodic requests");
     ccp_request_maker_tm();
 }
 
-
-
-static void init_periodic_requests(){
-    periodic_task_init_a(periodic_requests, 300000);   
+static void init_periodic_requests()
+{
+    // periodic_task_init_c(periodic_requests, 300000); // uncommented for now since periodic task limit is reached
 }

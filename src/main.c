@@ -7,7 +7,7 @@
 #include <external_screen.h>
 #include <util/delay.h>
 #include <display_controller.h>
-#include "scheduler.h"
+#include "display.h"
 
 void here()
 {
@@ -19,7 +19,6 @@ int main()
 	external_screen_init(); // --- NOTICE --- ------> makes a weird beeping sound
 	log_init();
 	display_init();
-	scheduler_init();
 
 	wifi_init(NULL);
 	wifi_command_reset(); // reset the module. Because sometimes it just makes it work -_('o')_-  Software development at its best.
