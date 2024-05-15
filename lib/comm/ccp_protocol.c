@@ -180,6 +180,8 @@ CCP_ACTION_TYPE ccp_at_from_str(char *message)
         return CCP_AT_CA;
     else if (strncmp(message, "DA", 2) == 0)
         return CCP_AT_DA;
+    else if (strncmp(message, "TH", 2) == 0)
+        return CCP_AT_TH;
     else
         return CCP_AT_UNKNOWN;
 }
@@ -199,6 +201,9 @@ void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type)
         break;
     case CCP_AT_DA:
         strcpy(action_type, "DA");
+        break;
+    case CCP_AT_TH:
+        strcpy(action_type, "TH");
         break;
     default:
         strcpy(action_type, "Unknown");

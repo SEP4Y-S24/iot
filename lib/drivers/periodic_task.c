@@ -72,6 +72,7 @@ ISR(TIMER3_COMPC_vect)
         cnt_c--;
     }
 }
+
 #endif
 
 static void init_timer3()
