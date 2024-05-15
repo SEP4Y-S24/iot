@@ -8,7 +8,7 @@
 #include "ccp_message_sender.h"
 #include "periodic_task.h"
 #include "native.h"
-#include "co2.h"
+// #include "co2.h"
 
 static void periodic_tasks_10_minutes();
 
@@ -45,5 +45,5 @@ static void periodic_tasks_10_minutes()
 
     humidity_temperature_send();
     native_delay_ms(2000);
-    c02_send();
+    // c02_send();
 }

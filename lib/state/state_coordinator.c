@@ -40,7 +40,7 @@ void start()
 
     // --- NOTICE ---
     // If you want to test the alarm, uncomment the following lines
-    // alarm_init(clock_minute_interval);
+    alarm_init(clock_minute_interval);
     // alarm_create(10, 11);
 
     // scheduler_add_task(clock_update_time, clock_minute_interval); -- deprecated
