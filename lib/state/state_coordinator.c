@@ -10,7 +10,7 @@
 
 void state_coordinator(State state)
 {
-    char *ip = "192.168.43.151";
+    char *ip = "192.168.43.130";
     int port = 13000;
 
     while (1)
@@ -18,7 +18,7 @@ void state_coordinator(State state)
         switch (state)
         {
         case WIFI_CONNECT_STATE:
-            state_coordinator(connect_wifi_state_switch("hi123", "kacenka123"));
+            state_coordinator(connect_wifi_state_switch("Verizon", "12345678"));
             break;
         case SERVER_CONNECT_STATE:
             state_coordinator(connect_server_state_switch(ip, port));
@@ -43,7 +43,7 @@ void start()
     //alarm_create(10, 11);
 
     // scheduler_add_task(clock_update_time, clock_minute_interval); -- deprecated
-    scheduler_add_task(display_time_from_clock, 60);
+    //scheduler_add_task(display_time_from_clock, 60);
     // clock_display_time();
 
     state_coordinator(WIFI_CONNECT_STATE);

@@ -22,6 +22,8 @@ void ccp_message_sender_send_response(CCP_ACTION_TYPE at, CCP_STATUS_CODE status
 
 static void send_message(char *message)
 {
+    log_info("Sending message:");
+    log_info(message);
     uint8_t data[MESSAGE_LENGTH];
     memcpy(data, message, strlen(message));
     log_info("Sending message:");

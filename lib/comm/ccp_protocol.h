@@ -13,8 +13,10 @@ typedef enum
 
 typedef enum
 {
-    CCP_AT_TM,
-    CCP_AT_MS,
+    CCP_AT_TM, //time
+    CCP_AT_MS, // message
+    CCP_AT_SK, // server key
+    CCP_AT_CK, // clock key
     CCP_AT_CA,
     CCP_AT_DA,
     CCP_AT_UNKNOWN
