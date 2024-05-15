@@ -4,4 +4,4 @@ make setup-env:
 
 make test-native:
 	@echo "Running native tests..."
-	cd ./scripts && chmod +x ./test_native.sh && ./test_native.sh
+	chmod +x ./scripts/test_native.sh && ./scripts/test_native.sh
