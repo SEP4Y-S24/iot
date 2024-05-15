@@ -8,10 +8,7 @@
 #include <util/delay.h>
 #include <display_controller.h>
 #include <i2cmaster.h>
-
-void here()
-{
-}
+#include <display.h>
 
 int main()
 {

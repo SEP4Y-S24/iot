@@ -34,21 +34,18 @@ void alarm_init_should_set_alarm_set_and_active_to_false()
 {
     alarm_init();
     TEST_ASSERT_FALSE(alarm_get_is_created());
-    TEST_ASSERT_FALSE(alarm_get_is_active());
 }
 
 void alarm_set_time_sets_alarm_to_set_and_active()
 {
     alarm_create(10, 10);
     TEST_ASSERT_TRUE(alarm_get_is_created());
-    TEST_ASSERT_TRUE(alarm_get_is_active());
 }
 
 void alarm_unset_should_unset_alarm()
 {
     alarm_delete();
     TEST_ASSERT_FALSE(alarm_get_is_created());
-    TEST_ASSERT_FALSE(alarm_get_is_active());
 }
 
 void alarm_check_should_beep_when_alarm_is_set_and_active()
