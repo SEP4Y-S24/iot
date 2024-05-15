@@ -62,6 +62,9 @@ void ccp_handle_create_alarm(char *message)
 
 void ccp_handle_delete_alarm(char *message)
 {
+    request server_request;
+    ccp_parse_request(message, &server_request);
+    ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_OK, "Alarm deleted");
     alarm_delete();
 }
 

@@ -15,7 +15,6 @@ static uint8_t alarm_time_delay = 0;
 
 static bool alarm_is_created = false;
 static bool alarm_is_stoped = false;
-static bool alarm_is_active = false;
 
 void alarm_log_time(int h, int m)
 {
@@ -39,7 +38,6 @@ void alarm_create(int hour, int minute)
     alarm_time_minute = minute;
     alarm_time_delay = 0;
     alarm_is_created = true;
-    alarm_is_active = true;
     alarm_is_stoped = false;
     log_info("Alarm created");
     alarm_log_time(alarm_time_hour, alarm_time_minute);
@@ -51,7 +49,7 @@ void alarm_delete()
     alarm_time_minute = 0;
     alarm_time_delay = 0;
     alarm_is_created = false;
-    alarm_is_active = false;
+    log_info("Alarm deleted");
 }
 
 void alarm_check()
@@ -68,7 +66,7 @@ void alarm_check()
     int shifted_minute = (alarm_time_minute + alarm_time_delay) % 60;
     alarm_log_time(shifted_hour, shifted_minute);
 
-    while (shifted_hour == current_hour && shifted_minute == current_minute && alarm_is_active)
+    while (shifted_hour == current_hour && shifted_minute == current_minute && alarm_is_created)
     {
         log_info("Alarm is active");
         buzzer_beep();
@@ -78,7 +76,6 @@ void alarm_check()
 
         if (distance < 100)
         {
-            alarm_is_active = true;
             alarm_is_stoped = false;
             log_info("Alarm is delayed");
             alarm_time_delay += 5;
@@ -87,7 +84,6 @@ void alarm_check()
 
         if (button_pressed_1)
         {
-            alarm_is_active = true;
             alarm_is_stoped = true;
             log_info("Alarm is stoped");
             alarm_time_delay = 0;
@@ -99,11 +95,6 @@ void alarm_check()
 bool alarm_get_is_created()
 {
     return alarm_is_created;
-}
-
-bool alarm_get_is_active()
-{
-    return alarm_is_active;
 }
 
 bool alarm_get_is_stoped()

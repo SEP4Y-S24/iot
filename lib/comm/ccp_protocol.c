@@ -95,10 +95,10 @@ void ccp_parse_request(char *raw_request, request *request_pointer)
 
     int body_length = atoi(request_parts[1]);
 
-    if (body_length < 0 || body_length > CCP_MAX_BODY_LENGTH)
+    if (body_length < 0 || body_length >= CCP_MAX_BODY_LENGTH)
     {
         char error_request[35];
-        ccp_create_response(error_request, ccp_at_from_str(request_parts[0]), CCP_STATUS_BAD_REQUEST, "Max Body Length is: 96.");
+        ccp_create_response(error_request, ccp_at_from_str(request_parts[0]), CCP_STATUS_BAD_REQUEST, "Invalid Body Length - <0 - 96>.");
         uint8_t request_data[35];
         memcpy(request_data, error_request, strlen(error_request));
         wifi_command_TCP_transmit(request_data, 35);
