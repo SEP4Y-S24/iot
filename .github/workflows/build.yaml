@@ -19,7 +19,9 @@ jobs:
                   python-version: "3.9"
             - name: Install PlatformIO Core
               run: pip install --upgrade platformio
+            - name: Setup env variables
+              run: make setup-env
             - name: Run native tests
-              run: chmod +x ./scripts/test_native.sh && ./scripts/test_native.sh
+              run: make test-native
             - name: Build default
               run: platformio run
