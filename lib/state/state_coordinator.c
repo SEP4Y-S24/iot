@@ -10,7 +10,7 @@
 
 void state_coordinator(State state)
 {
-    char *ip = "192.168.43.130";
+    char *ip = "192.168.43.151";
     int port = 13000;
 
     while (1)
@@ -33,7 +33,7 @@ void state_coordinator(State state)
 void start()
 {
     scheduler_init();
-    int clock_minute_interval = 5;
+    int clock_minute_interval = 60;
     // --- NOTICE ---
     // Can be adjasted to mock time passing quicker. 60s = 1 minute, 1s = 1 second
 
