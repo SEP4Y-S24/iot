@@ -1,6 +1,6 @@
 make setup-env:
 	@echo "Setting up environment..."
-	cd ./scripts && chmod +x ./setup_env.sh && ./setup_env.sh
+	chmod +x ./scripts/setup_env.sh && ./scripts/setup_env.sh
 
 make test-native:
 	@echo "Running native tests..."
