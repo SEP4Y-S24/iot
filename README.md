@@ -7,8 +7,12 @@
 
 - Arduino ATMega2560
 - Sensors
-  - Wi-Fi
-  - ...
+  - DS3231 (RTC module)
+  - DHT11 (Temperature and Humidity)
+  - MQ135 (Gas and CO2)
+- Peripherals 
+  - ESP-01 (Wifi)
+  - LCD 16x2 (Screen)
 
 ## How to connect...
 
