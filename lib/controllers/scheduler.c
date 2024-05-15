@@ -5,7 +5,7 @@
 
 static uint64_t last_run_time = 0;
 static schedule_task_t schedule_task_array[100];
-
+static int task_index = 0;
 static void scheduler_run_all_tasks()
 {
     last_run_time++;
@@ -27,13 +27,7 @@ void scheduler_init()
 
 void scheduler_add_task(void (*task)(void), int interval)
 {
-    for (int i = 0; i < 100; i++)
-    {
-        if (schedule_task_array[i].task == NULL)
-        {
-            schedule_task_array[i].task = task;
-            schedule_task_array[i].interval = interval;
-            break;
-        }
-    }
+    schedule_task_array[task_index].task = task;
+    schedule_task_array[task_index].interval = interval;
+    task_index++;
 }

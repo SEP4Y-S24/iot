@@ -2,7 +2,6 @@
 #include "ds3231.h"
 #include "i2cmaster.h"
 #include <avr/io.h>
-
 uint8_t read_sec()
 {
   i2c_start(DS3231_ADDR + I2C_WRITE);
