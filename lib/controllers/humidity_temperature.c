@@ -24,9 +24,7 @@ void humidity_temperature_get(char *message_buffer)
         sprintf(number_stringified, "%d.%d", temperature_int, temperature_dec);
         strcpy(message_buffer, "T");
         strcat(message_buffer, number_stringified);
-
         strcat(message_buffer, "-");
-
         sprintf(number_stringified, "%d.%d", humidity_int, humidity_dec);
         strcat(message_buffer, "H");
         strcat(message_buffer, number_stringified);

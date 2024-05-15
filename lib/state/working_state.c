@@ -8,6 +8,7 @@
 #include "ccp_message_sender.h"
 #include "periodic_task.h"
 #include "native.h"
+#include "co2.h"
 
 static void periodic_tasks_10_minutes();
 
@@ -28,7 +29,9 @@ State working_state_switch(char *ip, int port)
     log_info("Entered working state");
 
     ccp_message_sender_send_request(CCP_AT_TM, "");
-    periodic_task_init_b(periodic_tasks_10_minutes, 6000);
+    native_delay_ms(2000);
+
+    periodic_task_init_b(periodic_tasks_10_minutes, 60000);
 
     while (1)
     {
@@ -39,5 +42,8 @@ State working_state_switch(char *ip, int port)
 
 static void periodic_tasks_10_minutes()
 {
+
     humidity_temperature_send();
+    native_delay_ms(2000);
+    c02_send();
 }
