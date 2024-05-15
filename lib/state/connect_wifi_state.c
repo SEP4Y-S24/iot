@@ -1,4 +1,4 @@
-#ifndef WINDOWS_TEST
+#ifndef NATIVE_TESTING
 #include <util/delay.h>
 #endif
 
@@ -12,7 +12,6 @@
 #include <state_coordinator.h>
 #include <periodic_task.h>
 #include "logger.h"
-
 
 static char recieveBuffer[128];
 static uint8_t recieveBufferIndex;
@@ -181,7 +180,7 @@ void wifi_check_buffer_callback()
 
 State connect_wifi_state_switch(char *ssid, char *pass)
 {
-    log_debug("Entered connect wifi state");
+    log_info("Entered connect wifi state");
     wifi_init(NULL);
 
     // wifi_command_reset();

@@ -4,10 +4,14 @@
 #include "ccp_message_handler.h"
 #include "uart.h"
 #include "logger.h"
+#include "ccp_message_sender.h"
+#include "periodic_task.h"
+
+static void init_periodic_requests();
 
 static char message_buffer[128];
 
-void tcp_callback()
+static void tcp_callback()
 {
     ccp_message_handler_handle(message_buffer);
 }
@@ -18,6 +22,7 @@ State working_state_switch(char *ip, int port)
     // However it takes 10 seconds
     wifi_command_create_TCP_connection(ip, port, tcp_callback, message_buffer);
     log_info("Entered working state");
+    init_periodic_requests();
 
     while (1)
     {
@@ -25,4 +30,14 @@ State working_state_switch(char *ip, int port)
     }
 
     return WORKING_STATE;
+}
+
+static void periodic_requests()
+{
+    ccp_message_sender_send_request(CCP_AT_TM, "");
+}
+
+static void init_periodic_requests()
+{
+    periodic_task_init_b(periodic_requests, 10000);
 }

@@ -1,38 +1,37 @@
 #include "periodic_task.h" // Include the periodic task header
 #include "display.h"       // Include the display header
+#include <stdio.h>
+#include <stdlib.h>
 
-static uint8_t current_hour = 10;   // Current hour (0-23)
-static uint8_t current_minute = 10; // Current minute (0-59)
+#ifndef NO_RTC
+#include <ds3231.h> // Include the RTC module
 
-void clock_display_time()
+void clock_set_time(int hours, int minutes)
 {
-    uint8_t seg1 = current_hour / 10;   // First digit of the hour
-    uint8_t seg2 = current_hour % 10;   // Second digit of the hour
-    uint8_t seg3 = current_minute / 10; // First digit of the minute
-    uint8_t seg4 = current_minute % 10; // Second digit of the minute
-
-    display_setValues(seg1, seg2, seg3, seg4); // Display the values
+    write_hour(hours);
+    write_min(minutes);
 }
 
-void clock_update_time()
+void clock_get_time(int *hours, int *minutes)
 {
-    current_minute++; // Increment the minute
+    *hours = read_hour();
+    *minutes = read_min();
+}
+#endif
 
-    if (current_minute == 60)
-    { // Roll over when minute reaches 60
-        current_minute = 0;
-        current_hour++; // Increment the hour
-
-        if (current_hour == 24)
-        { // Roll over when hour reaches 24
-            current_hour = 0;
-        }
-    }
-
-    clock_display_time(); // Update the display
+#ifdef NO_RTC
+static int static_hours;
+static int static_minutes;
+void clock_set_time(int hours, int minutes)
+{
+    static_hours = hours;
+    static_minutes = minutes;
 }
 
-void clock_init()
+void clock_get_time(int *hours, int *minutes)
 {
-    periodic_task_init_c(clock_update_time, 60000); // Set to call `update_time` every minute (60000 ms)
+    *hours = static_hours;
+    *minutes = static_minutes;
 }
+
+#endif

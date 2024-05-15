@@ -3,11 +3,15 @@
 #include "connect_server_state.h"
 #include "working_state.h"
 #include <stddef.h>
+#include <clock.h>
+#include <display.h>
+#include "scheduler.h"
+#include "alarm.h"
 
 void state_coordinator(State state)
 {
-    char *ip = "192.168.43.130";
-    int port = 8080;
+    char *ip = "192.168.43.151";
+    int port = 13000;
 
     while (1)
     {
@@ -28,6 +32,19 @@ void state_coordinator(State state)
 
 void start()
 {
+    scheduler_init();
+    int clock_minute_interval = 60;
+    // --- NOTICE ---
+    // Can be adjasted to mock time passing quicker. 60s = 1 minute, 1s = 1 second
+
+    // --- NOTICE ---
+    // If you want to test the alarm, uncomment the following lines
+    //alarm_init(clock_minute_interval);
+    //alarm_create(10, 11);
+
+    // scheduler_add_task(clock_update_time, clock_minute_interval); -- deprecated
+    scheduler_add_task(display_time_from_clock, 60);
     // clock_display_time();
+
     state_coordinator(WIFI_CONNECT_STATE);
 }

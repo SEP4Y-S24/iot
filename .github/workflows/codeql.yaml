@@ -1,0 +1,53 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Schedule to run every Tuesday at 4:42 AM UTC
+    - cron: '42 4 * * 2'
+
+jobs:
+  codeql:
+    name: Analyze with CodeQL
+    runs-on: ubuntu-latest
+    permissions:
+      # Required permissions for security and repository contents
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+    timeout-minutes: 360  # Optional: set a timeout of 360 minutes (6 hours)
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: c-cpp
+
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cache/pip
+          ~/.platformio/.cache
+        key: ${{ runner.os }}-pio
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.9"
+
+    - name: Install PlatformIO Core
+      run: pip install --upgrade platformio
+    - name: Build default
+      run: platformio run
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
