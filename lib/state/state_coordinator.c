@@ -10,7 +10,7 @@
 
 void state_coordinator(State state)
 {
-    char *ip = "192.168.43.130";
+    char *ip = "192.168.43.151";
     int port = 13000;
 
     while (1)
@@ -33,14 +33,14 @@ void state_coordinator(State state)
 void start()
 {
     scheduler_init();
-    int clock_minute_interval = 5;
+    int clock_minute_interval = 60;
     // --- NOTICE ---
     // Can be adjasted to mock time passing quicker. 60s = 1 minute, 1s = 1 second
 
     // --- NOTICE ---
     // If you want to test the alarm, uncomment the following lines
-    alarm_init(clock_minute_interval);
-    alarm_create(10, 11);
+    //alarm_init(clock_minute_interval);
+    //alarm_create(10, 11);
 
     // scheduler_add_task(clock_update_time, clock_minute_interval); -- deprecated
     scheduler_add_task(display_time_from_clock, 60);
