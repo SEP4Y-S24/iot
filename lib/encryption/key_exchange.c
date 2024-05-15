@@ -50,11 +50,6 @@ void key_exchange_generate_shared_secret(uint8_t *received_public_key, uint8_t *
     // hash_secret(hash, generated_secret); // hash the generated secret and truncuate it
     log_debug("private key: ");
     log_debug((char *)private_key);
-    for (int i = 0; i < 16; i++)
-    {
-        secret[i] = generated_secret[i];
-    }
-    secret[16] = '\0';
     log_debug("Shared secret: ");
     log_debug((char *)generated_secret);
 }
