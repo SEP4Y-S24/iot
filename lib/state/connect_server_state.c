@@ -19,7 +19,7 @@ static char message_buffer[128];
 
 static void copy_key(char *buffer)
 {
-    strncpy(buffer, message_buffer + 8, 64); // + 8 because SK|1|64|
+    strncpy(buffer, message_buffer + 6, 64); // + 6 because SK|64|
     buffer[64] = '\0';
 }
 
