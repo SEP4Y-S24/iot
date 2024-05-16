@@ -1,5 +1,5 @@
+#ifndef NATIVE_TESTING
 #include "includes.h"
-
 #include <inttypes.h>
 
 //Vcc
@@ -103,3 +103,4 @@ TCNT1 = 0;
     cnt = cnt * 343UL / 125UL;
     return cnt;
 }
+#endif
