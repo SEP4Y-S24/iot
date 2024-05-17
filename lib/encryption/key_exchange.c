@@ -2,9 +2,12 @@
 #include "uECC.h"
 #include "logger.h"
 #include <stdio.h>
+#include "hash.h"
 static uint8_t private_key[33];
 static uint8_t public_key[65];
 static uECC_Curve curve;
+
+#define TRUNCATED_HASH_SIZE 16
 
 static void hash_secret(uint8_t *hash, uint8_t *secret);
 void key_echange_init()
@@ -44,10 +47,12 @@ void key_exchange_get_public_key(uint8_t *copy_public_key)
 void key_exchange_generate_shared_secret(uint8_t *received_public_key, uint8_t *secret)
 {
     uECC_Curve curve = uECC_secp256r1();
-    uint8_t generated_secret[33];
+    uint8_t generated_secret[32];
     uECC_shared_secret(received_public_key, private_key, generated_secret, curve);
-    uint8_t hash[17];
-    // hash_secret(hash, generated_secret); // hash the generated secret and truncuate it
+
+    hash_secret(secret, generated_secret); // hash the generated secret and truncuate it
+    // Now hash contains the truncated hash of the shared secret
+
     log_debug("private key: ");
     log_debug((char *)private_key);
     log_debug("Shared secret: ");
@@ -56,9 +61,5 @@ void key_exchange_generate_shared_secret(uint8_t *received_public_key, uint8_t *
 
 static void hash_secret(uint8_t *hash, uint8_t *secret)
 {
-    for (int i = 0; i < 16; i++)
-    {
-        hash[i] = secret[i];
-    } // TODO: Implement a hash function
-    hash[16] = '\0';
+    hash_computeSHA1(secret, 32, hash); // Compute SHA-1 hash of secret
 }

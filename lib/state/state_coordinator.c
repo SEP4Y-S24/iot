@@ -33,7 +33,6 @@ void state_coordinator(State state)
 void start()
 {
     scheduler_init();
-    int clock_minute_interval = 60;
     // --- NOTICE ---
     // Can be adjasted to mock time passing quicker. 60s = 1 minute, 1s = 1 second
 
