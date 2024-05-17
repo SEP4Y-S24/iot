@@ -41,6 +41,7 @@ void ccp_message_handler_handle(char *message)
         log_info("Unknown Action Type...");
         break;
     }
+    
 }
 
 void ccp_handle_create_alarm(char *message)

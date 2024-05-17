@@ -31,7 +31,7 @@ void periodic_task_init_a(PERIODIC_TASK_CALLBACK, uint32_t interval_ms_a);
  * @param user_function_b Pointer to the second function to be executed
  * @param interval_ms_b Time interval in milliseconds for the second function
  */
-void periodic_task_init_b(void (*user_function_b)(void), uint32_t interval_ms_b);
+void periodic_task_init_b(PERIODIC_TASK_CALLBACK, uint32_t interval_ms_b);
 
-void periodic_task_init_c(void (*user_function_c)(void), uint32_t interval_ms_c);
-void periodic_task_init_d(void (*user_function_d)(void), uint32_t interval_ms_d);
+void periodic_task_init_c(PERIODIC_TASK_CALLBACK, uint32_t interval_ms_c);
+void periodic_task_init_d(PERIODIC_TASK_CALLBACK, uint32_t interval_ms_d);
