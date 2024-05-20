@@ -13,11 +13,13 @@ typedef enum
 
 typedef enum
 {
+    CCP_AT_AU,
     CCP_AT_TM,
     CCP_AT_MS,
     CCP_AT_CA,
     CCP_AT_DA,
     CCP_AT_TH,
+    CCP_AT_KV,
     CCP_AT_UNKNOWN
 } CCP_ACTION_TYPE;
 
@@ -43,3 +45,5 @@ void ccp_parse_response(char *raw_response, response *parsed_response);
 void ccp_parse_request(char *raw_request, request *parsed_request);
 
 CCP_ACTION_TYPE ccp_at_from_str(char *action_type);
+
+void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type);

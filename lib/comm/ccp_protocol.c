@@ -54,7 +54,7 @@ void ccp_parse_response(char *raw_response, response *response_pointer)
         return;
     }
 
-    response.status_code = status_code_from_string(response_parts[1]);
+    response.status_code = CCP_STATUS_OK;
 
     strncpy(response.body, response_parts[3], body_length);
     response.body[body_length] = '\0';
@@ -182,6 +182,10 @@ CCP_ACTION_TYPE ccp_at_from_str(char *message)
         return CCP_AT_DA;
     else if (strncmp(message, "TH", 2) == 0)
         return CCP_AT_TH;
+    else if (strncmp(message, "AU", 2) == 0)
+        return CCP_AT_AU;
+    else if (strncmp(message, "KV", 2) == 0)
+        return CCP_AT_KV;
     else
         return CCP_AT_UNKNOWN;
 }
@@ -204,6 +208,12 @@ void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type)
         break;
     case CCP_AT_TH:
         strcpy(action_type, "TH");
+        break;
+    case CCP_AT_AU:
+        strcpy(action_type, "AU");
+        break;
+    case CCP_AT_KV:
+        strcpy(action_type, "KV");
         break;
     default:
         strcpy(action_type, "Unknown");
