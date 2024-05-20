@@ -2,7 +2,7 @@
 
 #include "scd40.h"
 
-int read_scd40()
+int scd40_read()
 {
     int sensorValue = 400; // Placeholder value, replace with actual sensor reading
 
