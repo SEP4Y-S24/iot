@@ -8,12 +8,13 @@ static uint8_t public_key[65];
 static uECC_Curve curve;
 
 #define TRUNCATED_HASH_SIZE 16
+#define IV_SIZE 16
 
-static void hash_secret(uint8_t *hash, uint8_t *secret);
 void key_echange_init()
 {
     curve = uECC_secp256r1();
 }
+
 // TODO implement a better random number generator
 int simple_rng(uint8_t *dest, unsigned size)
 {
@@ -50,16 +51,17 @@ void key_exchange_generate_shared_secret(uint8_t *received_public_key, uint8_t *
     uint8_t generated_secret[32];
     uECC_shared_secret(received_public_key, private_key, generated_secret, curve);
 
-    hash_secret(secret, generated_secret); // hash the generated secret and truncuate it
-    // Now hash contains the truncated hash of the shared secret
+    // Hash the generated secret and truncate it
+    uint8_t truncated_hash[TRUNCATED_HASH_SIZE];
+    hash_computeSHA1(truncated_hash, TRUNCATED_HASH_SIZE, generated_secret);
+
+    // Encrypt the truncated hash using AES
+    uint8_t iv[IV_SIZE];
+    generate_iv(iv); // Generate initialization vector
+    cryptorator_encrypt(truncated_hash, secret, iv);
 
     log_debug("private key: ");
     log_debug((char *)private_key);
     log_debug("Shared secret: ");
     log_debug((char *)generated_secret);
-}
-
-static void hash_secret(uint8_t *hash, uint8_t *secret)
-{
-    hash_computeSHA1(secret, 32, hash); // Compute SHA-1 hash of secret
 }
