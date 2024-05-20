@@ -38,15 +38,17 @@ void alarm_init_should_set_alarm_set_and_active_to_false()
 
 void alarm_set_time_sets_alarm_to_set_and_active()
 {
+    alarm_init();
     alarm_create(10, 10);
-    TEST_ASSERT_TRUE(alarm_get_alarm_count() != 0);
+    TEST_ASSERT_TRUE(alarm_get_alarm_count() == 1);
 }
 
 void alarm_unset_should_unset_alarm()
 {
+    alarm_init();
     alarm_create(10, 10);
     alarm_delete(10, 10);
-    TEST_ASSERT_FALSE(alarm_get_alarm_count() == 0);
+    TEST_ASSERT_TRUE(alarm_get_alarm_count() == 0);
 }
 
 void alarm_check_should_beep_when_alarm_is_set_and_active()
@@ -71,13 +73,13 @@ int main(void)
 
 void setUp(void)
 {
+    alarm_init();
     read_hour_fake.return_val = 10;
     read_min_fake.return_val = 10;
 }
 
 void tearDown(void)
 {
-    alarm_delete(10, 10);
 }
 
 #endif

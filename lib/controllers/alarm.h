@@ -3,9 +3,9 @@
 
 typedef struct alarm
 {
-    uint8_t hour;
-    uint8_t minute;
-    uint8_t delay;
+    int hour;
+    int minute;
+    int delay;
 } alarm_t;
 
 void alarm_init();
