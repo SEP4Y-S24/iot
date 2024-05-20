@@ -2,7 +2,7 @@
 #include "ds3231.h"
 #include "i2cmaster.h"
 #include <avr/io.h>
-uint8_t read_sec()
+uint8_t ds3231_read_sec()
 {
   i2c_start(DS3231_ADDR + I2C_WRITE);
   i2c_write(0x00);
@@ -16,7 +16,7 @@ uint8_t read_sec()
   return sec;
 }
 
-uint8_t read_min()
+uint8_t ds3231_read_min()
 {
   i2c_start(DS3231_ADDR + I2C_WRITE);
   i2c_write(0x01);
@@ -30,7 +30,7 @@ uint8_t read_min()
   return min;
 }
 
-uint8_t read_hour()
+uint8_t ds3231_read_hour()
 {
   i2c_start(DS3231_ADDR + I2C_WRITE);
   i2c_write(0x02);
@@ -45,7 +45,7 @@ uint8_t read_hour()
   return hour;
 }
 
-void write_sec(uint8_t sec)
+void ds3231_write_sec(uint8_t sec)
 {
   uint8_t secx1 = sec % 10;
   uint8_t secx10 = sec / 10;
@@ -56,7 +56,7 @@ void write_sec(uint8_t sec)
   i2c_stop();
 }
 
-void write_min(uint8_t min)
+void ds3231_write_min(uint8_t min)
 {
   uint8_t minx1 = min % 10;
   uint8_t minx10 = min / 10;
@@ -67,7 +67,7 @@ void write_min(uint8_t min)
   i2c_stop();
 }
 
-void write_hour(uint8_t hour)
+void ds3231_write_hour(uint8_t hour)
 {
 
   uint8_t hourx1 = hour % 10;
@@ -88,7 +88,7 @@ void write_hour(uint8_t hour)
   i2c_stop();
 }
 
-uint8_t read_date()
+uint8_t ds3231_read_date()
 {
   i2c_start(DS3231_ADDR + I2C_WRITE);
   i2c_write(0x04);
@@ -102,7 +102,7 @@ uint8_t read_date()
   return date;
 }
 
-uint8_t read_month()
+uint8_t ds3231_read_month()
 {
   i2c_start(DS3231_ADDR + I2C_WRITE);
   i2c_write(0x05);
@@ -116,7 +116,7 @@ uint8_t read_month()
   return month;
 }
 
-uint8_t read_year()
+uint8_t ds3231_read_year()
 {
   i2c_start(DS3231_ADDR + I2C_WRITE);
   i2c_write(0x06);
@@ -130,7 +130,7 @@ uint8_t read_year()
   return year;
 }
 
-void write_date(uint8_t date)
+void ds3231_write_date(uint8_t date)
 {
   uint8_t datex1 = date % 10;
   uint8_t datex10 = date / 10;
@@ -141,7 +141,7 @@ void write_date(uint8_t date)
   i2c_stop();
 }
 
-void write_month(uint8_t month)
+void ds3231_write_month(uint8_t month)
 {
   uint8_t monthx1 = month % 10;
   uint8_t monthx10 = month / 10;
@@ -152,7 +152,7 @@ void write_month(uint8_t month)
   i2c_stop();
 }
 
-void write_year(uint8_t year)
+void ds3231_write_year(uint8_t year)
 {
   uint8_t yearx1 = year % 10;
   uint8_t yearx10 = year / 10;
@@ -180,9 +180,9 @@ void set_date(uint8_t date, uint8_t month, uint8_t year)
 Time get_time()
 {
   Time t;
-  t.hour = read_hour();
-  t.min = read_min();
-  t.sec = read_sec();
+  t.hour = ds3231_read_hour();
+  t.min = ds3231_read_min();
+  t.sec = ds3231_read_sec();
   return t;
 }
 #endif
