@@ -13,7 +13,7 @@ FAKE_VALUE_FUNC(DHT11_ERROR_MESSAGE_t, dht11_get, uint8_t *, uint8_t *, uint8_t 
 FAKE_VOID_FUNC(ccp_message_sender_send_request, CCP_ACTION_TYPE, char *);
 FAKE_VOID_FUNC(log_debug, char *);
 
-char message_buffer[30];
+char message_buffer[28];
 
 const uint8_t EXPECTED_HUMIDITY_INT = 50;
 const uint8_t EXPECTED_HUMIDITY_DEC = 5;
