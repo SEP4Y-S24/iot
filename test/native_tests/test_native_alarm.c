@@ -1,8 +1,8 @@
-#ifdef TEST_ALARM
+#ifdef NATIVE_TEST_ALARM
 
 #include <unity.h>
 #include <alarm.h>
-#include <fff.h>
+#include "../fff.h"
 #include <periodic_task.h>
 #include <buzzer.h>
 #include <native.h>

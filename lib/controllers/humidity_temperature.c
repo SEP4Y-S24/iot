@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Undeclared them from statis so FFF can access them
+void humidity_temperature_get(char *message_buffer);
+
 void humidity_temperature_send()
 {
     char request_message[30];

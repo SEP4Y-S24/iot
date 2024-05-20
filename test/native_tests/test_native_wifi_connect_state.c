@@ -1,4 +1,4 @@
-#ifdef TEST_WIFI_CONNECT_STATE
+#ifdef NATIVE_TEST_WIFI_CONNECT_STATE
 
 #include <string.h>
 #include <stdio.h>
@@ -6,7 +6,7 @@
 #include <unity_internals.h>
 #include <stdlib.h>
 #include "connect_wifi_state.h"
-#include <fff.h>
+#include "../fff.h"
 #include <wifi.h>
 #include <periodic_task.h>
 #include <state_coordinator.h>

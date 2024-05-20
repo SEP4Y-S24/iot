@@ -1,9 +1,9 @@
-#ifdef TEST_CCP_PROTOCOL
+#ifdef NATIVE_TEST_CCP_PROTOCOL
 
 #include <unity.h>
 #include <ccp_protocol.h>
 #include <stdio.h>
-#include <fff.h>
+#include "../fff.h"
 #include <wifi.h>
 #include <uart.h>
 
