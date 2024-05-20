@@ -33,7 +33,7 @@ FAKE_VALUE_FUNC(uint8_t, buttons_2_pressed);
 FAKE_VALUE_FUNC(uint8_t, buttons_3_pressed);
 FAKE_VOID_FUNC(ccp_message_sender_send_response, CCP_ACTION_TYPE, CCP_STATUS_CODE, char *);
 FAKE_VOID_FUNC(alarm_create, int, int);
-FAKE_VALUE_FUNC(alarm_delete, int, int);
+FAKE_VOID_FUNC(alarm_delete, int, int);
 FAKE_VOID_FUNC(alarm_init);
 
 void test_ms_message_clock_message_is_set_and_response_is_sent_buzzer_beeps()
