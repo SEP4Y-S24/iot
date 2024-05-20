@@ -8,9 +8,8 @@
 #include "periodic_task.h"
 #include "logger.h"
 #include "buttons.h"
-
-static uint8_t max_alarm_count = 32;
-static alarm_t alarms[32];
+#define max_alarm_count 32
+static alarm_t alarms[max_alarm_count];
 
 void alarm_log_time(int h, int m, bool use_info)
 {
@@ -24,7 +23,13 @@ void alarm_init(int clock_minute_interval)
     buzzer_init();
     buttons_init();
     hc_sr04_init();
-    log_info("Alarm initialized");
+    for (int i = 0; i < max_alarm_count; i++)
+    {
+        alarms[i].hour = -1;
+        alarms[i].minute = -1;
+        alarms[i].delay = -1;
+    }
+    log_info("Alarms initialized");
     periodic_task_init_c(alarm_check, clock_minute_interval * 1000);
 }
 
@@ -42,7 +47,7 @@ void alarm_create(int hour, int minute)
 
     for (int i = 0; i < max_alarm_count; i++)
     {
-        if (alarms[i].hour != NULL)
+        if (alarms[i].hour != -1)
             continue;
 
         alarms[i].hour = hour;
@@ -61,9 +66,9 @@ void alarm_delete(int hour, int minute)
     {
         if (alarms[i].hour == hour && alarms[i].minute == minute)
         {
-            alarms[i].hour = NULL;
-            alarms[i].minute = NULL;
-            alarms[i].delay = NULL;
+            alarms[i].hour = -1;
+            alarms[i].minute = -1;
+            alarms[i].delay = -1;
             break;
         }
     }
@@ -83,7 +88,7 @@ void alarm_check()
 
     for (int i = 0; i < max_alarm_count; i++)
     {
-        if (alarms[i].hour == NULL)
+        if (alarms[i].hour == -1)
             continue;
 
         int shifted_hour = (alarms[i].hour + (alarms[i].delay / 60)) % 24;
@@ -119,7 +124,7 @@ int alarm_get_alarm_count()
     int count = 0;
     for (int i = 0; i < max_alarm_count; i++)
     {
-        if (alarms[i].hour != NULL)
+        if (alarms[i].hour != -1)
             count++;
     }
     return count;

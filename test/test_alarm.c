@@ -77,6 +77,7 @@ void setUp(void)
 
 void tearDown(void)
 {
+    alarm_delete(10, 10);
 }
 
 #endif
