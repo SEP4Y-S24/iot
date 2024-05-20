@@ -50,8 +50,8 @@ void test_ms_message_clock_message_is_set_and_response_is_sent_buzzer_beeps()
 void test_tm_message_time_is_set(){
     char message[] = "TM|1|4|1234";
     ccp_message_handler_handle(message);
-    TEST_ASSERT_EQUAL(12, write_hour_fake.arg0_val);
-    TEST_ASSERT_EQUAL(34, write_min_fake.arg0_val);
+    TEST_ASSERT_EQUAL(12, ds3231_write_hour_fake.arg0_val);
+    TEST_ASSERT_EQUAL(34, ds3231_write_min_fake.arg0_val);
 }
 
 void test_handle_alarm_message(){
@@ -89,8 +89,8 @@ void setUp(void)
     RESET_FAKE(ccp_message_sender_send_response);
     RESET_FAKE(log_info);
     RESET_FAKE(buzzer_beep);
-    RESET_FAKE(write_hour);
-    RESET_FAKE(write_min);
+    RESET_FAKE(ds3231_write_hour);
+    RESET_FAKE(ds3231_write_min);
     RESET_FAKE(alarm_create);
     RESET_FAKE(alarm_delete);
     
