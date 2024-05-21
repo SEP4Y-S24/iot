@@ -186,12 +186,12 @@ Time ds3231_get_time()
   return t;
 }
 
-Time ds3231_get_time()
+Date ds3231_get_date()
 {
   Date d;
   d.date = ds3231_read_date();
   d.month = ds3231_read_month();
   d.year = ds3231_read_year();
-  return t;
+  return d;
 }
 #endif
