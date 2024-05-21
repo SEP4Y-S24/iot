@@ -7,7 +7,7 @@
 #include <string.h>
 
 // Undeclared them from statis so FFF can access them
-static void humidity_temperature_get(char *message_buffer);
+// static void humidity_temperature_get(char *message_buffer);
 
 void humidity_temperature_send()
 {
@@ -17,7 +17,7 @@ void humidity_temperature_send()
     ccp_message_sender_send_request(CCP_AT_TH, request_message);
 }
 
-static void humidity_temperature_get(char *message_buffer)
+void humidity_temperature_get(char *message_buffer)
 {
     log_debug("Getting Temperature and Humidity...");
     uint8_t temperature_int, temperature_dec, humidity_int, humidity_dec;
