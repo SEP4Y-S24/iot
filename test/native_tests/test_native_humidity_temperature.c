@@ -57,7 +57,7 @@ void test_humidity_temperature_send_success(void)
 
     TEST_ASSERT_EQUAL(1, ccp_message_sender_send_request_fake.call_count);
     TEST_ASSERT_EQUAL(CCP_AT_TH, ccp_message_sender_send_request_fake.arg0_val);
-    TEST_ASSERT_EQUAL_STRING(expected_message, ccp_message_sender_send_request_fake.arg0_val);
+    TEST_ASSERT_EQUAL_STRING(expected_message, ccp_message_sender_send_request_fake.arg1_val);
 }
 
 void test_humidity_temperature_send_fail(void)
@@ -68,7 +68,7 @@ void test_humidity_temperature_send_fail(void)
 
     TEST_ASSERT_EQUAL(1, ccp_message_sender_send_request_fake.call_count);
     TEST_ASSERT_EQUAL(CCP_AT_TH, ccp_message_sender_send_request_fake.arg0_val);
-    TEST_ASSERT_EQUAL_STRING(EXPECTED_FAILURE_MESSAGE, ccp_message_sender_send_request_fake.arg0_history);
+    TEST_ASSERT_EQUAL_STRING(EXPECTED_FAILURE_MESSAGE, ccp_message_sender_send_request_fake.arg1_val);
 }
 
 int main(void)
