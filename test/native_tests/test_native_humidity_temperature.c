@@ -8,7 +8,6 @@
 #include "../fff.h"
 #include <stdio.h>
 
-DEFINE_FFF_GLOBALS;
 FAKE_VALUE_FUNC(DHT11_ERROR_MESSAGE_t, dht11_get, uint8_t *, uint8_t *, uint8_t *, uint8_t *);
 FAKE_VOID_FUNC(ccp_message_sender_send_request, CCP_ACTION_TYPE, char *);
 FAKE_VOID_FUNC(log_debug, char *);
@@ -58,7 +57,7 @@ void test_humidity_temperature_send_success(void)
 
     TEST_ASSERT_EQUAL(1, ccp_message_sender_send_request_fake.call_count);
     TEST_ASSERT_EQUAL(CCP_AT_TH, ccp_message_sender_send_request_fake.arg0_val);
-    TEST_ASSERT_EQUAL_STRING(expected_message, ccp_message_sender_send_request_fake.arg1_val);
+    TEST_ASSERT_EQUAL_STRING(expected_message, ccp_message_sender_send_request_fake.arg0_val);
 }
 
 void test_humidity_temperature_send_fail(void)
@@ -69,7 +68,7 @@ void test_humidity_temperature_send_fail(void)
 
     TEST_ASSERT_EQUAL(1, ccp_message_sender_send_request_fake.call_count);
     TEST_ASSERT_EQUAL(CCP_AT_TH, ccp_message_sender_send_request_fake.arg0_val);
-    TEST_ASSERT_EQUAL_STRING(EXPECTED_FAILURE_MESSAGE, ccp_message_sender_send_request_fake.arg1_val);
+    TEST_ASSERT_EQUAL_STRING(EXPECTED_FAILURE_MESSAGE, ccp_message_sender_send_request_fake.arg0_history);
 }
 
 int main(void)
