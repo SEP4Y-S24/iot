@@ -51,7 +51,7 @@ void test_humidity_temperature_send_success(void)
 {
     dht11_get_fake.custom_fake = dht11_get_successful_custom_fake;
 
-    char expected_message[28];
+    char expected_message[30];
     sprintf(expected_message, "T%d.%d-H%d.%d", EXPECTED_TEMPERATURE_INT, EXPECTED_TEMPERATURE_DEC, EXPECTED_HUMIDITY_INT, EXPECTED_HUMIDITY_DEC);
 
     humidity_temperature_send();
