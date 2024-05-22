@@ -64,7 +64,7 @@ State connect_server_state_switch(char *ip, int port)
     /*
     authentication comes here
     */
-    return WORKING_STATE;
+    return AUTHENTICATION_STATE;
 }
 
 static void handle_key_exchange()

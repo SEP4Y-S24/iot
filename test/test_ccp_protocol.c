@@ -44,21 +44,24 @@ void ccp_test_create_response_with_body()
 
 void ccp_test_parse_response_with_unknown_action_type()
 {
-    char raw_response[] = "XX|1|10|Hello World|";
+    char raw_response[] = "XX|1|11|Hello World|";
 
     response test_response;
     ccp_parse_response(raw_response, &test_response);
 
+    TEST_ASSERT_EQUAL_STRING("Hello World", test_response.body);
+    TEST_ASSERT_TRUE(CCP_STATUS_OK == test_response.status_code);
     TEST_ASSERT_TRUE(CCP_AT_UNKNOWN == test_response.action_type);
 }
 
 void ccp_test_parse_response_with_unknown_status_code()
 {
-    char raw_response[] = "MS|9|10|Hello World|";
+    char raw_response[] = "MS|9|11|Hello World|";
 
     response test_response;
     ccp_parse_response(raw_response, &test_response);
-
+    TEST_ASSERT_EQUAL(CCP_AT_MS, test_response.action_type);
+    TEST_ASSERT_EQUAL_STRING("Hello World", test_response.body);
     TEST_ASSERT_TRUE(CCP_STATUS_NUM_STATUS_CODES == test_response.status_code);
 }
 
@@ -68,7 +71,7 @@ void ccp_test_parse_response_with_empty_body()
 
     response test_response;
     ccp_parse_response(raw_response, &test_response);
-
+    TEST_ASSERT_EQUAL(CCP_STATUS_OK, test_response.status_code);
     TEST_ASSERT_EQUAL_STRING("", test_response.body);
 }
 
@@ -80,7 +83,7 @@ void ccp_test_parse_response_with_too_long_body()
     ccp_parse_response(raw_response, &test_response);
 
     TEST_ASSERT_TRUE(CCP_AT_MS == test_response.action_type);
-    // TEST_ASSERT_TRUE(CCP_STATUS_BAD_REQUEST == test_response.status_code);
+    TEST_ASSERT_EQUAL(CCP_STATUS_OK, test_response.status_code);
     TEST_ASSERT_EQUAL_STRING("", test_response.body);
 }
 

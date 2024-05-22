@@ -24,14 +24,14 @@ static void tcp_callback()
 // However it takes 10 seconds
 State working_state_switch(char *ip, int port)
 {
-    wifi_command_create_TCP_connection(ip, port, tcp_callback, message_buffer);
+    wifi_reassign_callback(tcp_callback, message_buffer);
 
     log_info("Entered working state");
 
     ccp_message_sender_send_request(CCP_AT_TM, "");
     native_delay_ms(2000);
 
-    periodic_task_init_b(periodic_tasks_10_minutes, 60000);
+    periodic_task_init_b(periodic_tasks_10_minutes, 600000);
 
     while (1)
     {
