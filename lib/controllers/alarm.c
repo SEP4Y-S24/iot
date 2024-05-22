@@ -18,7 +18,7 @@ void alarm_log_time(int h, int m, bool use_info)
     log_info(time);
 }
 
-void alarm_init(int clock_minute_interval)
+void alarm_init()
 {
     buzzer_init();
     buttons_init();
@@ -30,7 +30,7 @@ void alarm_init(int clock_minute_interval)
         alarms[i].delay = -1;
     }
     log_info("Alarms initialized");
-    periodic_task_init_c(alarm_check, clock_minute_interval * 1000);
+    periodic_task_init_c(alarm_check, 60000);
 }
 
 void alarm_create(int hour, int minute)
@@ -107,6 +107,7 @@ void alarm_check()
             if (distance < 100)
             {
                 log_debug("Alarm is delayed");
+                alarms[i].delay += 1;
                 break;
             }
 

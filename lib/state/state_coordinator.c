@@ -44,13 +44,12 @@ void state_coordinator(State state)
 void start()
 {
     scheduler_init();
-    int clock_minute_interval = 60;
     // --- NOTICE ---
     // Can be adjasted to mock time passing quicker. 60s = 1 minute, 1s = 1 second
 
     // --- NOTICE ---
     // If you want to test the alarm, uncomment the following lines
-    alarm_init(clock_minute_interval);
+    alarm_init();
     // alarm_create(10, 11);
 
     // scheduler_add_task(clock_update_time, clock_minute_interval); -- deprecated
