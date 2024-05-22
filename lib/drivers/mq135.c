@@ -2,7 +2,7 @@
 
 #include "mq135.h"
 
-float read_mq135()
+float mq135_read()
 {
     // Code to read the MQ135 sensor value
     float sensorValue = 0.3; // Placeholder value, replace with actual sensor reading

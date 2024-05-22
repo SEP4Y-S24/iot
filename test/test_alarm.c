@@ -25,10 +25,10 @@ FAKE_VOID_FUNC(buzzer_off);
 FAKE_VOID_FUNC(buttons_init);
 FAKE_VALUE_FUNC0(uint8_t, buttons_1_pressed);
 
-FAKE_VALUE_FUNC(uint8_t, read_hour);
-FAKE_VALUE_FUNC(uint8_t, read_min);
-FAKE_VOID_FUNC(write_hour, uint8_t);
-FAKE_VOID_FUNC(write_min, uint8_t);
+FAKE_VALUE_FUNC(uint8_t, ds3231_read_hour);
+FAKE_VALUE_FUNC(uint8_t, ds3231_read_min);
+FAKE_VOID_FUNC(ds3231_write_hour, uint8_t);
+FAKE_VOID_FUNC(ds3231_write_min, uint8_t);
 
 void alarm_init_should_set_alarm_set_and_active_to_false()
 {
@@ -74,8 +74,8 @@ int main(void)
 void setUp(void)
 {
     alarm_init();
-    read_hour_fake.return_val = 10;
-    read_min_fake.return_val = 10;
+    ds3231_read_hour_fake.return_val = 10;
+    ds3231_read_min_fake.return_val = 10;
 }
 
 void tearDown(void)

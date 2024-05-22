@@ -21,10 +21,10 @@ FAKE_VOID_FUNC(buzzer_init);
 FAKE_VOID_FUNC(buzzer_on);
 FAKE_VOID_FUNC(buzzer_off);
 FAKE_VOID_FUNC(periodic_task_init_c, PERIODIC_TASK_CALLBACK, uint32_t);
-FAKE_VOID_FUNC(write_hour, uint8_t);
-FAKE_VOID_FUNC(write_min, uint8_t);
-FAKE_VALUE_FUNC(uint8_t, read_hour);
-FAKE_VALUE_FUNC(uint8_t, read_min);
+FAKE_VOID_FUNC(ds3231_write_hour, uint8_t);
+FAKE_VOID_FUNC(ds3231_write_min, uint8_t);
+FAKE_VALUE_FUNC(uint8_t, ds3231_read_hour);
+FAKE_VALUE_FUNC(uint8_t, ds3231_read_min);
 FAKE_VOID_FUNC(hc_sr04_init);
 FAKE_VALUE_FUNC(uint16_t, hc_sr04_takeMeasurement);
 FAKE_VOID_FUNC(buttons_init);
@@ -51,8 +51,8 @@ void test_tm_message_time_is_set()
 {
     char message[] = "TM|1|4|1234";
     ccp_message_handler_handle(message);
-    TEST_ASSERT_EQUAL(12, write_hour_fake.arg0_val);
-    TEST_ASSERT_EQUAL(34, write_min_fake.arg0_val);
+    TEST_ASSERT_EQUAL(12, ds3231_write_hour_fake.arg0_val);
+    TEST_ASSERT_EQUAL(34, ds3231_write_min_fake.arg0_val);
 }
 
 void test_handle_alarm_message()
@@ -92,8 +92,8 @@ void setUp(void)
     RESET_FAKE(ccp_message_sender_send_response);
     RESET_FAKE(log_info);
     RESET_FAKE(buzzer_beep);
-    RESET_FAKE(write_hour);
-    RESET_FAKE(write_min);
+    RESET_FAKE(ds3231_write_hour);
+    RESET_FAKE(ds3231_write_min);
     RESET_FAKE(alarm_create);
     RESET_FAKE(alarm_delete);
 }
