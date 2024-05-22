@@ -6,7 +6,7 @@
 #include "key_exchange.h"
 #include "ccp_protocol.h"
 #include "ccp_message_sender.h"
-#include <util/delay.h>
+#include "native.h"
 #include <string.h>
 #include <cryptorator.h>
 
@@ -58,7 +58,7 @@ State connect_server_state_switch(char *ip, int port)
         {
             log_info("Waiting for public key from server");
         }
-        _delay_ms(5000);
+        native_delay_ms(5000);
     }
 
     /*

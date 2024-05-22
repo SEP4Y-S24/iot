@@ -55,10 +55,16 @@ void key_exchange_generate_shared_secret(uint8_t *received_public_key, uint8_t *
     uint8_t truncated_hash[TRUNCATED_HASH_SIZE];
     hash_computeSHA1(truncated_hash, TRUNCATED_HASH_SIZE, generated_secret);
 
-    // Encrypt the truncated hash using AES
-    uint8_t iv[IV_SIZE];
-    generate_iv(iv); // Generate initialization vector
-    cryptorator_encrypt(truncated_hash, secret, iv);
+    // Copy the truncated hash to the secret
+    for (int i = 0; i < TRUNCATED_HASH_SIZE; i++)
+    {
+        secret[i] = truncated_hash[i];
+    }
+
+    
+
+
+
 
     log_debug("private key: ");
     log_debug((char *)private_key);
