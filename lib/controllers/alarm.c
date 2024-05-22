@@ -16,7 +16,7 @@ static uint8_t alarm_time_delay = 0;
 static bool alarm_is_created = false;
 static bool alarm_is_stoped = false;
 
-void alarm_log_time(int h, int m)
+static void alarm_log_time(int h, int m)
 {
     char time[20];
     sprintf(time, "%d:%d", h, m);

@@ -26,13 +26,13 @@ typedef void (*DataRecievedCallback)(void);
 
 static DataRecievedCallback data_recieved_callback_static;
 
-void setup_server(RecieveDataCallback callback, DataRecievedCallback data_recieve_callback);
-void connect_to_wifi();
-void data_recieve_callback(uint8_t data);
-void clear_buffer();
-void wifi_check_buffer_callback();
+static void setup_server(RecieveDataCallback callback, DataRecievedCallback data_recieve_callback);
+static void connect_to_wifi();
+static void data_recieve_callback(uint8_t data);
+static void clear_buffer();
+static void wifi_check_buffer_callback();
 
-void connect_to_wifi()
+static void connect_to_wifi()
 {
     log_debug(ssid_static);
     log_debug(password_static);
@@ -47,7 +47,7 @@ void connect_to_wifi()
     }
 }
 
-void setup_server(RecieveDataCallback callback, DataRecievedCallback data_recieve_callback)
+static void setup_server(RecieveDataCallback callback, DataRecievedCallback data_recieve_callback)
 {
     wifi_command_setup_AP("SEP4-SmartClock", "MHDK2024");
     wifi_command_enable_multiple_connections();
@@ -56,7 +56,7 @@ void setup_server(RecieveDataCallback callback, DataRecievedCallback data_reciev
     data_recieved_callback_static = data_recieve_callback;
 }
 
-void data_recieve_callback(uint8_t data)
+static void data_recieve_callback(uint8_t data)
 {
     static enum { IDLE,
                   MATCH_PREFIX,
@@ -125,7 +125,7 @@ void data_recieve_callback(uint8_t data)
     }
 }
 
-void clear_buffer()
+static void clear_buffer()
 {
     for (uint16_t i = 0; i < 128; i++)
         recieveBuffer[i] = 0;
@@ -133,7 +133,7 @@ void clear_buffer()
 }
 
 // checks the buffer for ssid and pass and then sends the command to connect to the AP
-void wifi_check_buffer_callback()
+static void wifi_check_buffer_callback()
 {
     char *ssidString = strstr((char *)recieveBuffer, "ssid:");
     char *passString = strstr((char *)recieveBuffer, "pass:");
@@ -208,9 +208,8 @@ State connect_wifi_state_switch(char *ssid, char *pass)
         periodic_task_init_a(connect_to_wifi, 60000);
     }
 
-    while (!wifi_connected)
-    {
-    }
+    state_coordinator_wait_for_event(&wifi_connected);
+    
     periodic_task_init_a(NULL, 60000);
     log_debug("Connected to wifi");
 

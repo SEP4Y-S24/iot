@@ -13,7 +13,7 @@
 #include "logger.h"
 #include "key_verification_state.h"
 
-void state_coordinator(State state)
+static void state_coordinator(State state)
 {
     char *ip = IP_ADDRESS;
     int port = PORT;
