@@ -22,7 +22,7 @@ State key_verification_state_switch(char *key)
     log_debug("Switching to key verification state");
     waiting_for_key_verification = false;
 
-    wait_for_event(&waiting_for_key_verification);
+    state_coordinator_wait_for_event(&waiting_for_key_verification);
 
     char no_message[] = "No message received";
     message_set_message(no_message);

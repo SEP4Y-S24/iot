@@ -8,6 +8,7 @@
 #include "logger.h"
 #include "wifi.h"
 #include "ccp_message_sender.h"
+#include <stddef.h>
 
 static bool authenticated;
 static char buffer[120];
@@ -18,14 +19,21 @@ void authenticate_callback_wrapper()
     authentication_callback(buffer);
 }
 
-State authentication_state_switch()
+State authentication_state_switch(char *auth_key)
 {
     authenticated = false;
     waiting_for_key_verification = false;
     log_info("Switching to authentication state");
     wifi_reassign_callback(authenticate_callback_wrapper, buffer);
-    ccp_message_sender_send_request(CCP_AT_AU, "");
-    wait_for_event(&authenticated);
+
+    if (buffer == NULL)
+        ccp_message_sender_send_request(CCP_AT_AU, "");
+    else
+    {
+        ccp_message_sender_send_request(CCP_AT_AU, buffer);
+    }
+
+    state_coordinator_wait_for_event(&authenticated);
 
     if (!waiting_for_key_verification)
     {
@@ -37,6 +45,8 @@ State authentication_state_switch()
     }
 }
 
+#ifndef TEST_AUTH_STATE
+
 void authentication_state_set_authenticated(bool auth)
 {
     authenticated = auth;
@@ -46,3 +56,5 @@ void authentication_state_set_waiting_for_key_verification(bool waiting)
 {
     waiting_for_key_verification = waiting;
 }
+
+#endif

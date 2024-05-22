@@ -29,7 +29,7 @@ void state_coordinator(State state)
             state_coordinator(connect_server_state_switch(ip, port));
             break;
         case AUTHENTICATION_STATE:
-            state_coordinator(authentication_state_switch());
+            state_coordinator(authentication_state_switch(NULL));
             break;
         case KEY_VERIFICATION_STATE:
             state_coordinator(key_verification_state_switch(""));
@@ -60,7 +60,7 @@ void start()
     state_coordinator(WIFI_CONNECT_STATE);
 }
 
-void wait_for_event(bool *event)
+void state_coordinator_wait_for_event(bool *event)
 {
     while (!(*event))
     {

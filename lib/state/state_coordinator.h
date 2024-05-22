@@ -14,4 +14,4 @@ typedef enum
 void start();
 
 
-void wait_for_event(bool* event);
+void state_coordinator_wait_for_event(bool* event);

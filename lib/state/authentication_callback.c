@@ -17,6 +17,7 @@ void authentication_callback(char *message)
     {
         log_debug("Authenticated");
         authentication_state_set_authenticated(true);
+        authentication_state_set_waiting_for_key_verification(false);
     }
     else if (response.status_code == CCP_STATUS_UNAUTHENTICATED)
     {
