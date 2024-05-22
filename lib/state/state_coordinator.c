@@ -8,6 +8,10 @@
 #include "scheduler.h"
 #include "alarm.h"
 #include "env_variables.h"
+#include "native.h"
+#include "authentication_state.h"
+#include "logger.h"
+#include "key_verification_state.h"
 
 void state_coordinator(State state)
 {
@@ -23,6 +27,12 @@ void state_coordinator(State state)
             break;
         case SERVER_CONNECT_STATE:
             state_coordinator(connect_server_state_switch(ip, port));
+            break;
+        case AUTHENTICATION_STATE:
+            state_coordinator(authentication_state_switch(NULL));
+            break;
+        case KEY_VERIFICATION_STATE:
+            state_coordinator(key_verification_state_switch(""));
             break;
         case WORKING_STATE:
             state_coordinator(working_state_switch(ip, port));
@@ -48,4 +58,13 @@ void start()
     // clock_display_time();
 
     state_coordinator(WIFI_CONNECT_STATE);
+}
+
+void state_coordinator_wait_for_event(bool *event)
+{
+    while (!(*event))
+    {
+        native_delay_ms(100);
+    }
+    log_debug("I am free now!");
 }
