@@ -395,10 +395,11 @@ WIFI_ERROR_MESSAGE_t wifi_command_reset()
 {
     return wifi_command("AT+RST", 20);
 }
-#endif
 
 void wifi_reassign_callback(WIFI_TCP_Callback_t new_callback, char *new_buffer) {
     callback_when_message_received_static = new_callback;
     wifi_clear_databuffer_and_index();
     received_message_buffer_static_pointer = new_buffer;
 }
+
+#endif

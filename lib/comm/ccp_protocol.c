@@ -54,7 +54,7 @@ void ccp_parse_response(char *raw_response, response *response_pointer)
         return;
     }
 
-    response.status_code = CCP_STATUS_OK;
+    response.status_code = status_code_from_string(response_parts[1]);
 
     strncpy(response.body, response_parts[3], body_length);
     response.body[body_length] = '\0';
