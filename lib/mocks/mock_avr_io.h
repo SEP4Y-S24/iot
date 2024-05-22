@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 void cli(void);
-void sei(void );
+void sei(void);
 #define PB7 7
 #define F_CPU 16000000L
 #define TXEN0 3
@@ -48,13 +48,13 @@ extern uint8_t UCSR2C;
 
 extern uint8_t UCSR3C;
 
-extern uint8_t UCSR1B; 
+extern uint8_t UCSR1B;
 #define UDRIE1 5
-extern uint8_t UCSR2B; 
+extern uint8_t UCSR2B;
 #define UDRIE2 5
-extern uint8_t UCSR3B; 
+extern uint8_t UCSR3B;
 #define UDRIE3 5
-extern uint8_t UCSR0B; 
+extern uint8_t UCSR0B;
 #define UDRIE0 5
 extern uint8_t UCSR0A;
 extern uint8_t UCSR1A;
@@ -99,7 +99,6 @@ extern uint8_t PORTA;
 extern uint8_t DDRG;
 extern uint8_t PORTG;
 
-
 extern uint8_t DDRD;
 extern uint8_t PORTD;
 extern uint8_t PIND;
@@ -124,12 +123,11 @@ extern uint8_t EIMSK;
 extern uint8_t EICRA;
 #define PB1 1
 #define PB2 2
-#define PB3 3 
-#define PB0 0 
+#define PB3 3
+#define PB0 0
 
-#define  PL6 6
-#define  PL7 7
-
+#define PL6 6
+#define PL7 7
 
 #define PF1 1
 #define PF2 2
@@ -172,11 +170,11 @@ extern uint8_t PINK;
 #define PB5 5
 #define PB4 4
 
- extern uint8_t ADMUX;
- extern  uint8_t ADCSRA;
- extern  uint8_t ADCSRB;
-extern  uint8_t ADCL;
- extern  uint8_t ADCH;
+extern uint8_t ADMUX;
+extern uint8_t ADCSRA;
+extern uint8_t ADCSRB;
+extern uint8_t ADCL;
+extern uint8_t ADCH;
 extern uint8_t DIDR2;
 #define REFS0 6
 #define ADEN 7
@@ -189,7 +187,6 @@ extern uint8_t DIDR2;
 #define PK1 1
 #define PK2 2
 #define ADSC 6
-
 
 extern uint8_t TCCR3A;
 extern uint8_t TCCR3B;
@@ -204,7 +201,6 @@ extern uint8_t OCR3C;
 #define OCIE3B 2
 #define OCIE3C 3
 
-
 extern uint8_t ADCSRA;
 extern uint8_t ADCL;
 extern uint8_t ADCH;
@@ -214,39 +210,38 @@ extern uint8_t ADCH;
 #define PK1 1
 #define PK0 0
 
-//hc-sr04
-//Vcc
+// hc-sr04
+// Vcc
 extern uint8_t DDRC;
-extern uint8_t  PORTC;
-#define  PC0 0
+extern uint8_t PORTC;
+#define PC0 0
 
-//GND
-extern uint8_t  DDRC; 
-#define  PC6 6
+// GND
+extern uint8_t DDRC;
+#define PC6 6
 
-//Trigger
-extern uint8_t  DDRC;
-#define  PC2 2
-extern uint8_t  PORTC;
+// Trigger
+extern uint8_t DDRC;
+#define PC2 2
+extern uint8_t PORTC;
 
-//Echo
-extern uint8_t  PINC;
+// Echo
+extern uint8_t PINC;
 #define PC4 4
 
+// pir
+// Vcc
 
-//pir
-//Vcc
+extern uint8_t PORTK;
+#define PK5 5
 
-extern uint8_t  PORTK;
-#define   PK5 5
+// GND
+extern uint8_t DDRK; // DDRK
+#define PK3 3        // PK7
 
-//GND
-extern uint8_t  DDRK; //DDRK
-#define  PK3 3 //PK7
+// signal
 
-//signal
-
-#define  PK4 4
+#define PK4 4
 
 extern uint8_t PINK;
 
@@ -255,18 +250,16 @@ extern uint8_t PINK;
 extern uint8_t PCICR;
 extern uint8_t PCMSK2;
 
-
-//tone 
+// tone
 #define PA1 1
 extern uint8_t TCCR2A;
 extern uint8_t TCCR2B;
 extern uint8_t TCNT2;
 
-        // Busy-wait
+// Busy-wait
 #define CS22 2
 #define CS21 1
 #define CS20 0
-
 
 #define PE3 3
 #define PC7 7

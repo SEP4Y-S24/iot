@@ -8,3 +8,6 @@ pio test -e test_ccp_protocol -f "./test/"
 
 echo "Running alarm test..."
 pio test -e test_alarm -f "./test/"
+
+echo "Running message_handler test..."
+pio test -e test_message_handler -f "./test/"

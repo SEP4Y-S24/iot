@@ -95,10 +95,10 @@ void ccp_parse_request(char *raw_request, request *request_pointer)
 
     int body_length = atoi(request_parts[1]);
 
-    if (body_length < 0 || body_length > CCP_MAX_BODY_LENGTH)
+    if (body_length < 0 || body_length >= CCP_MAX_BODY_LENGTH)
     {
         char error_request[35];
-        ccp_create_response(error_request, ccp_at_from_str(request_parts[0]), CCP_STATUS_BAD_REQUEST, "Max Body Length is: 96.");
+        ccp_create_response(error_request, ccp_at_from_str(request_parts[0]), CCP_STATUS_BAD_REQUEST, "Invalid Body Length - <0 - 96>.");
         uint8_t request_data[35];
         memcpy(request_data, error_request, strlen(error_request));
         wifi_command_TCP_transmit(request_data, 35);
@@ -178,14 +178,10 @@ CCP_ACTION_TYPE ccp_at_from_str(char *message)
         return CCP_AT_MS;
     else if (strncmp(message, "CA", 2) == 0)
         return CCP_AT_CA;
-    else if (strncmp(message, "SK", 2) == 0)
-    {
-        return CCP_AT_SK;
-    }
-    else if (strncmp(message, "CK", 2) == 0)
-    {
-        return CCP_AT_CK;
-    }
+    else if (strncmp(message, "DA", 2) == 0)
+        return CCP_AT_DA;
+    else if (strncmp(message, "TH", 2) == 0)
+        return CCP_AT_TH;
     else
         return CCP_AT_UNKNOWN;
     
@@ -209,6 +205,12 @@ void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type)
         break;
     case CCP_AT_CA:
         strcpy(action_type, "CA");
+        break;
+    case CCP_AT_DA:
+        strcpy(action_type, "DA");
+        break;
+    case CCP_AT_TH:
+        strcpy(action_type, "TH");
         break;
     default:
         strcpy(action_type, "Unknown");

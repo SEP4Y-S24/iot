@@ -43,30 +43,31 @@ void ccp_message_handler_handle(char *message)
         log_info("Unknown Action Type...");
         break;
     }
+    
 }
 
 void ccp_handle_create_alarm(char *message)
 {
     // extract data from message
-    response server_response;
-    ccp_parse_response(message, &server_response);
+    request server_request;
+    ccp_parse_request(message, &server_request);
 
-    // Display Message if Status Code is OK
-    if (server_response.status_code == CCP_STATUS_OK)
-    {
-        ccp_message_sender_send_response(server_response.action_type, CCP_STATUS_OK, "Alarm received");
-        log_debug("Setting alarm...");
-        char hour_str[3] = {server_response.body[0], server_response.body[1], '\0'};
-        char minute_str[3] = {server_response.body[3], server_response.body[4], '\0'};
+    ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_OK, "Alarm received");
+    log_info("Setting alarm...");
 
-        int hour = atoi(hour_str);
-        int minute = atoi(minute_str);
-        alarm_create(hour, minute);
-    }
+    char hour_str[3] = {server_request.body[0], server_request.body[1], '\0'};
+    char minute_str[3] = {server_request.body[2], server_request.body[3], '\0'};
+
+    int hour = atoi(hour_str);
+    int minute = atoi(minute_str);
+    alarm_create(hour, minute);
 }
 
 void ccp_handle_delete_alarm(char *message)
 {
+    request server_request;
+    ccp_parse_request(message, &server_request);
+    ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_OK, "Alarm deleted");
     alarm_delete();
 }
 
