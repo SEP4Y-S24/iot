@@ -1,0 +1,10 @@
+*.cpp linguist-vendored
+*.hpp linguist-vendored
+*.h   linguist-vendored
+*.cxx linguist-vendored
+*.hxx linguist-vendored
+*.hxx linguist-vendored
+*.inc linguist-vendored
+*.yaml linguist-vendored
+
+/lib/encryption/* linguist-vendored
