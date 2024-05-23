@@ -6,6 +6,7 @@
 #include "logger.h"
 #include "ccp_message_sender.h"
 #include "native.h"
+#include "periodic_task.h"
 
 static void periodic_tasks_10_minutes();
 
@@ -37,9 +38,7 @@ State working_state_switch(char *ip, int port)
 
     periodic_task_init_b(periodic_tasks_10_minutes, 10000);
 
-    while (1)
-    {
-    }
+    state_coordinator_wait_for_event(&error);
 
     periodic_task_init_b(nothing, 10000);
     return WORKING_STATE; //Does not matter cause it only return in case of error 
