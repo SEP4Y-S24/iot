@@ -13,5 +13,5 @@ void key_verification_callback(char *message)
         log_info("Wrong action type");
         return;
     }
-    key_verification_state_set_waiting_for_key_verification(true);
+    key_verification_state_set_key_verified(true);
 }

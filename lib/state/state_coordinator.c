@@ -32,7 +32,7 @@ static void state_coordinator(State state)
             state_coordinator(authentication_state_switch(NULL));
             break;
         case KEY_VERIFICATION_STATE:
-            state_coordinator(key_verification_state_switch(""));
+            state_coordinator(key_verification_state_switch());
             break;
         case WORKING_STATE:
             state_coordinator(working_state_switch(ip, port));

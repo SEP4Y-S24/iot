@@ -45,7 +45,7 @@ State authentication_state_switch(char *auth_key)
     }
 }
 
-#ifndef TEST_AUTH_STATE
+#ifndef NATIVE_TESTING
 
 void authentication_state_set_authenticated(bool auth)
 {
