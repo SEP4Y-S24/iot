@@ -14,6 +14,14 @@ typedef enum
 
 typedef enum
 {
+    CCP_PARSING_INVALID_EMPTY_POINTER,
+    CCP_PARSING_INVALID_WRONG_FORMAT,
+    CCP_PARSING_VALID,
+
+} CCP_PARSING_STATUS;
+
+typedef enum
+{
     CCP_AT_AU,
     CCP_AT_TM,
     CCP_AT_MS,
@@ -41,9 +49,9 @@ void ccp_create_request(CCP_ACTION_TYPE at, char *body, char *request_buffer);
 
 void ccp_create_response(char *response_buffer, CCP_ACTION_TYPE at, CCP_STATUS_CODE code, char *body);
 
-void ccp_parse_response(char *raw_response, response *parsed_response);
+CCP_PARSING_STATUS ccp_parse_response(char *raw_response, response *parsed_response);
 
-void ccp_parse_request(char *raw_request, request *parsed_request);
+CCP_PARSING_STATUS ccp_parse_request(char *raw_request, request *parsed_request);
 
 CCP_ACTION_TYPE ccp_at_from_str(char *action_type);
 
