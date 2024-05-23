@@ -18,7 +18,7 @@ void ccp_handle_delete_alarm(char *message);
 
 void ccp_message_handler_handle(char *message)
 {
-    cryptonator_decrypt(message); // decrypt message
+    message = cryptonator_decrypt(message); // decrypt message and save it in a varriable 
     CCP_ACTION_TYPE at = ccp_at_from_str(message);
 
     log_info("Received message:");

@@ -25,8 +25,7 @@ static void send_message(char *message)
     log_info("Sending message:");
     log_info(message);
     uint8_t data[MESSAGE_LENGTH];
-    memcpy(data, message, strlen(message));
-    //cryptonator_encrypt(dataa, strlen(message));
+    memcpy(data, cryptonator_encrypt(message), strlen(message));
     log_debug("Sending message:");
     log_debug(message);
     wifi_command_TCP_transmit(data, strlen(message));
