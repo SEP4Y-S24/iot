@@ -14,3 +14,6 @@ pio test -e test_message_handler -f "./test/"
 
 echo "Running auth_test test..."
 pio test -e test_auth_state -f "./test/"
+
+echo "Running encryption test..."
+pio test -e test_cryptorator -f "./test/"

@@ -3,6 +3,7 @@
 #include "string.h"
 #include <stdio.h>
 #include "logger.h"
+#include "cryptorator.h"
 
 static const int MESSAGE_LENGTH = 110;
 static void send_message(char *message);
@@ -22,8 +23,13 @@ void ccp_message_sender_send_response(CCP_ACTION_TYPE at, CCP_STATUS_CODE status
 
 static void send_message(char *message)
 {
+    log_info("Sending message:");
+    log_info(message);
     uint8_t data[MESSAGE_LENGTH];
     memcpy(data, message, strlen(message));
+    #ifndef ENCRYPTION_DISABLED
+    cryptorator_encrypt((char **) data);
+    #endif
     log_debug("Sending message:");
     log_debug(message);
     wifi_command_TCP_transmit(data, strlen(message));
