@@ -1,9 +1,9 @@
-#include <unity.h>
-#include <ccp_protocol.h>
+#include "unity.h"
+#include "../../fff.h"
+#include "../comm/ccp_protocol.h"
+#include "../drivers/uart.h"
+#include "../drivers/wifi.h"
 #include <stdio.h>
-#include "../fff.h"
-#include <wifi.h>
-#include <uart.h>
 
 FAKE_VALUE_FUNC(WIFI_ERROR_MESSAGE_t, wifi_command_TCP_transmit, uint8_t *, uint16_t);
 FAKE_VOID_FUNC(uart_init, USART_t, uint32_t, UART_Callback_t);
@@ -236,6 +236,20 @@ void ccp_test_at_from_str3()
     CCP_ACTION_TYPE at = ccp_at_from_str("CA");
     TEST_ASSERT_TRUE(at == CCP_AT_CA);
 }
+void setUp(void)
+{
+    FFF_RESET_HISTORY();
+    RESET_FAKE(wifi_command_TCP_transmit);
+    RESET_FAKE(uart_init);
+    RESET_FAKE(uart_send_blocking);
+    RESET_FAKE(uart_send_array_nonBlocking);
+    RESET_FAKE(uart_send_array_blocking);
+    RESET_FAKE(uart_send_string_blocking);
+}
+
+void tearDown(void)
+{
+}
 
 int main(void)
 {
@@ -272,14 +286,4 @@ int main(void)
     RUN_TEST(ccp_test_at_from_str3);
 
     return UNITY_END();
-}
-
-void setUp(void)
-{
-    FFF_RESET_HISTORY();
-    RESET_FAKE(wifi_command_TCP_transmit);
-}
-
-void tearDown(void)
-{
 }

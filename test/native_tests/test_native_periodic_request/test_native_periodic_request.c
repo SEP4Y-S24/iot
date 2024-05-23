@@ -1,12 +1,12 @@
-#include "../controllers/periodic_request.h"
+#include "unity.h"
+#include "../../fff.h"
 #include "../drivers/periodic_task.h"
-#include "../fff.h"
+#include "../controllers/periodic_request.h"
 #include "../controllers/humidity_temperature.h"
-#include <unity.h>
 
-FAKE_VOID_FUNC(periodic_task_init_b, PERIODIC_TASK_CALLBACK, uint32_t);
-FAKE_VOID_FUNC(native_delay_ms, int);
-FAKE_VOID_FUNC(humidity_temperature_send);
+FAKE_VOID_FUNC2(periodic_task_init_b, PERIODIC_TASK_CALLBACK, uint32_t);
+FAKE_VOID_FUNC1(native_delay_ms, int);
+FAKE_VOID_FUNC0(humidity_temperature_send);
 
 void periodic_request_test_10_minutes_init()
 {
@@ -47,6 +47,9 @@ int main(void)
 void setUp(void)
 {
     FFF_RESET_HISTORY();
+    RESET_FAKE(periodic_task_init_b);
+    RESET_FAKE(native_delay_ms);
+    RESET_FAKE(humidity_temperature_send);
 }
 
 void tearDown(void)

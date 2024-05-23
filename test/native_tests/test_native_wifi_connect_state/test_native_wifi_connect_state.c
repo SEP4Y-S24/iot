@@ -1,15 +1,15 @@
 #include "unity.h"
-#include "../fff.h"
-#include <string.h>
-#include <stdio.h>
-#include <unity_internals.h>
-#include <stdlib.h>
+#include "../../fff.h"
 #include "../state/connect_wifi_state.h"
 #include "../state/state_coordinator.h"
 #include "../drivers/uart.h"
 #include "../drivers/wifi.h"
 #include "../drivers/periodic_task.h"
 #include "../utils/logger.h"
+#include <string.h>
+#include <stdio.h>
+#include <unity_internals.h>
+#include <stdlib.h>
 
 FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_set_mode_to_1);
 FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_set_mode_to_2);
@@ -23,10 +23,10 @@ FAKE_VOID_FUNC1(wifi_init, UART_Callback_t);
 FAKE_VOID_FUNC2(wifi_reassign_callback, WIFI_TCP_Callback_t, char *);
 FAKE_VALUE_FUNC0(WIFI_AP_CONNECTION, wifi_command_check_AP_connection);
 
-FAKE_VOID_FUNC(log_debug, char *);
-FAKE_VOID_FUNC(log_info, char *);
+FAKE_VOID_FUNC1(log_debug, char *);
+FAKE_VOID_FUNC1(log_info, char *);
 
-FAKE_VOID_FUNC(periodic_task_init_a, PERIODIC_TASK_CALLBACK, uint32_t);
+FAKE_VOID_FUNC2(periodic_task_init_a, PERIODIC_TASK_CALLBACK, uint32_t);
 
 void starting_with_specified_credentials_finishes_the_state()
 {

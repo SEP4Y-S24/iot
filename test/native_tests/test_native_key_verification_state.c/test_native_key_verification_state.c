@@ -1,17 +1,16 @@
-#ifdef TEST_KEY_VERIFICATION_STATE
-#include "key_verification_state.h"
-#include "fff.h"
-#include "ccp_protocol.h"
 #include "unity.h"
-#include "wifi.h"
-#include "periodic_task.h"
-#include "alarm.h"
-#include "ccp_message_sender.h"
-#include "authentication_callback.h"
-#include "logger.h"
-#include "message.h"
-#include "state_coordinator.h"
-#include "key_verification_callback.h"
+#include "../../fff.h"
+#include "../drivers/wifi.h"
+#include "../drivers/periodic_task.h"
+#include "../comm/ccp_message_sender.h"
+#include "../comm/ccp_protocol.h"
+#include "../utils/logger.h"
+#include "../controllers/alarm.h"
+#include "../controllers/message.h"
+#include "../state/authentication_callback.h"
+#include "../state/key_verification_state.h"
+#include "../state/state_coordinator.h"
+#include "../state/key_verification_callback.h"
 
 FAKE_VALUE_FUNC(WIFI_ERROR_MESSAGE_t, wifi_command_TCP_transmit, uint8_t *, uint16_t);
 FAKE_VOID_FUNC(uart_init, USART_t, uint32_t, UART_Callback_t);
@@ -38,19 +37,20 @@ FAKE_VOID_FUNC(authentication_state_set_waiting_for_key_verification, bool);
 FAKE_VOID_FUNC(ccp_message_sender_send_request, CCP_ACTION_TYPE, char *);
 FAKE_VOID_FUNC(key_verification_state_set_key_verified, bool);
 
-
 void key_verification_state_sets_key()
 {
     key_verification_state_set_key("hkasdterrhtadsgfdg");
-    TEST_ASSERT_EQUAL_STRING("hkasdterrhtadsgfdg", message_get_message()); 
+    TEST_ASSERT_EQUAL_STRING("hkasdterrhtadsgfdg", message_get_message());
 }
 
-void auth_callback_sets_auth_key(){
+void auth_callback_sets_auth_key()
+{
     authentication_callback("AU|3|5|key12|");
     TEST_ASSERT_EQUAL_STRING("key12", message_get_message());
 }
 
-void key_verification_callback_stops_waiting(){
+void key_verification_callback_stops_waiting()
+{
     key_verification_callback("KV|1|0|");
     TEST_ASSERT_EQUAL(1, key_verification_state_set_key_verified_fake.call_count);
     TEST_ASSERT_EQUAL(true, key_verification_state_set_key_verified_fake.arg0_val);
@@ -58,12 +58,10 @@ void key_verification_callback_stops_waiting(){
 
 void setUp(void)
 {
-
 }
 
 void tearDown(void)
 {
-    
 }
 
 int main(void)
@@ -74,5 +72,3 @@ int main(void)
     RUN_TEST(key_verification_callback_stops_waiting);
     return UNITY_END();
 }
-
-#endif

@@ -1,9 +1,9 @@
 #include "unity.h"
-#include "humidity_temperature.h"
-#include "ccp_message_sender.h"
-#include "dht11.h"
-#include "logger.h"
-#include "../fff.h"
+#include "../../fff.h"
+#include "../controllers/humidity_temperature.h"
+#include "../comm/ccp_message_sender.h"
+#include "../drivers/dht11.h"
+#include "../utils/logger.h"
 #include <stdio.h>
 
 FAKE_VALUE_FUNC(DHT11_ERROR_MESSAGE_t, dht11_get, uint8_t *, uint8_t *, uint8_t *, uint8_t *);

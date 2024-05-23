@@ -1,10 +1,9 @@
+#include "unity.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "unity.h"
-#include "cryptorator.h"
-#ifdef TEST_CRYPTORATOR
-// Set up and tear down functions
+#include "../encryption/cryptorator.h"
+
 void setUp(void)
 {
     // This function will be called before each test case
@@ -72,12 +71,13 @@ void test_decryption_withIV()
     free(encrypted_message);
 }
 
-// Entry point for the test suite
-int main()
+int main(void)
 {
     UNITY_BEGIN();
+
     // Run the encryption and decryption test
     RUN_TEST(test_encryption_decryption);
     RUN_TEST(test_decryption_withIV);
+
     return UNITY_END();
 }

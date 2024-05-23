@@ -1,14 +1,14 @@
-#include "authentication_state.h"
-#include "fff.h"
-#include "ccp_protocol.h"
 #include "unity.h"
-#include "wifi.h"
-#include "periodic_task.h"
-#include "alarm.h"
-#include "ccp_message_sender.h"
-#include "authentication_callback.h"
-#include "logger.h"
-#include "state_coordinator.h"
+#include "../../fff.h"
+#include "../drivers/wifi.h"
+#include "../drivers/periodic_task.h"
+#include "../controllers/alarm.h"
+#include "../comm/ccp_message_sender.h"
+#include "../comm/ccp_protocol.h"
+#include "../state/authentication_state.h"
+#include "../state/authentication_callback.h"
+#include "../state/state_coordinator.h"
+#include "../utils/logger.h"
 
 FAKE_VALUE_FUNC(WIFI_ERROR_MESSAGE_t, wifi_command_TCP_transmit, uint8_t *, uint16_t);
 FAKE_VOID_FUNC(uart_init, USART_t, uint32_t, UART_Callback_t);
@@ -16,8 +16,6 @@ FAKE_VOID_FUNC(uart_send_blocking, USART_t, uint8_t);
 
 FAKE_VOID_FUNC(state_coordinator_wait_for_event, bool *);
 FAKE_VOID_FUNC(uart_send_string_blocking, USART_t, char *);
-FAKE_VOID_FUNC(log_debug, char *);
-FAKE_VOID_FUNC(log_info, char *);
 FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_set_mode_to_1);
 FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_set_mode_to_2);
 FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_set_mode_to_3);
@@ -32,7 +30,6 @@ FAKE_VOID_FUNC(wifi_reassign_callback, WIFI_TCP_Callback_t, char *);
 FAKE_VOID_FUNC(authentication_state_set_authenticated, bool);
 FAKE_VOID_FUNC(authentication_state_set_waiting_for_key_verification, bool);
 FAKE_VOID_FUNC(key_verification_state_set_key_verified, bool);
-
 
 FAKE_VOID_FUNC(ccp_message_sender_send_request, CCP_ACTION_TYPE, char *);
 
@@ -61,6 +58,7 @@ void auth_callback_unauthenticated_sets_key_verification_to_true()
 
 void setUp()
 {
+    FFF_RESET_HISTORY();
     RESET_FAKE(authentication_state_set_authenticated);
     RESET_FAKE(authentication_state_set_waiting_for_key_verification);
 }
