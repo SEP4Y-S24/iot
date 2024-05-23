@@ -36,13 +36,12 @@ void static wifi_command_callback(uint8_t received_byte)
 
 void wifi_send_command(const char *str, uint16_t timeOut_s)
 {
-    char *message = (char *)malloc(strlen(str) + 10);
+    char message[128];
     strcpy(message, "Sending: ");
     strcat(message, str);
     log_debug((char *)message);
-    realloc(message, strlen(str) + 10);
 
-    char *sendbuffer = (char *)malloc(128);
+    char sendbuffer[128];
     strcpy(sendbuffer, str);
 
     UART_Callback_t callback_state = uart_get_rx_callback(USART_WIFI);
@@ -50,7 +49,7 @@ void wifi_send_command(const char *str, uint16_t timeOut_s)
     uart_init(USART_WIFI, wifi_baudrate, wifi_command_callback);
 
     uart_send_string_blocking(USART_WIFI, strcat(sendbuffer, "\r\n"));
-    realloc(sendbuffer, 128);
+
 
     // better wait sequence...
     for (uint16_t i = 0; i < timeOut_s * 100UL; i++) // timeout after 20 sec

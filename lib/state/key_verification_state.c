@@ -8,7 +8,7 @@
 #include "ccp_protocol.h"
 #include "wifi.h"
 
-static bool waiting_for_key_verification;
+static bool key_verified;
 static char buffer[CCP_MAX_BODY_LENGTH];
 
 void key_verification_callback_wrapper()
@@ -17,23 +17,24 @@ void key_verification_callback_wrapper()
 }
 
 
-State key_verification_state_switch(char *key)
+State key_verification_state_switch()
 {
     wifi_reassign_callback(key_verification_callback_wrapper, buffer);
     log_debug("Switching to key verification state");
-    waiting_for_key_verification = false;
+    key_verified = false;
 
-    state_coordinator_wait_for_event(&waiting_for_key_verification);
+    state_coordinator_wait_for_event(&key_verified);
 
     char no_message[] = "No message received";
     message_set_message(no_message);
     return WORKING_STATE;
 }
-
-void key_verification_state_set_waiting_for_key_verification(bool waiting)
+#ifndef NATIVE_TESTING
+void key_verification_state_set_key_verified(bool waiting)
 {
-    waiting_for_key_verification = waiting;
+    key_verified = waiting;
 }
+#endif
 
 void key_verification_state_set_key(char *new_key)
 {

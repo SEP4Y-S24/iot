@@ -16,7 +16,7 @@
 
 static char recieveBuffer[CCP_MAX_MESSAGE_LENGTH];
 static uint8_t recieveBufferIndex;
-static bool wifi_connected = false;
+static bool wifi_connected;
 
 static char ssid_static[32];
 static char password_static[32];
@@ -181,6 +181,7 @@ static void wifi_check_buffer_callback()
 
 State connect_wifi_state_switch(char *ssid, char *pass)
 {
+    wifi_connected = false;
     log_info("Entered connect wifi state");
     wifi_init(NULL);
 

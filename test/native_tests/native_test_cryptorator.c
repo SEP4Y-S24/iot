@@ -5,7 +5,7 @@
 #include <string.h>
 #include "unity.h"
 #include "cryptorator.h"
-
+#ifdef TEST_CRYPTORATOR
 // Set up and tear down functions
 void setUp(void)
 {

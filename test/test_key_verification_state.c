@@ -1,6 +1,5 @@
-#ifdef NATIVE_TEST_AUTH_STATE
-
-#include "authentication_state.h"
+#ifdef TEST_KEY_VERIFICATION_STATE
+#include "key_verification_state.h"
 #include "fff.h"
 #include "ccp_protocol.h"
 #include "unity.h"
@@ -10,7 +9,9 @@
 #include "ccp_message_sender.h"
 #include "authentication_callback.h"
 #include "logger.h"
+#include "message.h"
 #include "state_coordinator.h"
+#include "key_verification_callback.h"
 
 FAKE_VALUE_FUNC(WIFI_ERROR_MESSAGE_t, wifi_command_TCP_transmit, uint8_t *, uint16_t);
 FAKE_VOID_FUNC(uart_init, USART_t, uint32_t, UART_Callback_t);
@@ -33,51 +34,45 @@ FAKE_VALUE_FUNC0(WIFI_AP_CONNECTION, wifi_command_check_AP_connection);
 FAKE_VOID_FUNC(wifi_reassign_callback, WIFI_TCP_Callback_t, char *);
 FAKE_VOID_FUNC(authentication_state_set_authenticated, bool);
 FAKE_VOID_FUNC(authentication_state_set_waiting_for_key_verification, bool);
+
+FAKE_VOID_FUNC(ccp_message_sender_send_request, CCP_ACTION_TYPE, char *);
 FAKE_VOID_FUNC(key_verification_state_set_key_verified, bool);
 
 
-FAKE_VOID_FUNC(ccp_message_sender_send_request, CCP_ACTION_TYPE, char *);
-
-void auth_state_send_request()
+void key_verification_state_sets_key()
 {
-    authentication_state_switch(NULL);
-    TEST_ASSERT_EQUAL(ccp_message_sender_send_request_fake.call_count, 1);
-    TEST_ASSERT_EQUAL(CCP_AT_AU, ccp_message_sender_send_request_fake.arg0_val);
+    key_verification_state_set_key("hkasdterrhtadsgfdg");
+    TEST_ASSERT_EQUAL_STRING("hkasdterrhtadsgfdg", message_get_message()); 
 }
 
-void auth_callback_sets_auth()
-{
-    authentication_callback("AU|1|0||");
-    TEST_ASSERT_EQUAL(1, authentication_state_set_authenticated_fake.call_count);
-    TEST_ASSERT_EQUAL(true, authentication_state_set_authenticated_fake.arg0_val);
-    TEST_ASSERT_EQUAL(1, authentication_state_set_waiting_for_key_verification_fake.call_count);
-    TEST_ASSERT_EQUAL(false, authentication_state_set_waiting_for_key_verification_fake.arg0_val);
+void auth_callback_sets_auth_key(){
+    authentication_callback("AU|3|5|key12|");
+    TEST_ASSERT_EQUAL_STRING("key12", message_get_message());
 }
 
-void auth_callback_unauthenticated_sets_key_verification_to_true()
-{
-    authentication_callback("AU|3|0||");
-    TEST_ASSERT_EQUAL(authentication_state_set_waiting_for_key_verification_fake.call_count, 1);
-    TEST_ASSERT_EQUAL(true, authentication_state_set_waiting_for_key_verification_fake.arg0_val);
+void key_verification_callback_stops_waiting(){
+    key_verification_callback("KV|1|0|");
+    TEST_ASSERT_EQUAL(1, key_verification_state_set_key_verified_fake.call_count);
+    TEST_ASSERT_EQUAL(true, key_verification_state_set_key_verified_fake.arg0_val);
 }
 
-void setUp()
+void setUp(void)
 {
-    RESET_FAKE(authentication_state_set_authenticated);
-    RESET_FAKE(authentication_state_set_waiting_for_key_verification);
+
 }
 
-void tearDown()
+void tearDown(void)
 {
+    
 }
 
 int main(void)
 {
     UNITY_BEGIN();
-    RUN_TEST(auth_state_send_request);
-    RUN_TEST(auth_callback_sets_auth);
-    RUN_TEST(auth_callback_unauthenticated_sets_key_verification_to_true);
+    RUN_TEST(key_verification_state_sets_key);
+    RUN_TEST(auth_callback_sets_auth_key);
+    RUN_TEST(key_verification_callback_stops_waiting);
     return UNITY_END();
 }
 
-#endif // TEST_AUTH_STATE
+#endif

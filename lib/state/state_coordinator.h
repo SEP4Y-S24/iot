@@ -15,3 +15,5 @@ void start();
 
 
 void state_coordinator_wait_for_event(bool* event);
+
+void state_coordinator_set_error(bool err, State new_error_state);
