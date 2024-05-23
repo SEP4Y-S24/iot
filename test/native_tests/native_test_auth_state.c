@@ -1,4 +1,4 @@
-#ifdef TEST_AUTH_STATE
+#ifdef NATIVE_TEST_AUTH_STATE
 
 #include "authentication_state.h"
 #include "fff.h"
