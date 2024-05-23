@@ -1,4 +1,4 @@
-#ifndef WINDOWS_TEST
+#ifndef NATIVE_TESTING
 
 #ifndef EXCLUDE_UART
 
@@ -15,7 +15,8 @@ static UART_Callback_t usart0_rx_callback = NULL;
 static UART_Callback_t usart1_rx_callback = NULL;
 static UART_Callback_t usart2_rx_callback = NULL;
 static UART_Callback_t usart3_rx_callback = NULL;
-UART_Callback_t uart_get_rx_callback(USART_t usart){
+UART_Callback_t uart_get_rx_callback(USART_t usart)
+{
     switch (usart)
     {
     case USART_0:
@@ -31,12 +32,11 @@ UART_Callback_t uart_get_rx_callback(USART_t usart){
         return usart3_rx_callback;
         break;
     default:
-    return 0;
+        return 0;
         break;
     }
-
 }
-#ifndef WINDOWS_TEST
+#ifndef NATIVE_TESTING
 // This is the ISR for USART0 Receive Complete
 #ifndef TARGET_TEST
 ISR(USART0_RX_vect)
@@ -84,9 +84,9 @@ ISR(USART3_RX_vect)
 inline static void uart_init_usart0(uint16_t ubrr, UART_Callback_t callback)
 {
     // Enable transmitter, receiver and the transmit interrupt
-    UCSR0B = (1 << TXEN0) | (1<< RXEN0);
- //   
- //   UCSR0B = (1 << TXEN0) | (1 << RXEN0)// Enable USART0 transmitter Enable USART0 receiver
+    UCSR0B = (1 << TXEN0) | (1 << RXEN0);
+    //
+    //   UCSR0B = (1 << TXEN0) | (1 << RXEN0)// Enable USART0 transmitter Enable USART0 receiver
 
     //  frame format: 8 data bits, 1 stop bit, no parity
     UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
@@ -170,7 +170,6 @@ inline static void uart_init_usart3(uint16_t ubrr, UART_Callback_t callback)
 
         // Enable the USART Receive Complete interrupt
         UCSR3B |= (1 << RXCIE3);
-        
     }
 }
 
@@ -202,7 +201,6 @@ void uart_init(USART_t usart, uint32_t baudrate, UART_Callback_t callback)
     }
     sei();
 }
-
 
 void uart_send_blocking(USART_t usart, uint8_t data)
 {
@@ -259,10 +257,9 @@ void uart_send_array_blocking(USART_t usart, uint8_t *data, uint16_t length)
     }
 }
 
-
-
-void uart_send_string_blocking(USART_t usart, char *data){
-    uart_send_array_blocking(usart, (uint8_t*)data, strlen(data));
+void uart_send_string_blocking(USART_t usart, char *data)
+{
+    uart_send_array_blocking(usart, (uint8_t *)data, strlen(data));
 }
 
 static volatile uint8_t *usart0_transmit_buffer;
@@ -287,7 +284,6 @@ static volatile uint8_t usart3_transmission_in_progress = 0;
 
 void uart_send_array_nonBlocking(USART_t usart, uint8_t *str, uint16_t len)
 {
-
 
     while (usart0_transmission_in_progress)
     {
@@ -352,7 +348,7 @@ void uart_send_array_nonBlocking(USART_t usart, uint8_t *str, uint16_t len)
     sei(); // Enable global interrupts after updating variables
 }
 
-#ifndef WINDOWS_TEST
+#ifndef NATIVE_TESTING
 
 #ifndef TARGET_TEST
 
@@ -419,6 +415,6 @@ ISR(USART3_UDRE_vect)
 
 #endif
 
-#endif//EXCLUDE_UART
+#endif // EXCLUDE_UART
 
-#endif//WINDOWS_TEST
+#endif // NATIVE_TESTING

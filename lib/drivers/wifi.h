@@ -173,3 +173,5 @@ WIFI_AP_CONNECTION wifi_command_check_AP_connection();
 WIFI_ERROR_MESSAGE_t wifi_command_reset();
 
 WIFI_ERROR_MESSAGE_t wifi_command_set_mode_to_3();
+
+void wifi_reassign_callback(WIFI_TCP_Callback_t new_callback, char *new_buffer);

@@ -12,18 +12,6 @@
 
 #pragma once
 
-#include <avr/io.h>
-#include <util/delay.h>
-
-/* LCD Port and Pin Definitions */
-#define LCD_Data_Dir DDRA    /* Define LCD data port direction */
-#define LCD_Command_Dir DDRC /* Define LCD command port direction register */
-#define LCD_Data_Port PORTA
-#define LCD_Command_Port PORTC
-#define RS PC0 /* Define Register Select pin */
-#define RW PC1 /* Define Read/Write signal pin */
-#define EN PC2 /* Define Enable signal pin */
-
 /* LCD Function Prototypes */
 
 /**
@@ -58,7 +46,7 @@ void external_screen_string(const char *str);
 
 /**
  * @brief Displays a string on the external LCD screen at a specific position.
- * @param row The row number (0 or 1) where the string will be displayed.
+ * @param row The row number (1 or 2) where the string will be displayed.
  * @param pos The starting position of the string on the row.
  * @param str The string to be displayed.
  */
@@ -80,4 +68,4 @@ void external_screen_two_rows(const char *row1_text, char row1_pos, const char *
  * @param delay The delay between each scroll step.
  * @param cycles The number of times the scrolling text should be repeated.
  */
-void external_screen_static_with_scroll(const char *static_text, const char *scroll_text, uint16_t delay, int cycles);
+void external_screen_static_with_scroll(const char *static_text, const char *scroll_text, int delay, int cycles);

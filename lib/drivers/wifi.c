@@ -1,4 +1,4 @@
-#ifndef WINDOWS_TEST
+#ifndef NATIVE_TESTING
 #include "wifi.h"
 #include "includes.h"
 #include "uart.h"
@@ -56,7 +56,7 @@ void wifi_send_command(const char *str, uint16_t timeOut_s)
     for (uint16_t i = 0; i < timeOut_s * 100UL; i++) // timeout after 20 sec
     {
         _delay_ms(10);
-        if (strstr((char *)wifi_dataBuffer, "OK\r\n") != NULL)
+        if (strstr((char *)wifi_dataBuffer, "OK\r\n") != NULL || strstr((char *)wifi_dataBuffer, "ERROR\r\n") != NULL || strstr((char *)wifi_dataBuffer, "FAIL\r\n") != NULL)
             break;
     }
     log_debug((char *)wifi_dataBuffer);
@@ -297,7 +297,7 @@ WIFI_ERROR_MESSAGE_t wifi_command_create_TCP_connection(char *IP, uint16_t port,
     sprintf(portString, "%u", port);
     strcat(sendbuffer, portString);
 
-    WIFI_ERROR_MESSAGE_t errorMessage = wifi_command(sendbuffer, 20);
+    WIFI_ERROR_MESSAGE_t errorMessage = wifi_command(sendbuffer, 7);
     if (errorMessage != WIFI_OK)
         return errorMessage;
     else
@@ -395,4 +395,11 @@ WIFI_ERROR_MESSAGE_t wifi_command_reset()
 {
     return wifi_command("AT+RST", 20);
 }
+
+void wifi_reassign_callback(WIFI_TCP_Callback_t new_callback, char *new_buffer) {
+    callback_when_message_received_static = new_callback;
+    wifi_clear_databuffer_and_index();
+    received_message_buffer_static_pointer = new_buffer;
+}
+
 #endif

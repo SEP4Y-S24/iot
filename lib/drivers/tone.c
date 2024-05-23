@@ -1,4 +1,4 @@
-#ifndef WINDOWS_TEST
+#ifndef NATIVE_TESTING
 
 #include "tone.h"
 #include "includes.h"
@@ -7,21 +7,19 @@
 #define BUZ_DDR DDRA
 #define BUZ_PORT PORTA
 
-void tone_init(){
-BUZ_DDR|=(1<<BUZ_BIT);
+void tone_init()
+{
+    BUZ_DDR |= (1 << BUZ_BIT);
 }
 
-
-void tone_play(uint16_t frequency, uint16_t duration) {
-
+void tone_play(uint16_t frequency, uint16_t duration)
+{
 
     // Calculate the half-period delay in microseconds
     uint16_t delay_us = 500000 / frequency;
 
     // Calculate the number of cycles needed for the specified duration
-    uint16_t loop = (uint16_t) ((uint32_t) duration * 1000 / (2 * delay_us));
-
-
+    uint16_t loop = (uint16_t)((uint32_t)duration * 1000 / (2 * delay_us));
 
     // Initialize Timer2 in normal mode
     TCCR2A = 0;
@@ -31,27 +29,36 @@ void tone_play(uint16_t frequency, uint16_t duration) {
     uint16_t prescaler_value = 0;
 
     // Choose prescaler based on delay
-    if (delay_us > 4000) {
+    if (delay_us > 4000)
+    {
         prescaler_bits = (1 << CS22) | (1 << CS21) | (1 << CS20); // 1024
         prescaler_value = 1024;
-    } else if (delay_us > 2000) {
+    }
+    else if (delay_us > 2000)
+    {
         prescaler_bits = (1 << CS22) | (1 << CS21); // 256
         prescaler_value = 256;
-    } else if (delay_us > 1000) {
+    }
+    else if (delay_us > 1000)
+    {
         prescaler_bits = (1 << CS22) | (1 << CS20); // 128
         prescaler_value = 128;
-    } else if (delay_us >500) {
+    }
+    else if (delay_us > 500)
+    {
         prescaler_bits = (1 << CS22); // 64
         prescaler_value = 64;
-    } else if (delay_us >125) {
-        prescaler_bits = (1 << CS21)| (1 << CS20); //32
+    }
+    else if (delay_us > 125)
+    {
+        prescaler_bits = (1 << CS21) | (1 << CS20); // 32
         prescaler_value = 32;
     }
     else
-     {
-       prescaler_bits = (1 << CS21) ; // 8
+    {
+        prescaler_bits = (1 << CS21); // 8
         prescaler_value = 8;
-     }
+    }
 
     // Set the prescaler
     TCCR2B = prescaler_bits;
@@ -59,35 +66,34 @@ void tone_play(uint16_t frequency, uint16_t duration) {
     // Calculate the number of timer ticks needed for the specified delay
     uint8_t num_ticks = (F_CPU / 1000000UL) * delay_us / prescaler_value;
 
-
-
-
     // Generate the tone
-    for (uint16_t i = 0; i < loop; i++) {
+    for (uint16_t i = 0; i < loop; i++)
+    {
         // Set PA1 high
         BUZ_PORT |= (1 << BUZ_BIT);
-            // Reset the timer counter
-    TCNT2 = 0;
+        // Reset the timer counter
+        TCNT2 = 0;
 
-    // Wait until the timer counter reaches the required ticks
-    while (TCNT2 < num_ticks) {
-        // Busy-wait
-    }
+        // Wait until the timer counter reaches the required ticks
+        while (TCNT2 < num_ticks)
+        {
+            // Busy-wait
+        }
 
         // Set PA1 low
         BUZ_PORT &= ~(1 << BUZ_BIT);
-            // Reset the timer counter
-    TCNT2 = 0;
+        // Reset the timer counter
+        TCNT2 = 0;
 
-    // Wait until the timer counter reaches the required ticks
-    while (TCNT2 < num_ticks) {
-        // Busy-wait
-    }
+        // Wait until the timer counter reaches the required ticks
+        while (TCNT2 < num_ticks)
+        {
+            // Busy-wait
+        }
     }
 
     TCCR2B = 0;
 }
-
 
 void tone_play_starwars()
 {
@@ -112,6 +118,5 @@ void tone_play_starwars()
     tone_play(466, 150);  // B4 for 150 ms
     tone_play(392, 1000); // G4 for 1000 ms
 }
-
 
 #endif
