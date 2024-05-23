@@ -32,11 +32,12 @@ jobs:
 
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
-      - name: Build default
-        run: platformio run
 
       - name: Setup env variables
         run: make setup-env
+
+      - name: Build default
+        run: platformio run
 
       - name: Bump version
         id: version_bump
