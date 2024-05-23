@@ -1,14 +1,12 @@
-#ifdef NATIVE_TEST_ALARM
-
-#include <unity.h>
+#include "unity.h"
 #include <alarm.h>
 #include "../fff.h"
-#include <periodic_task.h>
-#include <buzzer.h>
-#include <native.h>
+#include "periodic_task.h"
+#include "buzzer.h"
+#include "native.h"
 #include <hc_sr04.h>
-#include <logger.h>
-#include <clock.h>
+#include "../utils/logger.h"
+#include "clock.h"
 #include <buttons.h>
 #include <ds3231.h>
 
@@ -81,5 +79,3 @@ void setUp(void)
 void tearDown(void)
 {
 }
-
-#endif

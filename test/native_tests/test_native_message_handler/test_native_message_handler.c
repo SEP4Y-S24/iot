@@ -1,18 +1,18 @@
-#ifdef NATIVE_TEST_MESSAGE_HANDLER
-#include "ccp_message_handler.h"
+#include "unity.h"
 #include "../fff.h"
-#include <unity.h>
-#include <logger.h>
-#include <wifi.h>
-#include <message.h>
-#include <buzzer.h>
-#include <ds3231.h>
-#include <periodic_task.h>
-#include <hc_sr04.h>
-#include <buttons.h>
-#include <ccp_protocol.h>
-#include <alarm.h>
-#include <ccp_message_sender.h>
+#include "../comm/ccp_message_handler.h"
+#include "../comm/ccp_message_sender.h"
+#include "../comm/ccp_protocol.h"
+#include "../utils/logger.h"
+#include "../controllers/message.h"
+#include "../controllers/alarm.h"
+#include "../drivers/wifi.h"
+#include "../drivers/buzzer.h"
+#include "../drivers/dht11.h"
+#include "../drivers/periodic_task.h"
+#include "../drivers/hc_sr04.h"
+#include "../drivers/buttons.h"
+
 FAKE_VOID_FUNC(log_info, char *);
 FAKE_VOID_FUNC(log_debug, char *);
 FAKE_VALUE_FUNC(WIFI_ERROR_MESSAGE_t, wifi_command_TCP_transmit, uint8_t *, uint16_t);
@@ -101,5 +101,3 @@ void setUp(void)
 void tearDown(void)
 {
 }
-
-#endif

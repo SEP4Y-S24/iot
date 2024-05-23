@@ -1,5 +1,3 @@
-#ifdef NATIVE_TEST_CRYPTORATOR
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -83,5 +81,3 @@ int main()
     RUN_TEST(test_decryption_withIV);
     return UNITY_END();
 }
-
-#endif

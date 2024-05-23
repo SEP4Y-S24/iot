@@ -1,5 +1,3 @@
-#ifdef NATIVE_TEST_HUMIDITY_TEMPERATURE
-
 #include "unity.h"
 #include "humidity_temperature.h"
 #include "ccp_message_sender.h"
@@ -63,5 +61,3 @@ int main(void)
 
     return UNITY_END();
 }
-
-#endif

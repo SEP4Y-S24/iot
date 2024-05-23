@@ -1,10 +1,10 @@
 echo "Running all native tests..."
 
 echo "Running wifi_connect_state test..."
-pio test -e native_test_wifi_connect_state -f "./test/native_tests"
+pio test -e native_test -f "./test/native_tests"
 
 echo "Running ccp_protocol test..."
-pio test -e native_test_ccp_protocol -f "./test/native_tests"
+pio test -e native_test -f "./test/native_tests"
 
 echo "Running alarm test..."
 pio test -e native_test_alarm -f "./test/native_tests"

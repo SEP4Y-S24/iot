@@ -1,10 +1,7 @@
-
-#ifdef NATIVE_TEST_PERIODIC_REQUEST
-
-#include "periodic_request.h"
-#include "periodic_task.h"
+#include "../controllers/periodic_request.h"
+#include "../drivers/periodic_task.h"
 #include "../fff.h"
-#include "humidity_temperature.h"
+#include "../controllers/humidity_temperature.h"
 #include <unity.h>
 
 FAKE_VOID_FUNC(periodic_task_init_b, PERIODIC_TASK_CALLBACK, uint32_t);
@@ -32,7 +29,7 @@ void periodic_request_test_10_minutes_delay()
 {
     periodic_request_10_minutes_init();
 
-    TEST_ASSERT_EQUAL_INT(60000, periodic_task_init_b_fake.arg1_val);
+    TEST_ASSERT_EQUAL_INT(600000, periodic_task_init_b_fake.arg1_val);
 }
 
 int main(void)
@@ -55,5 +52,3 @@ void setUp(void)
 void tearDown(void)
 {
 }
-
-#endif

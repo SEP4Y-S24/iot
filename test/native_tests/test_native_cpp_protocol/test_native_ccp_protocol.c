@@ -1,5 +1,3 @@
-#ifdef NATIVE_TEST_CCP_PROTOCOL
-
 #include <unity.h>
 #include <ccp_protocol.h>
 #include <stdio.h>
@@ -285,5 +283,3 @@ void setUp(void)
 void tearDown(void)
 {
 }
-
-#endif // TEST_CCP_PROTOCOL

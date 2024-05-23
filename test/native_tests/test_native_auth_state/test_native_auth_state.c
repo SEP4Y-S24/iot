@@ -1,5 +1,3 @@
-#ifdef NATIVE_TEST_AUTH_STATE
-
 #include "authentication_state.h"
 #include "fff.h"
 #include "ccp_protocol.h"
@@ -79,5 +77,3 @@ int main(void)
     RUN_TEST(auth_callback_unauthenticated_sets_key_verification_to_true);
     return UNITY_END();
 }
-
-#endif // TEST_AUTH_STATE
