@@ -20,7 +20,10 @@ static void ccp_handle_delete_alarm(char *message);
 
 void ccp_message_handler_handle(char *message)
 {
+    #ifndef ENCRYPTION_DISABLED
     cryptorator_decrypt(message); 
+    #endif
+
     CCP_ACTION_TYPE at = ccp_at_from_str(message);
 
     log_info("Received message:");
