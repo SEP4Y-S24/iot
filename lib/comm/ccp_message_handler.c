@@ -16,6 +16,7 @@ static void ccp_handle_time_at(char *message);
 static void ccp_handle_message_at(char *message);
 static void ccp_handle_create_alarm(char *message);
 static void ccp_handle_delete_alarm(char *message);
+static void ccp_handle_parse_error(CCP_ACTION_TYPE action_type, CCP_PARSING_STATUS parsing_status);
 
 void ccp_message_handler_handle(char *message)
 {
