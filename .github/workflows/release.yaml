@@ -35,6 +35,9 @@ jobs:
       - name: Build default
         run: platformio run
 
+      - name: Setup env variables
+        run: make setup-env
+
       - name: Bump version
         id: version_bump
         uses: anothrNick/github-tag-action@v1
