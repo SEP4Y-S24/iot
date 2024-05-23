@@ -12,7 +12,6 @@
 #include "alarm.h"
 #include "cryptorator.h"
 
-
 static void ccp_handle_time_at(char *message);
 static void ccp_handle_message_at(char *message);
 static void ccp_handle_create_alarm(char *message);
@@ -20,9 +19,9 @@ static void ccp_handle_delete_alarm(char *message);
 
 void ccp_message_handler_handle(char *message)
 {
-    #ifndef ENCRYPTION_DISABLED
-    cryptorator_decrypt(message); 
-    #endif
+#ifndef ENCRYPTION_DISABLED
+    cryptorator_decrypt(message);
+#endif
 
     CCP_ACTION_TYPE at = ccp_at_from_str(message);
 
@@ -49,20 +48,27 @@ void ccp_message_handler_handle(char *message)
     }
 }
 
+static void ccp_handle_parse_error(CCP_ACTION_TYPE action_type, CCP_PARSING_STATUS parsing_status)
+{
+    if (parsing_status == CCP_PARSING_INVALID_WRONG_FORMAT)
+    {
+        ccp_message_sender_send_response(action_type, CCP_STATUS_BAD_REQUEST, "Invalid fromat of the request.");
+    }
+    else if (parsing_status == CCP_PARSING_INVALID_EMPTY_POINTER)
+    {
+        ccp_message_sender_send_response(action_type, CCP_STATUS_SERVER_ERROR, "Server error occurred.");
+    }
+}
+
 static void ccp_handle_create_alarm(char *message)
 {
     // extract data from message
     request server_request;
     CCP_PARSING_STATUS parsing_status = ccp_parse_request(message, &server_request);
 
-    if (parsing_status == CCP_PARSING_INVALID_WRONG_FORMAT)
+    if (parsing_status != CCP_PARSING_VALID)
     {
-        ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_BAD_REQUEST, "Invalid fromat of the request.");
-        return;
-    }
-    else if (parsing_status == CCP_PARSING_INVALID_EMPTY_POINTER)
-    {
-        ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_SERVER_ERROR, "Server error occurred.");
+        ccp_handle_parse_error(server_request.action_type, parsing_status);
         return;
     }
     ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_OK, "Alarm received");
@@ -80,14 +86,9 @@ static void ccp_handle_delete_alarm(char *message)
 {
     request server_request;
     CCP_PARSING_STATUS parsing_status = ccp_parse_request(message, &server_request);
-    if (parsing_status == CCP_PARSING_INVALID_WRONG_FORMAT)
+    if (parsing_status != CCP_PARSING_VALID)
     {
-        ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_BAD_REQUEST, "Invalid fromat of the request.");
-        return;
-    }
-    else if (parsing_status == CCP_PARSING_INVALID_EMPTY_POINTER)
-    {
-        ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_SERVER_ERROR, "Server error occurred.");
+        ccp_handle_parse_error(server_request.action_type, parsing_status);
         return;
     }
     char hour_str[3] = {server_request.body[0], server_request.body[1], '\0'};
@@ -104,14 +105,9 @@ static void ccp_handle_time_at(char *message)
     // extract data from message
     response server_response;
     CCP_PARSING_STATUS parsing_status = ccp_parse_response(message, &server_response);
-    if (parsing_status == CCP_PARSING_INVALID_WRONG_FORMAT)
+    if (parsing_status != CCP_PARSING_VALID)
     {
-        ccp_message_sender_send_response(server_response.action_type, CCP_STATUS_BAD_REQUEST, "Invalid fromat of the request.");
-        return;
-    }
-    else if (parsing_status == CCP_PARSING_INVALID_EMPTY_POINTER)
-    {
-        ccp_message_sender_send_response(server_response.action_type, CCP_STATUS_SERVER_ERROR, "Server error occurred.");
+        ccp_handle_parse_error(server_response.action_type, parsing_status);
         return;
     }
     log_info("Updating time...");
@@ -138,14 +134,9 @@ static void ccp_handle_message_at(char *message)
     // extract data from message
     request server_request;
     CCP_PARSING_STATUS parsing_status = ccp_parse_request(message, &server_request);
-    if (parsing_status == CCP_PARSING_INVALID_WRONG_FORMAT)
+    if (parsing_status != CCP_PARSING_VALID)
     {
-        ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_BAD_REQUEST, "Invalid fromat of the request.");
-        return;
-    }
-    else if (parsing_status == CCP_PARSING_INVALID_EMPTY_POINTER)
-    {
-        ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_SERVER_ERROR, "Server error occurred.");
+        ccp_handle_parse_error(server_request.action_type, parsing_status);
         return;
     }
 
