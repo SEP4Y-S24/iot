@@ -165,16 +165,16 @@ void ds3231_write_year(uint8_t year)
 
 void set_time(uint8_t hour, uint8_t min, uint8_t sec)
 {
-  write_hour(hour);
-  write_min(min);
-  write_sec(sec);
+  ds3231_write_hour(hour);
+  ds3231_write_min(min);
+  ds3231_write_sec(sec);
 }
 
 void set_date(uint8_t date, uint8_t month, uint8_t year)
 {
-  write_date(date);
-  write_month(month);
-  write_year(year);
+  ds3231_write_date(date);
+  ds3231_write_month(month);
+  ds3231_write_year(year);
 }
 
 Time get_time()

@@ -11,10 +11,10 @@
 #include "message.h"
 #include "alarm.h"
 
-void ccp_handle_time_at(char *message);
-void ccp_handle_message_at(char *message);
-void ccp_handle_create_alarm(char *message);
-void ccp_handle_delete_alarm(char *message);
+static void ccp_handle_time_at(char *message);
+static void ccp_handle_message_at(char *message);
+static void ccp_handle_create_alarm(char *message);
+static void ccp_handle_delete_alarm(char *message);
 
 void ccp_message_handler_handle(char *message)
 {
@@ -44,7 +44,7 @@ void ccp_message_handler_handle(char *message)
     }
 }
 
-void ccp_handle_create_alarm(char *message)
+static void ccp_handle_create_alarm(char *message)
 {
     // extract data from message
     request server_request;
@@ -61,7 +61,7 @@ void ccp_handle_create_alarm(char *message)
     alarm_create(hour, minute);
 }
 
-void ccp_handle_delete_alarm(char *message)
+static void ccp_handle_delete_alarm(char *message)
 {
     request server_request;
     ccp_parse_request(message, &server_request);
@@ -74,7 +74,7 @@ void ccp_handle_delete_alarm(char *message)
     ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_OK, "Alarm deleted");
 }
 
-void ccp_handle_time_at(char *message)
+static void ccp_handle_time_at(char *message)
 {
     // extract data from message
     response server_response;
@@ -99,7 +99,7 @@ void ccp_handle_time_at(char *message)
     clock_set_time(hours, minutes);
 }
 
-void ccp_handle_message_at(char *message)
+static void ccp_handle_message_at(char *message)
 {
     // extract data from message
     request server_request;

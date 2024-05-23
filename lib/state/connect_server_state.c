@@ -3,6 +3,7 @@
 #include <wifi.h>
 #include <stddef.h>
 #include <logger.h>
+#include <ccp_protocol.h>
 #include "key_exchange.h"
 #include "ccp_protocol.h"
 #include "ccp_message_sender.h"

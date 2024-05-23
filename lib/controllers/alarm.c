@@ -11,7 +11,15 @@
 #define max_alarm_count 32
 static alarm_t alarms[max_alarm_count];
 
+
+static uint8_t alarm_time_hour = 0;
+static uint8_t alarm_time_minute = 0;
+static uint8_t alarm_time_delay = 0;
+
+static bool alarm_is_created = false;
+static bool alarm_is_stoped = false;
 void alarm_log_time(int h, int m, bool use_info)
+
 {
     char time[20];
     sprintf(time, "%d:%d", h, m);
