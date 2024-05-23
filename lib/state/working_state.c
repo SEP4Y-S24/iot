@@ -1,18 +1,13 @@
-#include <working_state.h>
-#include <state_coordinator.h>
-#include <wifi.h>
+#include "working_state.h"
+#include "state_coordinator.h"
+#include "wifi.h"
 #include "ccp_message_handler.h"
-#include "humidity_temperature.h"
-#include "uart.h"
+#include "periodic_request.h"
 #include "logger.h"
 #include "ccp_message_sender.h"
-#include "periodic_task.h"
 #include "native.h"
-// #include "co2.h"
 
-static void periodic_tasks_10_minutes();
-
-static char message_buffer[CCP_MAX_MESSAGE_LENGTH];
+static char message_buffer[128];
 
 static void tcp_callback()
 {
@@ -31,19 +26,11 @@ State working_state_switch(char *ip, int port)
     ccp_message_sender_send_request(CCP_AT_TM, "");
     native_delay_ms(2000);
 
-    periodic_task_init_b(periodic_tasks_10_minutes, 600000);
+    periodic_request_10_minutes_init();
 
     while (1)
     {
     }
 
     return WORKING_STATE;
-}
-
-static void periodic_tasks_10_minutes()
-{
-
-    humidity_temperature_send();
-    native_delay_ms(2000);
-    // c02_send();
 }
