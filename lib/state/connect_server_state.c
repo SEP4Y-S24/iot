@@ -49,10 +49,11 @@ State connect_server_state_switch(char *ip, int port)
     WIFI_ERROR_MESSAGE_t result = WIFI_ERROR_NOT_RECEIVING;
     while (result != WIFI_OK)
     {
-        result = wifi_command_create_TCP_connection(ip, port, nothing, buffer);
+        result = wifi_command_create_TCP_connection(ip, port, receive_cloud_public_key, buffer);
         native_delay_ms(2000);
     }
 
+#ifndef ENCRYPTION_DISABLED
     handle_key_exchange();
     while (!public_key_received || !public_key_sent)
     {

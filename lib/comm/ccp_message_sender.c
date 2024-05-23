@@ -8,7 +8,6 @@
 #include "ccp_message_handler.h"
 #include "cryptorator.h"
 
-
 static void send_message(char *message);
 
 void ccp_message_sender_send_request(CCP_ACTION_TYPE at, char *body)
@@ -32,11 +31,11 @@ static void send_message(char *message)
     log_info(message);
 
     memcpy(data, message, strlen(message));
-    #ifndef ENCRYPTION_DISABLED
-    cryptorator_encrypt((char **) data);
-    #endif
+#ifndef ENCRYPTION_DISABLED
+    cryptorator_encrypt((char **)data);
     log_debug("Sending message:");
     log_debug(message);
+#endif
     if (wifi_command_TCP_transmit(data, strlen(message)) != WIFI_OK)
     {
         state_coordinator_set_error(true, SERVER_CONNECT_STATE);

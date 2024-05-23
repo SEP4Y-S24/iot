@@ -33,6 +33,8 @@ FAKE_VALUE_FUNC0(WIFI_AP_CONNECTION, wifi_command_check_AP_connection);
 FAKE_VOID_FUNC(wifi_reassign_callback, WIFI_TCP_Callback_t, char *);
 FAKE_VOID_FUNC(authentication_state_set_authenticated, bool);
 FAKE_VOID_FUNC(authentication_state_set_waiting_for_key_verification, bool);
+FAKE_VOID_FUNC(key_verification_state_set_key_verified, bool);
+
 
 FAKE_VOID_FUNC(ccp_message_sender_send_request, CCP_ACTION_TYPE, char *);
 

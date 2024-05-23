@@ -26,6 +26,7 @@ int main()
 
 	wifi_init(nothing_callback);
 	wifi_command_reset(); // reset the module. Because sometimes it just makes it work -_('o')_-  Software development at its best.
+	native_delay_ms(2000);
 	start();
 
 	while (1)
