@@ -1,6 +1,6 @@
-#ifdef TEST_MESSAGE_HANDLER
+#ifdef NATIVE_TEST_MESSAGE_HANDLER
 #include "ccp_message_handler.h"
-#include <fff.h>
+#include "../fff.h"
 #include <unity.h>
 #include <logger.h>
 #include <wifi.h>

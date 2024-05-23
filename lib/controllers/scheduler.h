@@ -1,3 +1,5 @@
+#pragma once
+
 typedef struct schedule_task
 {
     void (*task)(void);

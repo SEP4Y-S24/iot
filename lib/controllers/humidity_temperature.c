@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Undeclared them from static so FFF can access them
+void humidity_temperature_get(char *message_buffer);
+
 void humidity_temperature_send()
 {
     char request_message[30];
@@ -18,16 +21,9 @@ void humidity_temperature_get(char *message_buffer)
 {
     log_debug("Getting Temperature and Humidity...");
     uint8_t temperature_int, temperature_dec, humidity_int, humidity_dec;
-    char number_stringified[8];
     if (dht11_get(&humidity_int, &humidity_dec, &temperature_int, &temperature_dec) == DHT11_OK)
     {
-        sprintf(number_stringified, "%d.%d", temperature_int, temperature_dec);
-        strcpy(message_buffer, "T");
-        strcat(message_buffer, number_stringified);
-        strcat(message_buffer, "-");
-        sprintf(number_stringified, "%d.%d", humidity_int, humidity_dec);
-        strcat(message_buffer, "H");
-        strcat(message_buffer, number_stringified);
+        sprintf(message_buffer, "T%d.%d-H%d.%d", temperature_int, temperature_dec, humidity_int, humidity_dec);
     }
     else
     {

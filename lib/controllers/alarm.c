@@ -11,13 +11,6 @@
 #define max_alarm_count 32
 static alarm_t alarms[max_alarm_count];
 
-
-static uint8_t alarm_time_hour;
-static uint8_t alarm_time_minute;
-static uint8_t alarm_time_delay;
-
-static bool alarm_is_created;
-static bool alarm_is_stoped;
 void alarm_log_time(int h, int m, bool use_info)
 
 {
@@ -128,6 +121,7 @@ void alarm_check()
             if (button_pressed_1)
             {
                 log_debug("Alarm is stoped");
+                alarms[i].delay = 0;
                 break;
             }
         }

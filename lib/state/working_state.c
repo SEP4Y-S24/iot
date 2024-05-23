@@ -1,14 +1,11 @@
-#include <working_state.h>
-#include <state_coordinator.h>
-#include <wifi.h>
+#include "working_state.h"
+#include "state_coordinator.h"
+#include "wifi.h"
 #include "ccp_message_handler.h"
-#include "humidity_temperature.h"
-#include "uart.h"
+#include "periodic_request.h"
 #include "logger.h"
 #include "ccp_message_sender.h"
-#include "periodic_task.h"
 #include "native.h"
-// #include "co2.h"
 
 static void periodic_tasks_10_minutes();
 
@@ -40,7 +37,9 @@ State working_state_switch(char *ip, int port)
 
     periodic_task_init_b(periodic_tasks_10_minutes, 10000);
 
-    state_coordinator_wait_for_event(&error);
+    while (1)
+    {
+    }
 
     periodic_task_init_b(nothing, 10000);
     return WORKING_STATE; //Does not matter cause it only return in case of error 

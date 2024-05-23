@@ -163,26 +163,35 @@ void ds3231_write_year(uint8_t year)
   i2c_stop();
 }
 
-void set_time(uint8_t hour, uint8_t min, uint8_t sec)
+void ds3231_set_time(uint8_t hour, uint8_t min, uint8_t sec)
 {
   ds3231_write_hour(hour);
   ds3231_write_min(min);
   ds3231_write_sec(sec);
 }
 
-void set_date(uint8_t date, uint8_t month, uint8_t year)
+void ds3231_set_date(uint8_t date, uint8_t month, uint8_t year)
 {
   ds3231_write_date(date);
   ds3231_write_month(month);
   ds3231_write_year(year);
 }
 
-Time get_time()
+Time ds3231_get_time()
 {
   Time t;
   t.hour = ds3231_read_hour();
   t.min = ds3231_read_min();
   t.sec = ds3231_read_sec();
   return t;
+}
+
+Date ds3231_get_date()
+{
+  Date d;
+  d.date = ds3231_read_date();
+  d.month = ds3231_read_month();
+  d.year = ds3231_read_year();
+  return d;
 }
 #endif
