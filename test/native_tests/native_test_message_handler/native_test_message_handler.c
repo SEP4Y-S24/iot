@@ -1,4 +1,5 @@
-#ifdef TEST_MESSAGE_HANDLER
+#ifdef NATIVE_TESTING
+
 #include "ccp_message_handler.h"
 #include <fff.h>
 #include <unity.h>

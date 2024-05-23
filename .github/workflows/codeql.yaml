@@ -23,7 +23,7 @@ jobs:
         timeout-minutes: 360 # Optional: set a timeout of 360 minutes (6 hours)
 
         steps:
-            - name: Checkout repository
+            - name: Checkout Repository
               uses: actions/checkout@v4
 
             - name: Initialize CodeQL
@@ -31,7 +31,7 @@ jobs:
               with:
                   languages: c-cpp
 
-            - name: Cache dependencies
+            - name: Cache Dependencies
               uses: actions/cache@v4
               with:
                   path: |
@@ -47,7 +47,7 @@ jobs:
             - name: Install PlatformIO Core
               run: pip install --upgrade platformio
 
-            - name: Setup env variables
+            - name: Setup Environment Variables
               run: make setup-env
 
             - name: Build default

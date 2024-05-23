@@ -14,10 +14,10 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Cache dependencies
+      - name: Cache Dependencies
         uses: actions/cache@v4
         with:
           path: |
@@ -25,14 +25,15 @@ jobs:
             ~/.platformio/.cache
           key: ${{ runner.os }}-pio
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.9"
 
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
-      - name: Build default
+        
+      - name: Build Default
         run: platformio run
 
       - name: Bump version

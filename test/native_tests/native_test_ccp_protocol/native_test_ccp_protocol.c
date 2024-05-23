@@ -1,4 +1,4 @@
-#ifdef TEST_CCP_PROTOCOL
+#ifdef NATIVE_TESTING
 
 #include <unity.h>
 #include <ccp_protocol.h>

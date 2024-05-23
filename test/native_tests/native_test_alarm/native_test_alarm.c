@@ -1,4 +1,4 @@
-#ifdef TEST_ALARM
+#ifdef NATIVE_TESTING
 
 #include <unity.h>
 #include <alarm.h>

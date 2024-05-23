@@ -1,4 +1,4 @@
-#ifdef TEST_WIFI_CONNECT_STATE
+#ifdef NATIVE_TESTING
 
 #include <string.h>
 #include <stdio.h>

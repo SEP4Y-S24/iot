@@ -1,7 +1,8 @@
 name: Platformio Dependabot
 
 on:
-  workflow_dispatch: # option to manually trigger the workflow
+  # option to manually trigger the workflow
+  workflow_dispatch: 
   schedule:
     # Runs every Sunday at 00:00 UTC
     - cron: '0 0 * * 0'
@@ -13,6 +14,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
       - name: run PlatformIO Dependabot
         uses: peterus/platformio_dependabot@v1
         with:
