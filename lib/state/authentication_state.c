@@ -26,11 +26,11 @@ State authentication_state_switch(char *auth_key)
     log_info("Switching to authentication state");
     wifi_reassign_callback(authenticate_callback_wrapper, buffer);
 
-    if (buffer == NULL)
+    if (auth_key == NULL)
         ccp_message_sender_send_request(CCP_AT_AU, "");
     else
     {
-        ccp_message_sender_send_request(CCP_AT_AU, buffer);
+        ccp_message_sender_send_request(CCP_AT_AU, auth_key);
     }
 
     state_coordinator_wait_for_event(&authenticated);

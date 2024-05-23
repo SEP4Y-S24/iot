@@ -3,9 +3,9 @@
 #include "periodic_task.h"
 #include <stdlib.h>
 
-static uint64_t last_run_time = 0;
+static uint64_t last_run_time;
 static schedule_task_t schedule_task_array[100];
-static int task_index = 0;
+static int task_index;
 static void scheduler_run_all_tasks()
 {
     last_run_time++;
@@ -21,6 +21,8 @@ static void scheduler_run_all_tasks()
 
 void scheduler_init()
 {
+    task_index = 0;
+    last_run_time = 0;
     log_info("Scheduler initialized");
     periodic_task_init_a(scheduler_run_all_tasks, 1000);
 }
