@@ -5,10 +5,11 @@
 #include "logger.h"
 #include "message.h"
 #include "string.h"
+#include "ccp_protocol.h"
 #include "wifi.h"
 
 static bool waiting_for_key_verification;
-static char buffer[120];
+static char buffer[CCP_MAX_BODY_LENGTH];
 
 void key_verification_callback_wrapper()
 {

@@ -12,8 +12,9 @@
 #include <state_coordinator.h>
 #include <periodic_task.h>
 #include "logger.h"
+#include "ccp_protocol.h"
 
-static char recieveBuffer[128];
+static char recieveBuffer[CCP_MAX_MESSAGE_LENGTH];
 static uint8_t recieveBufferIndex;
 static bool wifi_connected = false;
 
