@@ -33,7 +33,7 @@ FAKE_VALUE_FUNC(uint8_t, buttons_2_pressed);
 FAKE_VALUE_FUNC(uint8_t, buttons_3_pressed);
 FAKE_VOID_FUNC(ccp_message_sender_send_response, CCP_ACTION_TYPE, CCP_STATUS_CODE, char *);
 FAKE_VOID_FUNC(alarm_create, int, int);
-FAKE_VOID_FUNC(alarm_delete);
+FAKE_VOID_FUNC(alarm_delete, int, int);
 FAKE_VOID_FUNC(alarm_init);
 
 void test_ms_message_clock_message_is_set_and_response_is_sent_buzzer_beeps()
@@ -47,14 +47,16 @@ void test_ms_message_clock_message_is_set_and_response_is_sent_buzzer_beeps()
     TEST_ASSERT_EQUAL(1, buzzer_beep_fake.call_count);
 }
 
-void test_tm_message_time_is_set(){
+void test_tm_message_time_is_set()
+{
     char message[] = "TM|1|4|1234";
     ccp_message_handler_handle(message);
     TEST_ASSERT_EQUAL(12, ds3231_write_hour_fake.arg0_val);
     TEST_ASSERT_EQUAL(34, ds3231_write_min_fake.arg0_val);
 }
 
-void test_handle_alarm_message(){
+void test_handle_alarm_message()
+{
     char message[] = "CA|4|1234";
     ccp_message_handler_handle(message);
     TEST_ASSERT_EQUAL(1, ccp_message_sender_send_response_fake.call_count);
@@ -65,7 +67,8 @@ void test_handle_alarm_message(){
     TEST_ASSERT_EQUAL(34, alarm_create_fake.arg1_val);
 }
 
-void test_handle_delete_alarm_message(){
+void test_handle_delete_alarm_message()
+{
     char message[] = "DA|0||";
     ccp_message_handler_handle(message);
     TEST_ASSERT_EQUAL(1, ccp_message_sender_send_response_fake.call_count);
@@ -93,7 +96,6 @@ void setUp(void)
     RESET_FAKE(ds3231_write_min);
     RESET_FAKE(alarm_create);
     RESET_FAKE(alarm_delete);
-    
 }
 
 void tearDown(void)
