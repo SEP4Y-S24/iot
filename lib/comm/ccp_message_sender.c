@@ -6,6 +6,8 @@
 #include "ccp_message_sender.h"
 #include "state_coordinator.h"
 #include "ccp_message_handler.h"
+#include "cryptorator.h"
+
 
 static void send_message(char *message);
 
@@ -24,8 +26,15 @@ void ccp_message_sender_send_response(CCP_ACTION_TYPE at, CCP_STATUS_CODE status
 
 static void send_message(char *message)
 {
+
     uint8_t data[CCP_MAX_MESSAGE_LENGTH];
+    log_info("Sending message:");
+    log_info(message);
+
     memcpy(data, message, strlen(message));
+    #ifndef ENCRYPTION_DISABLED
+    cryptorator_encrypt((char **) data);
+    #endif
     log_debug("Sending message:");
     log_debug(message);
     if (wifi_command_TCP_transmit(data, strlen(message)) != WIFI_OK)

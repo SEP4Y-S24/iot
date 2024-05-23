@@ -63,7 +63,7 @@ void start()
     // alarm_create(10, 11);
 
     // scheduler_add_task(clock_update_time, clock_minute_interval); -- deprecated
-    scheduler_add_task(display_time_from_clock, 60);
+    //scheduler_add_task(display_time_from_clock, 60);
     // clock_display_time();
 
     state_coordinator(WIFI_CONNECT_STATE);

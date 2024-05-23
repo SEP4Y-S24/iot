@@ -8,7 +8,6 @@
 #include <util/delay.h>
 #include <display_controller.h>
 #include <i2cmaster.h>
-#include <util/delay.h>
 #include <scheduler.h>
 #include "native.h"
 
@@ -22,7 +21,7 @@ int main()
 	display_controller_init();
 	external_screen_init();
 	log_init();
-	//display_init();
+	// display_init();
 	i2c_init();
 
 	wifi_init(nothing_callback);

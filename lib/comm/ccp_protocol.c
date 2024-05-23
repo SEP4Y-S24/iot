@@ -12,20 +12,20 @@ const CCP_STATUS_CODE status_code_from_string(char *code);
 const char *status_code_to_string(CCP_STATUS_CODE code);
 static void extract_action_type(char *message, CCP_ACTION_TYPE *action_type);
 static void extract_status_code(char *message, CCP_STATUS_CODE *status_code);
-static void extract_body(char *message, char *body_ptr, int line_terminator_index);
+static CCP_PARSING_STATUS extract_body(char *message, char *body_ptr, int line_terminator_index);
 const CCP_STATUS_CODE status_code_from_string(char *code);
 
-void ccp_parse_response(char *raw_response, response *response_pointer)
+CCP_PARSING_STATUS ccp_parse_response(char *raw_response, response *response_pointer)
 {
     if (response_pointer == NULL)
-        return;
+        return CCP_PARSING_INVALID_EMPTY_POINTER;
 
     response response = {CCP_AT_UNKNOWN, CCP_STATUS_BAD_REQUEST, {0}};
 
     if (raw_response == NULL)
     {
         *response_pointer = response;
-        return;
+        return CCP_PARSING_INVALID_EMPTY_POINTER;
     }
 
     int num_parts = utils_count_char_in_string(raw_response, LINE_TERMINATOR[0]);
@@ -33,62 +33,62 @@ void ccp_parse_response(char *raw_response, response *response_pointer)
     if (num_parts < 1)
     {
         *response_pointer = response;
-        return;
+        return CCP_PARSING_INVALID_WRONG_FORMAT;
     }
 
     extract_action_type(raw_response, &response.action_type);
 
-    if (num_parts < 2)
+    if (num_parts <= 2)
     {
         *response_pointer = response;
-        return;
+        return CCP_PARSING_INVALID_WRONG_FORMAT;
     }
 
     extract_status_code(raw_response, &response.status_code);
 
-    if (num_parts < 4)
+    CCP_PARSING_STATUS body_parsing_status = CCP_PARSING_VALID;
+
+    if (num_parts >= 4)
     {
-        *response_pointer = response;
-        return;
+        body_parsing_status = extract_body(raw_response, response.body, 2);
     }
 
-    extract_body(raw_response, response.body, 2);
-
     *response_pointer = response;
+    return body_parsing_status;
 }
 
-void ccp_parse_request(char *raw_request, request *request_pointer)
+CCP_PARSING_STATUS ccp_parse_request(char *raw_request, request *request_pointer)
 {
     if (request_pointer == NULL)
-        return;
+        return CCP_PARSING_INVALID_EMPTY_POINTER;
 
     request request = {CCP_AT_UNKNOWN, {0}};
 
     if (raw_request == NULL)
     {
         *request_pointer = request;
-        return;
+        return CCP_PARSING_INVALID_EMPTY_POINTER;
     }
 
     int num_parts = utils_count_char_in_string(raw_request, LINE_TERMINATOR[0]);
 
-    if (num_parts < 1)
+    if (num_parts <= 1)
     {
         *request_pointer = request;
-        return;
+        return CCP_PARSING_INVALID_WRONG_FORMAT;
     }
 
     extract_action_type(raw_request, &request.action_type);
+    CCP_PARSING_STATUS body_parsing_status = CCP_PARSING_VALID;
 
-    if (num_parts < 3)
+    if (num_parts >= 3)
     {
-        *request_pointer = request;
-        return;
+        body_parsing_status = extract_body(raw_request, request.body, 1);
     }
 
-    extract_body(raw_request, request.body, 1);
-
     *request_pointer = request;
+
+    return body_parsing_status;
 }
 
 void ccp_create_request(CCP_ACTION_TYPE at, char *body, char *request_buffer)
@@ -167,6 +167,7 @@ CCP_ACTION_TYPE ccp_at_from_str(char *message)
         return CCP_AT_KV;
     else
         return CCP_AT_UNKNOWN;
+    
 }
 
 void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type)
@@ -178,6 +179,12 @@ void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type)
         break;
     case CCP_AT_MS:
         strcpy(action_type, "MS");
+        break;
+    case CCP_AT_SK:
+        strcpy(action_type, "SK");
+        break;
+    case CCP_AT_CK:
+        strcpy(action_type, "CK");
         break;
     case CCP_AT_CA:
         strcpy(action_type, "CA");
@@ -217,7 +224,7 @@ static void extract_status_code(char *message, CCP_STATUS_CODE *status_code_ptr)
     *status_code_ptr = status_code_from_string(status_code);
 }
 
-static void extract_body(char *message, char *body_ptr, int line_terminator_index)
+static CCP_PARSING_STATUS extract_body(char *message, char *body_ptr, int line_terminator_index)
 {
     char body_length[10];
     int body_length_index = utils_find_nth_char_index_in_string(message, LINE_TERMINATOR[0], line_terminator_index);
@@ -227,10 +234,12 @@ static void extract_body(char *message, char *body_ptr, int line_terminator_inde
     if (body_length_int < 0 || body_length_int > CCP_MAX_BODY_LENGTH)
     {
         body_ptr = "";
-        return;
+        return CCP_PARSING_INVALID_WRONG_FORMAT;
     }
 
     int body_index = utils_find_nth_char_index_in_string(message, LINE_TERMINATOR[0], line_terminator_index + 1);
     strncpy(body_ptr, message + body_index + 1, body_length_int);
     body_ptr[body_length_int] = '\0';
+
+    return CCP_PARSING_VALID;
 }
