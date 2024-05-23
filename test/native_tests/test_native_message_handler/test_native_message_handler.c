@@ -1,5 +1,5 @@
 #include "unity.h"
-#include "../../fff.h"
+#include "../fff.h"
 #include "../comm/ccp_message_handler.h"
 #include "../comm/ccp_message_sender.h"
 #include "../comm/ccp_protocol.h"
@@ -38,9 +38,9 @@ FAKE_VOID_FUNC0(alarm_init);
 
 void test_ms_message_clock_message_is_set_and_response_is_sent_buzzer_beeps()
 {
-    char message[] = "MS|4|helo|";
+    char message[] = "MS|4|hello|";
     ccp_message_handler_handle(message);
-    TEST_ASSERT_EQUAL_STRING("helo", message_get_message());
+    TEST_ASSERT_EQUAL_STRING("hello", message_get_message());
     TEST_ASSERT_EQUAL(1, ccp_message_sender_send_response_fake.call_count);
     TEST_ASSERT_EQUAL(CCP_AT_MS, ccp_message_sender_send_response_fake.arg0_val);
     TEST_ASSERT_EQUAL(CCP_STATUS_OK, ccp_message_sender_send_response_fake.arg1_val);
@@ -89,13 +89,29 @@ int main(void)
 
 void setUp(void)
 {
-    RESET_FAKE(ccp_message_sender_send_response);
+    FFF_RESET_HISTORY();
     RESET_FAKE(log_info);
+    RESET_FAKE(log_debug);
+    RESET_FAKE(wifi_command_TCP_transmit);
     RESET_FAKE(buzzer_beep);
+    RESET_FAKE(buzzer_init);
+    RESET_FAKE(buzzer_on);
+    RESET_FAKE(buzzer_off);
+    RESET_FAKE(periodic_task_init_c);
     RESET_FAKE(ds3231_write_hour);
     RESET_FAKE(ds3231_write_min);
+    RESET_FAKE(ds3231_read_hour);
+    RESET_FAKE(ds3231_read_min);
+    RESET_FAKE(hc_sr04_init);
+    RESET_FAKE(hc_sr04_takeMeasurement);
+    RESET_FAKE(buttons_init);
+    RESET_FAKE(buttons_1_pressed);
+    RESET_FAKE(buttons_2_pressed);
+    RESET_FAKE(buttons_3_pressed);
+    RESET_FAKE(ccp_message_sender_send_response);
     RESET_FAKE(alarm_create);
     RESET_FAKE(alarm_delete);
+    RESET_FAKE(alarm_init);
 }
 
 void tearDown(void)

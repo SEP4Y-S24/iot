@@ -1,5 +1,5 @@
 #include "unity.h"
-#include "../../fff.h"
+#include "../fff.h"
 #include "../drivers/wifi.h"
 #include "../drivers/periodic_task.h"
 #include "../comm/ccp_message_sender.h"
@@ -58,6 +58,29 @@ void key_verification_callback_stops_waiting()
 
 void setUp(void)
 {
+    FFF_RESET_HISTORY();
+    RESET_FAKE(wifi_command_TCP_transmit);
+    RESET_FAKE(uart_init);
+    RESET_FAKE(uart_send_blocking);
+    RESET_FAKE(state_coordinator_wait_for_event);
+    RESET_FAKE(uart_send_string_blocking);
+    RESET_FAKE(log_debug);
+    RESET_FAKE(log_info);
+    RESET_FAKE(wifi_command_set_mode_to_1);
+    RESET_FAKE(wifi_command_set_mode_to_2);
+    RESET_FAKE(wifi_command_set_mode_to_3);
+    RESET_FAKE(wifi_command_join_AP);
+    RESET_FAKE(wifi_command_setup_AP);
+    RESET_FAKE(wifi_command_enable_multiple_connections);
+    RESET_FAKE(wifi_command_reset);
+    RESET_FAKE(wifi_command_setup_server);
+    RESET_FAKE(wifi_init);
+    RESET_FAKE(wifi_command_check_AP_connection);
+    RESET_FAKE(wifi_reassign_callback);
+    RESET_FAKE(authentication_state_set_authenticated);
+    RESET_FAKE(authentication_state_set_waiting_for_key_verification);
+    RESET_FAKE(ccp_message_sender_send_request);
+    RESET_FAKE(key_verification_state_set_key_verified);
 }
 
 void tearDown(void)

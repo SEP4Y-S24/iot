@@ -1,5 +1,5 @@
-#include "unity.h"
-#include "../../fff.h"
+#include <unity.h>
+#include "../fff.h"
 #include "../drivers/periodic_task.h"
 #include "../drivers/buzzer.h"
 #include "../drivers/native.h"
@@ -88,8 +88,8 @@ void alarm_check_should_beep_when_alarm_is_set_and_active()
 
 int main(void)
 {
-
     UNITY_BEGIN();
+
     RUN_TEST(alarm_init_should_set_alarm_set_and_active_to_false);
     RUN_TEST(alarm_set_time_sets_alarm_to_set_and_active);
     RUN_TEST(alarm_unset_should_unset_alarm);
