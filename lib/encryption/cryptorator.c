@@ -20,7 +20,6 @@ void cryptorator_init(uint8_t *givenkey) {
 // Function to generate a random IV
 void cryptorator_generate_iv(char *iv) {
     // Generate random bytes for the IV
-    srand(time(NULL)); // Seed the random number generator
     for (int i = 0; i < AES_BLOCKLEN; i++) {
         iv[i] = rand() % 256; // Generate a random byte (0-255) and store it in the IV
     }
