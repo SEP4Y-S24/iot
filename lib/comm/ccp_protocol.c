@@ -167,6 +167,7 @@ CCP_ACTION_TYPE ccp_at_from_str(char *message)
         return CCP_AT_KV;
     else
         return CCP_AT_UNKNOWN;
+    
 }
 
 void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type)
@@ -178,6 +179,12 @@ void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type)
         break;
     case CCP_AT_MS:
         strcpy(action_type, "MS");
+        break;
+    case CCP_AT_SK:
+        strcpy(action_type, "SK");
+        break;
+    case CCP_AT_CK:
+        strcpy(action_type, "CK");
         break;
     case CCP_AT_CA:
         strcpy(action_type, "CA");
