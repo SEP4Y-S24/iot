@@ -1,6 +1,6 @@
 #include "display.h"
 #include "includes.h"
-#include "clock.h"
+
 // LATCH
 #define LATCH_BIT PG5
 #define LATCH_DDR DDRG
@@ -160,11 +160,4 @@ void pulse_latch()
     //_delay_us(1);
     LATCH_PORT &= ~(1 << LATCH_BIT);
     // _delay_us(1);
-}
-
-void display_time_from_clock()
-{
-    int hours, minutes;
-    clock_get_time(&hours, &minutes);
-    display_setValues(hours / 10, hours % 10, minutes / 10, minutes % 10);
 }

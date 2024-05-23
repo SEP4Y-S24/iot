@@ -7,13 +7,15 @@
 
 void setUp(void)
 {
+    // This function is run before each test
 }
 
 void tearDown(void)
 {
+    // This function is run after each test
 }
 
-void test_dht11_get_valid_values()
+void test_dht11_get_valid_values(void)
 {
     uint8_t humidity_int, humidity_dec, temperature_int, temperature_dec;
 
@@ -21,11 +23,11 @@ void test_dht11_get_valid_values()
 
     TEST_ASSERT_EQUAL(DHT11_OK, result);
 
-    TEST_ASSERT_TRUE(humidity_int >= 15 && humidity_int <= 35);
-    TEST_ASSERT_TRUE(temperature_int >= 20 && temperature_int <= 70);
+    TEST_ASSERT_TRUE(humidity_int >= 45 && humidity_int <= 65);
+    TEST_ASSERT_TRUE(temperature_int >= 20 && temperature_int <= 30);
 }
 
-void test_dht11_get_repeated_failures()
+void test_dht11_get_repeated_failures(void)
 {
     for (int i = 0; i < 5; i++)
     {
@@ -37,16 +39,21 @@ void test_dht11_get_repeated_failures()
     }
 }
 
-int main(void)
+void setup()
 {
-    UNITY_BEGIN();
-
     // Wait ~2 seconds before the Unity test runner
     // establishes connection with a board Serial interface
-    delay(2000);
+    _delay_ms(2000);
 
-    RUN_TEST(test_dht11_get_success);
-    RUN_TEST(test_dht11_get_fail);
+    UNITY_BEGIN();
 
-    return UNITY_END();
+    RUN_TEST(test_dht11_get_valid_values);
+    RUN_TEST(test_dht11_get_repeated_failures);
+
+    UNITY_END();
+}
+
+void loop()
+{
+    // Empty loop function as tests are run in setup
 }

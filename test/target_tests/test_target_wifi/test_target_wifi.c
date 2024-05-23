@@ -1,4 +1,6 @@
-// Tests the Wifi module on target
+// COULD NOT FIND A WAY TO MAKE THE WI-FI MODULE TARGET TEST TO WORK
+
+// Tests the Wi-fi module on target
 #define WIFI_SSID "Correct Name"
 #define WIFI_PASSWORD "Correct Password"
 #define TCP_SERVER "192.168.56.1" // Should be running and in echo mode for the test to pass.
@@ -14,7 +16,7 @@
 
 void setUp(void)
 {
-    wifi_init();
+    wifi_init(NULL);
 }
 
 void tearDown(void)
@@ -119,13 +121,10 @@ int main(void)
     RUN_TEST(test_wifi_set_to_mode_1);
     RUN_TEST(test_wifi_set_to_single_connection);
     RUN_TEST(test_wifi_connect_to_AP_with_correct_ssid_and_password);
-
-    // RUN_TEST(test_wifi_create_TCP_connection);
-
-    // RUN_TEST(test_wifi_send_stuff);
-    // RUN_TEST(test_wifi_receive_stuff);
-
-    // RUN_TEST(test_wifi_close_tcp);
+    RUN_TEST(test_wifi_create_TCP_connection);
+    RUN_TEST(test_wifi_send_stuff);
+    RUN_TEST(test_wifi_receive_stuff);
+    RUN_TEST(test_wifi_close_tcp);
     RUN_TEST(test_get_ip);
     RUN_TEST(test_wifi_quit_AP);
 
