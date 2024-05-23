@@ -1,6 +1,7 @@
 #pragma once
 
 #define CCP_MAX_BODY_LENGTH 96
+#define CCP_MAX_MESSAGE_LENGTH 128
 
 typedef enum
 {

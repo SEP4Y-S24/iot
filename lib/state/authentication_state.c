@@ -11,7 +11,7 @@
 #include <stddef.h>
 
 static bool authenticated;
-static char buffer[120];
+static char buffer[CCP_MAX_MESSAGE_LENGTH];
 static bool waiting_for_key_verification;
 
 void authenticate_callback_wrapper()

@@ -12,7 +12,7 @@
 
 static void periodic_tasks_10_minutes();
 
-static char message_buffer[128];
+static char message_buffer[CCP_MAX_MESSAGE_LENGTH];
 
 static void tcp_callback()
 {
