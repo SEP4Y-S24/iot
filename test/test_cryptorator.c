@@ -28,7 +28,7 @@ void test_encryption_decryption() {
     }
 
     // Encrypt the message
-    cryptorator_encrypt(encrypted_message);
+    cryptorator_encrypt(&encrypted_message);
 
     // Decrypt the message
     cryptorator_decrypt(encrypted_message);
@@ -54,7 +54,7 @@ void test_decryption_withIV() {
     }
 
     // Encrypt the message
-    cryptorator_encrypt(encrypted_message);
+    cryptorator_encrypt(&encrypted_message);
 
     // Decrypt the message
     cryptorator_decrypt(encrypted_message);
