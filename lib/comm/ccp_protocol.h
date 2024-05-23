@@ -19,6 +19,8 @@ typedef enum
     CCP_AT_MS,
     CCP_AT_CA,
     CCP_AT_DA,
+    CCP_AT_CK,
+    CCP_AT_SK,
     CCP_AT_TH,
     CCP_AT_KV,
     CCP_AT_UNKNOWN

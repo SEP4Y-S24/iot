@@ -2,13 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "unity.h"
-#include "aes.h" // Include the AES library header file
-
-// Function declarations
-void cryptorator_init(uint8_t *givenkey);
-uint8_t* cryptorator_encrypt(const uint8_t *message);
-uint8_t* cryptorator_decrypt(const uint8_t *encrypted_data);
-void cryptorator_generate_iv(uint8_t *iv);
+#include "cryptorator.h"
 
 // Set up and tear down functions
 void setUp(void) {
@@ -22,47 +16,54 @@ void tearDown(void) {
 // Test case for encryption and decryption
 void test_encryption_decryption() {
     uint8_t key[16] = {0}; // Initialize key with zeros
-    uint8_t message[] = "hello world";
+    char message[] = "hello world";
     
     cryptorator_init(key);
 
-    // Encrypt the message
-    uint8_t *encrypted_data = cryptorator_encrypt(message);
+    // Make a copy of the message for encryption
+    char *encrypted_message = strdup(message);
+    if (encrypted_message == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return;
+    }
 
-    // Decrypt the encrypted data
-    uint8_t *decrypted_data = cryptorator_decrypt(encrypted_data);
+    // Encrypt the message
+    cryptorator_encrypt(encrypted_message);
+
+    // Decrypt the message
+    cryptorator_decrypt(encrypted_message);
 
     // Check if decrypted message matches original message
-    TEST_ASSERT_EQUAL_STRING("hello world", decrypted_data);
+    TEST_ASSERT_EQUAL_STRING("hello world", encrypted_message);
 
     // Free allocated memory
-    free(encrypted_data);
-    free(decrypted_data);
+    free(encrypted_message);
 }
 
 // Test case for decryption
 void test_decryption_withIV() {
     uint8_t key[16] = {0}; // Initialize key with zeros
-    uint8_t message[] = "hello world";
+    char message[] = "hello world";
     cryptorator_init(key);
 
+    // Make a copy of the message for encryption
+    char *encrypted_message = strdup(message);
+    if (encrypted_message == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        return;
+    }
+
     // Encrypt the message
-    uint8_t *encrypted_data = cryptorator_encrypt(message);
+    cryptorator_encrypt(encrypted_message);
 
-    // Create IV and encrypted message combined
-    uint8_t combined_data[strlen((char*)message) + AES_BLOCKLEN];
-    memcpy(combined_data, encrypted_data, AES_BLOCKLEN); // Copy IV
-    memcpy(combined_data + AES_BLOCKLEN, encrypted_data + AES_BLOCKLEN, strlen((char*)message)); // Copy encrypted message
-
-    // Decrypt the combined data
-    uint8_t *decrypted_data = cryptorator_decrypt(combined_data);
+    // Decrypt the message
+    cryptorator_decrypt(encrypted_message);
 
     // Check if decrypted message matches original message
-    TEST_ASSERT_EQUAL_STRING("hello world", decrypted_data);
+    TEST_ASSERT_EQUAL_STRING("hello world", encrypted_message);
 
     // Free allocated memory
-    free(encrypted_data);
-    free(decrypted_data);
+    free(encrypted_message);
 }
 
 // Entry point for the test suite

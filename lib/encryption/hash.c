@@ -1,6 +1,7 @@
 #include <sha1.h>
 #include <stdio.h>
 #include "hash.h"
+#include <string.h>
 
 void hash_computeSHA1(const uint8_t *message, unsigned int length, uint8_t digest[truncated_SHA1_hash_size])
 {

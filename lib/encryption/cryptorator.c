@@ -7,8 +7,8 @@
 #include "aes.h" // Include the AES library header file
 
 #define AES_BLOCKLEN 16 // AES block length
+#define IV_SIZE 16 // Define the size of the initialization vector (IV)
 static uint8_t key[16]; // Define a static key array of 16 bytes
-
 
 // Function to initialize the cryptorator with a given key
 void cryptorator_init(uint8_t *givenkey){
@@ -18,64 +18,60 @@ void cryptorator_init(uint8_t *givenkey){
 }
 
 // Function to encrypt data using AES in CBC mode
-uint8_t* cryptorator_encrypt(const uint8_t *message) {
+void cryptorator_encrypt(char *message) {
     struct AES_ctx ctx; // Define a context for AES encryption
-    uint8_t iv[AES_BLOCKLEN]; // Define an initialization vector (IV)
+    char iv[AES_BLOCKLEN]; // Define an initialization vector (IV)
     cryptorator_generate_iv(iv); // Generate a random IV
-    
-    // Allocate memory for the encrypted data (message size + IV size)
-    uint8_t *encrypted_data = (uint8_t *)malloc(AES_BLOCKLEN + strlen((char *)message) + 1);
-    if (encrypted_data == NULL) {
+
+    // Get the length of the message
+    size_t message_len = strlen(message);
+
+    // Reallocate memory for the message to accommodate the IV and encrypted message
+    message = (char *)realloc(message, AES_BLOCKLEN + message_len + 1);
+    if (message == NULL) {
         // Memory allocation failed
-        return NULL;
+        fprintf(stderr, "Memory allocation failed\n");
+        return;
     }
-    
-    // Copy the IV to the output buffer
-    memcpy(encrypted_data, iv, AES_BLOCKLEN);
+
+    // Move the original message to make space for the IV at the beginning
+    memmove(message + AES_BLOCKLEN, message, message_len + 1);
+
+    // Copy the IV to the beginning of the message buffer
+    memcpy(message, iv, AES_BLOCKLEN);
+
     // Initialize the AES context with the key and IV
-    AES_init_ctx_iv(&ctx, key, iv);
+    AES_init_ctx_iv(&ctx, (uint8_t*)key, (uint8_t*)iv);
+
     // Encrypt the data using AES in CBC mode
-    AES_CBC_encrypt_buffer(&ctx, message, strlen((char *)message));
-    // Copy the encrypted data to the output buffer after the IV
-    memcpy(encrypted_data + AES_BLOCKLEN, message, strlen((char *)message) + 1);
-
-    return encrypted_data;
+    AES_CBC_encrypt_buffer(&ctx, (uint8_t*)(message + AES_BLOCKLEN), message_len);
 }
 
 // Function to decrypt data using AES in CBC mode
-#define AES_BLOCKLEN 16 // AES block length
-
-// Function to decrypt data using AES in CBC mode
-uint8_t* cryptorator_decrypt(const uint8_t *encrypted_data) {
+void cryptorator_decrypt(char *message) {
     struct AES_ctx ctx; // Define a context for AES decryption
-    
+
     // Extract IV from the encrypted data
-    uint8_t iv[AES_BLOCKLEN];
-    memcpy(iv, encrypted_data, AES_BLOCKLEN);
-    
-    // Allocate memory for the decrypted data (encrypted_data size - IV size)
-    uint8_t *decrypted_data = (uint8_t *)malloc(strlen((char *)encrypted_data) - AES_BLOCKLEN + 1);
-    if (decrypted_data == NULL) {
-        // Memory allocation failed
-        return NULL;
-    }
-    
+    char iv[AES_BLOCKLEN];
+    memcpy(iv, message, AES_BLOCKLEN);
+
+    // Get the length of the encrypted message
+    size_t encrypted_data_len = strlen(message) - AES_BLOCKLEN;
+
     // Initialize the AES context with the key and IV
-    AES_init_ctx_iv(&ctx, key, iv);
+    AES_init_ctx_iv(&ctx, (uint8_t*)key, (uint8_t*)iv);
+
     // Decrypt the data using AES in CBC mode
-    AES_CBC_decrypt_buffer(&ctx, encrypted_data + AES_BLOCKLEN, strlen((char *)encrypted_data) - AES_BLOCKLEN);
-    // Copy the decrypted data to the output buffer
-    memcpy(decrypted_data, encrypted_data + AES_BLOCKLEN, strlen((char *)encrypted_data) - AES_BLOCKLEN + 1);
-    
-    return decrypted_data;
+    AES_CBC_decrypt_buffer(&ctx, (uint8_t*)(message + AES_BLOCKLEN), encrypted_data_len);
+
+    // Move the decrypted message to the beginning of the buffer
+    memmove(message, message + AES_BLOCKLEN, encrypted_data_len + 1);
 }
 
-
-#define IV_SIZE 16 // Define the size of the initialization vector (IV)
 // Function to generate a random IV
-void cryptorator_generate_iv(uint8_t *iv) {
+void cryptorator_generate_iv(char *iv) {
     // Generate random bytes for the IV
-    for (int i = 0; i < IV_SIZE; i++) {
+    for (int i = 0; i < AES_BLOCKLEN; i++) {
         iv[i] = rand() % 256; // Generate a random byte (0-255) and store it in the IV
     }
-} 
+}

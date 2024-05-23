@@ -10,6 +10,8 @@
 #include "ccp_message_sender.h"
 #include "message.h"
 #include "alarm.h"
+#include "cryptorator.h"
+
 
 static void ccp_handle_time_at(char *message);
 static void ccp_handle_message_at(char *message);
@@ -18,7 +20,7 @@ static void ccp_handle_delete_alarm(char *message);
 
 void ccp_message_handler_handle(char *message)
 {
-    message = cryptonator_decrypt(message); // decrypt message and save it in a varriable 
+    cryptorator_decrypt(message); 
     CCP_ACTION_TYPE at = ccp_at_from_str(message);
 
     log_info("Received message:");
