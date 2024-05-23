@@ -31,7 +31,7 @@ void receive_cloud_public_key()
     if (at == CCP_AT_SK)
     {
         char key[65];
-        copy_key(key); //extracts the key from the message
+        copy_key(key); // extracts the key from the message
         log_debug("Received public key from server");
         log_debug(key);
         uint8_t shared_secret[17];
@@ -47,6 +47,7 @@ State connect_server_state_switch(char *ip, int port)
     log_info("Entered connect server state");
     wifi_command_create_TCP_connection(ip, port, receive_cloud_public_key, message_buffer);
 
+#ifndef ENCRYPTION_DISABLED
     handle_key_exchange();
 
     while (!public_key_received || !public_key_sent)
@@ -61,7 +62,7 @@ State connect_server_state_switch(char *ip, int port)
         }
         native_delay_ms(5000);
     }
-
+#endif
     /*
     authentication comes here
     */
@@ -72,8 +73,8 @@ static void handle_key_exchange()
 {
     uint8_t public_key[33];
     key_echange_init();
-    key_exchange_generete_keys();  // generates public and private keys
-    key_exchange_get_public_key(public_key); 
+    key_exchange_generete_keys(); // generates public and private keys
+    key_exchange_get_public_key(public_key);
     log_debug("Public key generated:");
     log_debug((char *)public_key);
     ccp_message_sender_send_request(CCP_AT_SK, (char *)public_key); // sends public key to servers
