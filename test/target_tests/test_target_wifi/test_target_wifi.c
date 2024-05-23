@@ -1,4 +1,13 @@
 // COULD NOT FIND A WAY TO MAKE THE WI-FI MODULE TARGET TEST TO WORK
+/*
+    HardwareSerial0.cpp.o (symbol from plugin): In function `Serial':
+    (.text+0x0): multiple definition of `__vector_25'
+    uart.c.o (symbol from plugin):(.text+0x0): first defined here
+    HardwareSerial0.cpp.o (symbol from plugin): In function `Serial':
+    (.text+0x0): multiple definition of `__vector_26'
+    uart.c.o (symbol from plugin):(.text+0x0): first defined here
+*/
+// Potentional fix was found by converting the file to a C++ since Serial is a C++ library
 
 // Tests the Wi-fi module on target
 #define WIFI_SSID "Correct Name"
@@ -8,11 +17,10 @@
 
 #include "unity.h"
 #include "wifi.h"
-#include "env_variables.h"
 #include <util/delay.h>
-#include <avr/io.h>
 #include <string.h>
 #include <stdio.h>
+#include "uart.h"
 
 void setUp(void)
 {
@@ -116,7 +124,8 @@ void test_wifi_quit_AP()
 int main(void)
 {
     UNITY_BEGIN();
-    _delay_ms(4000);
+    _delay_ms(2000);
+
     RUN_TEST(test_wifi_AT);
     RUN_TEST(test_wifi_set_to_mode_1);
     RUN_TEST(test_wifi_set_to_single_connection);

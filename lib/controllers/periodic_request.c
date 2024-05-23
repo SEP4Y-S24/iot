@@ -7,7 +7,7 @@ static void periodic_request_10_minutes();
 
 void periodic_request_10_minutes_init()
 {
-    periodic_task_init_b(periodic_request_10_minutes, 60000);
+    periodic_task_init_b(periodic_request_10_minutes, 600000);
 }
 
 static void periodic_request_10_minutes()
