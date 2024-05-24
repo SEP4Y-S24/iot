@@ -72,7 +72,7 @@ void ds3231_write_hour(uint8_t hour)
 
   uint8_t hourx1 = hour % 10;
   uint8_t hourx10 = hour / 10;
-  uint8_t data;
+  uint8_t data = 0;
   if (hourx10 == 2)
   {
     data = (1 << 5);
