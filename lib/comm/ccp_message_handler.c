@@ -10,14 +10,20 @@
 #include "ccp_message_sender.h"
 #include "message.h"
 #include "alarm.h"
+#include "cryptorator.h"
 
-void ccp_handle_time_at(char *message);
-void ccp_handle_message_at(char *message);
-void ccp_handle_create_alarm(char *message);
-void ccp_handle_delete_alarm(char *message);
+static void ccp_handle_time_at(char *message);
+static void ccp_handle_message_at(char *message);
+static void ccp_handle_create_alarm(char *message);
+static void ccp_handle_delete_alarm(char *message);
+static void ccp_handle_parse_error(CCP_ACTION_TYPE action_type, CCP_PARSING_STATUS parsing_status);
 
 void ccp_message_handler_handle(char *message)
 {
+#ifndef ENCRYPTION_DISABLED
+    cryptorator_decrypt(message);
+#endif
+
     CCP_ACTION_TYPE at = ccp_at_from_str(message);
 
     log_info("Received message:");
@@ -43,42 +49,73 @@ void ccp_message_handler_handle(char *message)
     }
 }
 
-void ccp_handle_create_alarm(char *message)
+static void ccp_handle_parse_error(CCP_ACTION_TYPE action_type, CCP_PARSING_STATUS parsing_status)
 {
-    // extract data from message
-    response server_response;
-    ccp_parse_response(message, &server_response);
-
-    // Display Message if Status Code is OK
-    if (server_response.status_code == CCP_STATUS_OK)
+    if (parsing_status == CCP_PARSING_INVALID_WRONG_FORMAT)
     {
-        ccp_message_sender_send_response(server_response.action_type, CCP_STATUS_OK, "Alarm received");
-        log_debug("Setting alarm...");
-        char hour_str[3] = {server_response.body[0], server_response.body[1], '\0'};
-        char minute_str[3] = {server_response.body[3], server_response.body[4], '\0'};
-
-        int hour = atoi(hour_str);
-        int minute = atoi(minute_str);
-        alarm_create(hour, minute);
+        ccp_message_sender_send_response(action_type, CCP_STATUS_BAD_REQUEST, "Invalid fromat of the request.");
+    }
+    else if (parsing_status == CCP_PARSING_INVALID_EMPTY_POINTER)
+    {
+        ccp_message_sender_send_response(action_type, CCP_STATUS_SERVER_ERROR, "Server error occurred.");
     }
 }
 
-void ccp_handle_delete_alarm(char *message)
+static void ccp_handle_create_alarm(char *message)
 {
-    alarm_delete();
+    // extract data from message
+    request server_request;
+    CCP_PARSING_STATUS parsing_status = ccp_parse_request(message, &server_request);
+
+    if (parsing_status != CCP_PARSING_VALID)
+    {
+        ccp_handle_parse_error(server_request.action_type, parsing_status);
+        return;
+    }
+    ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_OK, "Alarm received");
+    log_info("Setting alarm...");
+
+    char hour_str[3] = {server_request.body[0], server_request.body[1], '\0'};
+    char minute_str[3] = {server_request.body[2], server_request.body[3], '\0'};
+
+    int hour = atoi(hour_str);
+    int minute = atoi(minute_str);
+    alarm_create(hour, minute);
 }
 
-void ccp_handle_time_at(char *message)
+static void ccp_handle_delete_alarm(char *message)
+{
+    request server_request;
+    CCP_PARSING_STATUS parsing_status = ccp_parse_request(message, &server_request);
+    if (parsing_status != CCP_PARSING_VALID)
+    {
+        ccp_handle_parse_error(server_request.action_type, parsing_status);
+        return;
+    }
+    char hour_str[3] = {server_request.body[0], server_request.body[1], '\0'};
+    char minute_str[3] = {server_request.body[2], server_request.body[3], '\0'};
+
+    int hour = atoi(hour_str);
+    int minute = atoi(minute_str);
+    alarm_delete(hour, minute);
+    ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_OK, "Alarm deleted");
+}
+
+static void ccp_handle_time_at(char *message)
 {
     // extract data from message
     response server_response;
-    ccp_parse_response(message, &server_response);
-
+    CCP_PARSING_STATUS parsing_status = ccp_parse_response(message, &server_response);
+    if (parsing_status != CCP_PARSING_VALID)
+    {
+        ccp_handle_parse_error(server_response.action_type, parsing_status);
+        return;
+    }
     log_info("Updating time...");
 
     log_info(server_response.body);
     int hours, minutes;
-    char hours_str[3], minutes_str[3];
+    char hours_str[3] = {0}, minutes_str[3] = {0};
 
     // Extract hours and minutes from server response
     for (int i = 0; i < 2; i++)
@@ -86,18 +123,28 @@ void ccp_handle_time_at(char *message)
         hours_str[i] = server_response.body[i];
         minutes_str[i] = server_response.body[i + 2];
     }
-    hours_str[2] = minutes_str[2] = '\0';
     hours = atoi(hours_str);
     minutes = atoi(minutes_str);
+
+    if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59)
+    {
+        log_info("Invalid time extracted from server response");
+        return;
+    }
 
     clock_set_time(hours, minutes);
 }
 
-void ccp_handle_message_at(char *message)
+static void ccp_handle_message_at(char *message)
 {
     // extract data from message
     request server_request;
-    ccp_parse_request(message, &server_request);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_request(message, &server_request);
+    if (parsing_status != CCP_PARSING_VALID)
+    {
+        ccp_handle_parse_error(server_request.action_type, parsing_status);
+        return;
+    }
 
     buzzer_beep();
     ccp_message_sender_send_response(server_request.action_type, CCP_STATUS_OK, "Message received");

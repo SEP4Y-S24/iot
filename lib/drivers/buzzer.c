@@ -1,3 +1,4 @@
+#ifndef NATIVE_TESTING
 #include "buzzer.h"
 #include "includes.h"
 
@@ -46,3 +47,4 @@ void buzzzer_off()
     BUZ_DDR = DDR_state;
     BUZ_PORT = PORT_state;
 }
+#endif

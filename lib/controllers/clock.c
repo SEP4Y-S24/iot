@@ -8,14 +8,14 @@
 
 void clock_set_time(int hours, int minutes)
 {
-    write_hour(hours);
-    write_min(minutes);
+    ds3231_write_hour(hours);
+    ds3231_write_min(minutes);
 }
 
 void clock_get_time(int *hours, int *minutes)
 {
-    *hours = read_hour();
-    *minutes = read_min();
+    *hours = ds3231_read_hour();
+    *minutes = ds3231_read_min();
 }
 #endif
 

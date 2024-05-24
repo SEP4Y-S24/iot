@@ -21,73 +21,73 @@
  * @brief Read the seconds value from the DS3231 RTC.
  * @return The seconds value.
  */
-uint8_t read_sec();
+uint8_t ds3231_read_sec();
 
 /**
  * @brief Read the minutes value from the DS3231 RTC.
  * @return The minutes value.
  */
-uint8_t read_min();
+uint8_t ds3231_read_min();
 
 /**
  * @brief Read the hours value from the DS3231 RTC.
  * @return The hours value.
  */
-uint8_t read_hour();
+uint8_t ds3231_read_hour();
 
 /**
  * @brief Read the date value from the DS3231 RTC.
  * @return The date value.
  */
-uint8_t read_date();
+uint8_t ds3231_read_date();
 
 /**
  * @brief Read the month value from the DS3231 RTC.
  * @return The month value.
  */
-uint8_t read_month();
+uint8_t ds3231_read_month();
 
 /**
  * @brief Read the year value from the DS3231 RTC.
  * @return The year value.
  */
-uint8_t read_year();
+uint8_t ds3231_read_year();
 
 /**
  * @brief Write the seconds value to the DS3231 RTC.
  * @param sec The seconds value to write.
  */
-void write_sec(uint8_t sec);
+void ds3231_write_sec(uint8_t sec);
 
 /**
  * @brief Write the minutes value to the DS3231 RTC.
  * @param min The minutes value to write.
  */
-void write_min(uint8_t min);
+void ds3231_write_min(uint8_t min);
 
 /**
  * @brief Write the hours value to the DS3231 RTC.
  * @param hour The hours value to write.
  */
-void write_hour(uint8_t hour);
+void ds3231_write_hour(uint8_t hour);
 
 /**
  * @brief Write the date value to the DS3231 RTC.
  * @param date The date value to write.
  */
-void write_date(uint8_t date);
+void ds3231_write_date(uint8_t date);
 
 /**
  * @brief Write the month value to the DS3231 RTC.
  * @param month The month value to write.
  */
-void write_month(uint8_t month);
+void ds3231_write_month(uint8_t month);
 
 /**
  * @brief Write the year value to the DS3231 RTC.
  * @param year The year value to write.
  */
-void write_year(uint8_t year);
+void ds3231_write_year(uint8_t year);
 
 /**
  * Sets the time on the DS3231 RTC module.
@@ -96,7 +96,7 @@ void write_year(uint8_t year);
  * @param min The minute value (0-59).
  * @param sec The second value (0-59).
  */
-void set_time(uint8_t hour, uint8_t min, uint8_t sec);
+void ds3231_set_time(uint8_t hour, uint8_t min, uint8_t sec);
 
 typedef struct
 {
@@ -110,7 +110,7 @@ typedef struct
  *
  * @return The current time as a Time struct.
  */
-Time get_time();
+Time ds3231_get_time();
 
 /**
  * Sets the date on the DS3231 RTC module.
@@ -119,7 +119,7 @@ Time get_time();
  * @param month The month value (1-12).
  * @param year The year value (0-99).
  */
-void set_date(uint8_t date, uint8_t month, uint8_t year);
+void ds3231_set_date(uint8_t date, uint8_t month, uint8_t year);
 
 typedef struct
 {
@@ -132,4 +132,4 @@ typedef struct
  *
  * @return The current date as a Date struct.
  */
-Date get_date();
+Date ds3231_get_date();

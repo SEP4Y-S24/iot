@@ -1,3 +1,5 @@
+#pragma once
+
 typedef enum
 {
     DISPLAY_STATE_TIME,

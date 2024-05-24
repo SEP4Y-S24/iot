@@ -1,8 +1,8 @@
-#ifdef TEST_ALARM
+#ifdef NATIVE_TEST_ALARM
 
 #include <unity.h>
 #include <alarm.h>
-#include <fff.h>
+#include "../fff.h"
 #include <periodic_task.h>
 #include <buzzer.h>
 #include <native.h>
@@ -25,30 +25,30 @@ FAKE_VOID_FUNC(buzzer_off);
 FAKE_VOID_FUNC(buttons_init);
 FAKE_VALUE_FUNC0(uint8_t, buttons_1_pressed);
 
-FAKE_VALUE_FUNC(uint8_t, read_hour);
-FAKE_VALUE_FUNC(uint8_t, read_min);
-FAKE_VOID_FUNC(write_hour, uint8_t);
-FAKE_VOID_FUNC(write_min, uint8_t);
+FAKE_VALUE_FUNC(uint8_t, ds3231_read_hour);
+FAKE_VALUE_FUNC(uint8_t, ds3231_read_min);
+FAKE_VOID_FUNC(ds3231_write_hour, uint8_t);
+FAKE_VOID_FUNC(ds3231_write_min, uint8_t);
 
 void alarm_init_should_set_alarm_set_and_active_to_false()
 {
     alarm_init();
-    TEST_ASSERT_FALSE(alarm_get_is_created());
-    TEST_ASSERT_FALSE(alarm_get_is_active());
+    TEST_ASSERT_TRUE(alarm_get_alarm_count() == 0);
 }
 
 void alarm_set_time_sets_alarm_to_set_and_active()
 {
+    alarm_init();
     alarm_create(10, 10);
-    TEST_ASSERT_TRUE(alarm_get_is_created());
-    TEST_ASSERT_TRUE(alarm_get_is_active());
+    TEST_ASSERT_TRUE(alarm_get_alarm_count() == 1);
 }
 
 void alarm_unset_should_unset_alarm()
 {
-    alarm_delete();
-    TEST_ASSERT_FALSE(alarm_get_is_created());
-    TEST_ASSERT_FALSE(alarm_get_is_active());
+    alarm_init();
+    alarm_create(10, 10);
+    alarm_delete(10, 10);
+    TEST_ASSERT_TRUE(alarm_get_alarm_count() == 0);
 }
 
 void alarm_check_should_beep_when_alarm_is_set_and_active()
@@ -73,8 +73,9 @@ int main(void)
 
 void setUp(void)
 {
-    read_hour_fake.return_val = 10;
-    read_min_fake.return_val = 10;
+    alarm_init();
+    ds3231_read_hour_fake.return_val = 10;
+    ds3231_read_min_fake.return_val = 10;
 }
 
 void tearDown(void)

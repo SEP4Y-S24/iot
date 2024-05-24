@@ -32,6 +32,10 @@ jobs:
 
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
+
+      - name: Setup env variables
+        run: make setup-env
+
       - name: Build default
         run: platformio run
 
