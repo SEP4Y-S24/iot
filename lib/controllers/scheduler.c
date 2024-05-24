@@ -1,6 +1,6 @@
 #include "scheduler.h"
-#include "logger.h"
-#include "periodic_task.h"
+#include "../utils/logger.h"
+#include "../drivers/periodic_task.h"
 #include <stdlib.h>
 
 static uint64_t last_run_time;

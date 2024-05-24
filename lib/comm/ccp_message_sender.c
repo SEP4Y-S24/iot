@@ -1,12 +1,11 @@
-#include "ccp_protocol.h"
-#include "wifi.h"
-#include "string.h"
-#include <stdio.h>
-#include "logger.h"
 #include "ccp_message_sender.h"
-#include "state_coordinator.h"
-#include "ccp_message_handler.h"
-#include "cryptorator.h"
+#include "ccp_protocol.h"
+#include "../drivers/wifi.h"
+#include "../utils/logger.h"
+#include "../state/state_coordinator.h"
+#include "../encryption/cryptorator.h"
+#include <string.h>
+#include <stdio.h>
 
 static void send_message(char *message);
 

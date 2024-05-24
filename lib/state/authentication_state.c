@@ -1,13 +1,13 @@
-
-#include <state_coordinator.h>
-#include <stdbool.h>
-#include <ccp_protocol.h>
+#include "authentication_state.h"
+#include "authentication_callback.h"
+#include "state_coordinator.h"
+#include "../controllers/message.h"
+#include "../drivers/wifi.h"
+#include "../comm/ccp_message_sender.h"
+#include "../comm/ccp_protocol.h"
+#include "../utils/logger.h"
 #include <inttypes.h>
-#include <authentication_callback.h>
-#include <message.h>
-#include "logger.h"
-#include "wifi.h"
-#include "ccp_message_sender.h"
+#include <stdbool.h>
 #include <stddef.h>
 #include "string.h"
 
@@ -16,7 +16,7 @@ static char buffer[CCP_MAX_MESSAGE_LENGTH];
 static bool waiting_for_key_verification;
 static char auth_key_buffer[64];
 
-void authenticate_callback_wrapper()
+static void authenticate_callback_wrapper()
 {
     authentication_callback(buffer);
 }

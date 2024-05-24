@@ -1,12 +1,12 @@
-#include <stdbool.h>
-#include <state_coordinator.h>
-#include <key_verification_state.h>
+#include "key_verification_state.h"
+#include "state_coordinator.h"
 #include "key_verification_callback.h"
-#include "logger.h"
-#include "message.h"
-#include "string.h"
-#include "ccp_protocol.h"
-#include "wifi.h"
+#include "../controllers/message.h"
+#include "../comm/ccp_protocol.h"
+#include "../drivers/wifi.h"
+#include "../utils/logger.h"
+#include <string.h>
+#include <stdbool.h>
 
 static bool key_verified;
 static char buffer[CCP_MAX_BODY_LENGTH];
@@ -15,7 +15,6 @@ void key_verification_callback_wrapper()
 {
     key_verification_callback(buffer);
 }
-
 
 State key_verification_state_switch()
 {
