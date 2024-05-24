@@ -35,6 +35,7 @@ DHT11_ERROR_MESSAGE_t dht11_get_failed_custom_fake(uint8_t *humidity_int, uint8_
 void setUp(void)
 {
     FFF_RESET_HISTORY();
+
     RESET_FAKE(dht11_get);
     RESET_FAKE(ccp_message_sender_send_request);
     RESET_FAKE(log_debug);

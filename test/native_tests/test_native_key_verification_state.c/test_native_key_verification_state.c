@@ -12,14 +12,14 @@
 #include "../state/state_coordinator.h"
 #include "../state/key_verification_callback.h"
 
-FAKE_VALUE_FUNC(WIFI_ERROR_MESSAGE_t, wifi_command_TCP_transmit, uint8_t *, uint16_t);
-FAKE_VOID_FUNC(uart_init, USART_t, uint32_t, UART_Callback_t);
-FAKE_VOID_FUNC(uart_send_blocking, USART_t, uint8_t);
+FAKE_VALUE_FUNC2(WIFI_ERROR_MESSAGE_t, wifi_command_TCP_transmit, uint8_t *, uint16_t);
+FAKE_VOID_FUNC3(uart_init, USART_t, uint32_t, UART_Callback_t);
+FAKE_VOID_FUNC2(uart_send_blocking, USART_t, uint8_t);
 
-FAKE_VOID_FUNC(state_coordinator_wait_for_event, bool *);
-FAKE_VOID_FUNC(uart_send_string_blocking, USART_t, char *);
-FAKE_VOID_FUNC(log_debug, char *);
-FAKE_VOID_FUNC(log_info, char *);
+FAKE_VOID_FUNC1(state_coordinator_wait_for_event, bool *);
+FAKE_VOID_FUNC2(uart_send_string_blocking, USART_t, char *);
+FAKE_VOID_FUNC1(log_debug, char *);
+FAKE_VOID_FUNC1(log_info, char *);
 FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_set_mode_to_1);
 FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_set_mode_to_2);
 FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_set_mode_to_3);
@@ -30,12 +30,12 @@ FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_reset);
 FAKE_VALUE_FUNC2(WIFI_ERROR_MESSAGE_t, wifi_command_setup_server, uint16_t, UART_Callback_t);
 FAKE_VOID_FUNC1(wifi_init, UART_Callback_t);
 FAKE_VALUE_FUNC0(WIFI_AP_CONNECTION, wifi_command_check_AP_connection);
-FAKE_VOID_FUNC(wifi_reassign_callback, WIFI_TCP_Callback_t, char *);
-FAKE_VOID_FUNC(authentication_state_set_authenticated, bool);
-FAKE_VOID_FUNC(authentication_state_set_waiting_for_key_verification, bool);
+FAKE_VOID_FUNC2(wifi_reassign_callback, WIFI_TCP_Callback_t, char *);
+FAKE_VOID_FUNC1(authentication_state_set_authenticated, bool);
+FAKE_VOID_FUNC1(authentication_state_set_waiting_for_key_verification, bool);
 
-FAKE_VOID_FUNC(ccp_message_sender_send_request, CCP_ACTION_TYPE, char *);
-FAKE_VOID_FUNC(key_verification_state_set_key_verified, bool);
+FAKE_VOID_FUNC2(ccp_message_sender_send_request, CCP_ACTION_TYPE, char *);
+FAKE_VOID_FUNC1(key_verification_state_set_key_verified, bool);
 
 void key_verification_state_sets_key()
 {
@@ -59,6 +59,7 @@ void key_verification_callback_stops_waiting()
 void setUp(void)
 {
     FFF_RESET_HISTORY();
+
     RESET_FAKE(wifi_command_TCP_transmit);
     RESET_FAKE(uart_init);
     RESET_FAKE(uart_send_blocking);

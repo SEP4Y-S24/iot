@@ -47,6 +47,7 @@ int main(void)
 void setUp(void)
 {
     FFF_RESET_HISTORY();
+
     RESET_FAKE(periodic_task_init_b);
     RESET_FAKE(native_delay_ms);
     RESET_FAKE(humidity_temperature_send);

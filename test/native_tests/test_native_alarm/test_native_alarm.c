@@ -1,4 +1,4 @@
-#include <unity.h>
+#include "unity.h"
 #include "../fff.h"
 #include "../drivers/periodic_task.h"
 #include "../drivers/buzzer.h"
@@ -10,27 +10,27 @@
 #include "../controllers/clock.h"
 #include "../controllers/alarm.h"
 
-FAKE_VOID_FUNC(periodic_task_init_c, PERIODIC_TASK_CALLBACK, uint32_t);
-FAKE_VOID_FUNC(log_debug, char *);
-FAKE_VOID_FUNC(log_info, char *);
-FAKE_VOID_FUNC(hc_sr04_init);
-FAKE_VALUE_FUNC(uint16_t, hc_sr04_takeMeasurement);
-FAKE_VOID_FUNC(buzzer_beep);
-FAKE_VOID_FUNC(native_delay_ms, int);
-FAKE_VOID_FUNC(buzzer_init);
-FAKE_VOID_FUNC(buzzer_on);
-FAKE_VOID_FUNC(buzzer_off);
-FAKE_VOID_FUNC(buttons_init);
+FAKE_VOID_FUNC2(periodic_task_init_c, PERIODIC_TASK_CALLBACK, uint32_t);
+FAKE_VOID_FUNC1(log_debug, char *);
+FAKE_VOID_FUNC1(log_info, char *);
+FAKE_VOID_FUNC0(hc_sr04_init);
+FAKE_VALUE_FUNC0(uint16_t, hc_sr04_takeMeasurement);
+FAKE_VOID_FUNC0(buzzer_beep);
+FAKE_VOID_FUNC1(native_delay_ms, int);
+FAKE_VOID_FUNC0(buzzer_init);
+FAKE_VOID_FUNC0(buzzer_on);
+FAKE_VOID_FUNC0(buzzer_off);
+FAKE_VOID_FUNC0(buttons_init);
 FAKE_VALUE_FUNC0(uint8_t, buttons_1_pressed);
-
-FAKE_VALUE_FUNC(uint8_t, ds3231_read_hour);
-FAKE_VALUE_FUNC(uint8_t, ds3231_read_min);
-FAKE_VOID_FUNC(ds3231_write_hour, uint8_t);
-FAKE_VOID_FUNC(ds3231_write_min, uint8_t);
+FAKE_VALUE_FUNC0(uint8_t, ds3231_read_hour);
+FAKE_VALUE_FUNC0(uint8_t, ds3231_read_min);
+FAKE_VOID_FUNC1(ds3231_write_hour, uint8_t);
+FAKE_VOID_FUNC1(ds3231_write_min, uint8_t);
 
 void setUp(void)
 {
     FFF_RESET_HISTORY();
+
     RESET_FAKE(periodic_task_init_c);
     RESET_FAKE(log_debug);
     RESET_FAKE(log_info);
