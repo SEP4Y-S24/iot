@@ -115,7 +115,7 @@ static void ccp_handle_time_at(char *message)
 
     log_info(server_response.body);
     int hours, minutes;
-    char hours_str[3], minutes_str[3];
+    char hours_str[3] = {0}, minutes_str[3] = {0};
 
     // Extract hours and minutes from server response
     for (int i = 0; i < 2; i++)
@@ -123,9 +123,14 @@ static void ccp_handle_time_at(char *message)
         hours_str[i] = server_response.body[i];
         minutes_str[i] = server_response.body[i + 2];
     }
-    hours_str[2] = minutes_str[2] = '\0';
     hours = atoi(hours_str);
     minutes = atoi(minutes_str);
+
+    if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59)
+    {
+        log_info("Invalid time extracted from server response");
+        return;
+    }
 
     clock_set_time(hours, minutes);
 }
