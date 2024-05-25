@@ -18,8 +18,6 @@ static State error_state;
 
 static void state_coordinator(State state)
 {
-    char *ip = IP_ADDRESS;
-    int port = PORT;
 
     while (1)
     {
@@ -35,7 +33,7 @@ static void state_coordinator(State state)
             state_coordinator(connect_wifi_state_switch(SSID, PASSWORD));
             break;
         case SERVER_CONNECT_STATE:
-            state_coordinator(connect_server_state_switch(ip, port));
+            state_coordinator(connect_server_state_switch(IP_ADDRESS, PORT));
             break;
         case AUTHENTICATION_STATE:
             state_coordinator(authentication_state_switch(NULL));
