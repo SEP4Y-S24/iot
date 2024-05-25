@@ -44,7 +44,7 @@ static void state_coordinator(State state)
             state_coordinator(key_verification_state_switch());
             break;
         case WORKING_STATE:
-            state_coordinator(working_state_switch(ip, port));
+            state_coordinator(working_state_switch());
             break;
         }
     }
