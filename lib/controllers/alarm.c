@@ -1,13 +1,14 @@
-#include "native.h"
-#include "hc_sr04.h"
-#include "buzzer.h"
-#include <stdio.h>
-#include <stdbool.h>
 #include "alarm.h"
 #include "clock.h"
-#include "periodic_task.h"
-#include "logger.h"
-#include "buttons.h"
+#include "../drivers/hc_sr04.h"
+#include "../drivers/buzzer.h"
+#include "../drivers/periodic_task.h"
+#include "../drivers/buttons.h"
+#include "../utils/logger.h"
+#include "../utils/native.h"
+#include <stdio.h>
+#include <stdbool.h>
+
 #define max_alarm_count 32
 static alarm_t alarms[max_alarm_count];
 
@@ -17,7 +18,8 @@ static uint8_t alarm_time_delay = 0;
 
 static bool alarm_is_created = false;
 static bool alarm_is_stoped = false;
-void alarm_log_time(int h, int m, bool use_info)
+
+static void alarm_log_time(int h, int m, bool use_info)
 
 {
     char time[20];

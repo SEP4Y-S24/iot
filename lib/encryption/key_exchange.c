@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include "uECC.h"
-#include "logger.h"
+#include "../utils/logger.h"
 #include <stdio.h>
 #include "hash.h"
 static uint8_t private_key[33];
@@ -60,11 +60,6 @@ void key_exchange_generate_shared_secret(uint8_t *received_public_key, uint8_t *
     {
         secret[i] = truncated_hash[i];
     }
-
-    
-
-
-
 
     log_debug("private key: ");
     log_debug((char *)private_key);

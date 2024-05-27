@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "wifi.h"
-#include "logger.h"
-#include "utils.h"
+#include "../utils/logger.h"
+#include "../utils/utils.h"
 
 const char *LINE_TERMINATOR = "|";
 void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type);
@@ -167,7 +167,6 @@ CCP_ACTION_TYPE ccp_at_from_str(char *message)
         return CCP_AT_KV;
     else
         return CCP_AT_UNKNOWN;
-    
 }
 
 void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type)
