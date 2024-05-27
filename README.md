@@ -1,6 +1,7 @@
 # IoT Device
 
 [![Tests](https://github.com/SEP4Y-S24/iot/actions/workflows/build.yaml/badge.svg)](https://github.com/SEP4Y-S24/iot/actions/workflows/build.yaml)
+[![codecov](https://codecov.io/gh/SEP4Y-S24/iot/branch/main/graph/badge.svg?token=ZXVQMEAXOZ)](https://codecov.io/gh/SEP4Y-S24/iot)
 ![GitHub Latest Release)](https://img.shields.io/github/v/release/SEP4Y-S24/iot?logo=github)
 
 ## Specifications
