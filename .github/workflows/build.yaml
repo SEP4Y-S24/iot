@@ -23,5 +23,9 @@ jobs:
               run: make setup-env
             - name: Run native tests
               run: make test-native
+            - name: Upload coverage reports to Codecov
+                uses: codecov/codecov-action@v4.0.1
+                with:
+                  token: ${{ secrets.CODECOV_TOKEN }}
             - name: Build default
               run: platformio run
