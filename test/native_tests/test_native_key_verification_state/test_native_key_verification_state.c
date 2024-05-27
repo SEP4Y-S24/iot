@@ -38,6 +38,21 @@ FAKE_VOID_FUNC1(authentication_state_set_waiting_for_key_verification, bool);
 FAKE_VOID_FUNC2(ccp_message_sender_send_request, CCP_ACTION_TYPE, char *);
 FAKE_VOID_FUNC1(key_verification_state_set_key_verified, bool);
 
+// Mock external_screen_string as a global variable
+char *external_screen_string = NULL;
+
+// Fake function for periodic_task_init_a
+FAKE_VOID_FUNC2(periodic_task_init_a, PERIODIC_TASK_CALLBACK, uint32_t);
+
+// Fake functions for ds3231
+FAKE_VOID_FUNC1(ds3231_write_hour, uint8_t);
+FAKE_VOID_FUNC1(ds3231_write_min, uint8_t);
+FAKE_VALUE_FUNC0(uint8_t, ds3231_read_hour);
+FAKE_VALUE_FUNC0(uint8_t, ds3231_read_min);
+
+// Fake function for buttons_2_pressed
+FAKE_VALUE_FUNC0(uint8_t, buttons_2_pressed);
+
 void key_verification_state_sets_key()
 {
     key_verification_state_set_key("hkasdterrhtadsgfdg");
@@ -83,6 +98,12 @@ void setUp(void)
     RESET_FAKE(authentication_state_set_waiting_for_key_verification);
     RESET_FAKE(ccp_message_sender_send_request);
     RESET_FAKE(key_verification_state_set_key_verified);
+    RESET_FAKE(periodic_task_init_a);
+    RESET_FAKE(ds3231_write_hour);
+    RESET_FAKE(ds3231_write_min);
+    RESET_FAKE(ds3231_read_hour);
+    RESET_FAKE(ds3231_read_min);
+    RESET_FAKE(buttons_2_pressed);
 }
 
 void tearDown(void)

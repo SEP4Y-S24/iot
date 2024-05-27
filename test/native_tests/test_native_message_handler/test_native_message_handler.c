@@ -14,6 +14,7 @@
 #include "../drivers/buttons.h"
 
 DEFINE_FFF_GLOBALS;
+
 FAKE_VOID_FUNC1(log_info, char *);
 FAKE_VOID_FUNC1(log_debug, char *);
 FAKE_VALUE_FUNC2(WIFI_ERROR_MESSAGE_t, wifi_command_TCP_transmit, uint8_t *, uint16_t);
@@ -36,6 +37,9 @@ FAKE_VOID_FUNC3(ccp_message_sender_send_response, CCP_ACTION_TYPE, CCP_STATUS_CO
 FAKE_VOID_FUNC2(alarm_create, int, int);
 FAKE_VOID_FUNC2(alarm_delete, int, int);
 FAKE_VOID_FUNC0(alarm_init);
+
+char *external_screen_string = NULL;
+FAKE_VOID_FUNC2(periodic_task_init_a, PERIODIC_TASK_CALLBACK, uint32_t);
 
 void test_ms_message_clock_message_is_set_and_response_is_sent_buzzer_beeps()
 {
@@ -113,6 +117,7 @@ void setUp(void)
     RESET_FAKE(alarm_create);
     RESET_FAKE(alarm_delete);
     RESET_FAKE(alarm_init);
+    RESET_FAKE(periodic_task_init_a); 
 }
 
 void tearDown(void)
