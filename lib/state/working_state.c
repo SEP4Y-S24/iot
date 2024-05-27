@@ -7,6 +7,7 @@
 #include "ccp_message_sender.h"
 #include "native.h"
 #include "periodic_task.h"
+#include "humidity_temperature.h"
 
 static void periodic_tasks_10_minutes();
 

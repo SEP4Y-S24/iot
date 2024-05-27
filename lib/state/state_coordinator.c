@@ -15,34 +15,34 @@
 
 static bool error;
 static State error_state;
+static State next_state;
 
-static void state_coordinator(State state)
+static void state_coordinator()
 {
-
     while (1)
     {
         if (error)
         {
-            state = error_state;
+            next_state = error_state;
             error = false;
             error_state = WIFI_CONNECT_STATE;
         }
-        switch (state)
+        switch (next_state)
         {
         case WIFI_CONNECT_STATE:
-            state_coordinator(connect_wifi_state_switch(SSID, PASSWORD));
+            next_state = connect_wifi_state_switch(SSID, PASSWORD);
             break;
         case SERVER_CONNECT_STATE:
-            state_coordinator(connect_server_state_switch(IP_ADDRESS, PORT));
+            next_state = connect_server_state_switch(IP_ADDRESS, PORT);
             break;
         case AUTHENTICATION_STATE:
-            state_coordinator(authentication_state_switch(NULL));
+            next_state = authentication_state_switch(NULL);
             break;
         case KEY_VERIFICATION_STATE:
-            state_coordinator(key_verification_state_switch());
+            next_state = (key_verification_state_switch());
             break;
         case WORKING_STATE:
-            state_coordinator(working_state_switch());
+            next_state = (working_state_switch());
             break;
         }
     }
@@ -52,6 +52,7 @@ void start()
 {
     error = false;
     error_state = WIFI_CONNECT_STATE;
+    next_state = WIFI_CONNECT_STATE;
     // --- NOTICE ---
     // Can be adjasted to mock time passing quicker. 60s = 1 minute, 1s = 1 second
 
@@ -61,7 +62,7 @@ void start()
     // alarm_create(10, 11);
 
     // scheduler_add_task(clock_update_time, clock_minute_interval); -- deprecated
-    //scheduler_add_task(display_time_from_clock, 60);
+    // scheduler_add_task(display_time_from_clock, 60);
     // clock_display_time();
 
     state_coordinator(WIFI_CONNECT_STATE);
