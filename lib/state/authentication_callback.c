@@ -3,6 +3,8 @@
 #include "logger.h"
 #include "key_verification_state.h"
 #include "string.h"
+#include "stddef.h"
+
 void authentication_callback(char *message)
 {
     response response;
@@ -16,7 +18,7 @@ void authentication_callback(char *message)
     if (response.status_code == CCP_STATUS_OK)
     {
         log_debug("Authenticated");
-        authentication_state_set_authenticated(true);
+        authentication_state_set_authenticated(true, NULL);
         authentication_state_set_waiting_for_key_verification(false);
     }
     else if (response.status_code == CCP_STATUS_UNAUTHENTICATED)
@@ -24,7 +26,7 @@ void authentication_callback(char *message)
         response.status_code = CCP_STATUS_UNAUTHENTICATED;
         log_info("Unauthenticated");
         authentication_state_set_waiting_for_key_verification(true);
-        authentication_state_set_authenticated(true);
+        authentication_state_set_authenticated(true, response.body);
         key_verification_state_set_key(response.body);
     }
     else
