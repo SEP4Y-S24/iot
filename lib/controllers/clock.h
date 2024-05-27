@@ -1,7 +1,6 @@
 #pragma once
 
-#include <stdint.h>        // For standard integer types
-#include "periodic_task.h" // For the periodic task functions
+#include <stdint.h> // For standard integer types
 
 void clock_set_time(int hours, int minutes);
 
