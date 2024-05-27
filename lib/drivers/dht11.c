@@ -1,7 +1,7 @@
 #ifndef NATIVE_TESTING
 #include "dht11.h"
 #include "includes.h"
-#include "logger.h"
+#include "../utils/logger.h"
 
 // Data (The data goes both ways)
 #define DATA_BIT PL1

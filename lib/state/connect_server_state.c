@@ -1,14 +1,14 @@
-#include <state_coordinator.h>
-#include <connect_server_state.h>
-#include <wifi.h>
+#include "connect_server_state.h"
+#include "state_coordinator.h"
+#include "../comm/ccp_protocol.h"
+#include "../comm/ccp_message_sender.h"
+#include "../drivers/wifi.h"
+#include "../utils/native.h"
+#include "../utils/logger.h"
+#include "../encryption/key_exchange.h"
+#include "../encryption/cryptorator.h"
 #include <stddef.h>
-#include <logger.h>
-#include "key_exchange.h"
-#include "ccp_protocol.h"
-#include "ccp_message_sender.h"
-#include "native.h"
 #include <string.h>
-#include <cryptorator.h>
 
 static void handle_key_exchange();
 

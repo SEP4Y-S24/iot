@@ -1,17 +1,17 @@
 #include "state_coordinator.h"
 #include "connect_wifi_state.h"
 #include "connect_server_state.h"
-#include "working_state.h"
-#include <stddef.h>
-#include <clock.h>
-#include <display.h>
-#include "scheduler.h"
-#include "alarm.h"
-#include "env_variables.h"
-#include "native.h"
-#include "authentication_state.h"
-#include "logger.h"
 #include "key_verification_state.h"
+#include "working_state.h"
+#include "authentication_state.h"
+#include "../drivers/display.h"
+#include "../controllers/clock.h"
+#include "../controllers/scheduler.h"
+#include "../controllers/alarm.h"
+#include "../env/env_variables.h"
+#include "../utils/native.h"
+#include "../utils/logger.h"
+#include <stddef.h>
 
 static bool error;
 static State error_state;

@@ -1,9 +1,10 @@
-#include "ccp_protocol.h"
+#include "authentication_callback.h"
 #include "authentication_state.h"
-#include "logger.h"
 #include "key_verification_state.h"
-#include "string.h"
-#include "stddef.h"
+#include "../comm/ccp_protocol.h"
+#include "../utils/logger.h"
+#include <string.h>
+#include <stddef.h>
 
 void authentication_callback(char *message)
 {

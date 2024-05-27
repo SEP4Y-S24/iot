@@ -1,7 +1,7 @@
 #include "humidity_temperature.h"
-#include "ccp_message_sender.h"
-#include "dht11.h"
-#include "logger.h"
+#include "../comm/ccp_message_sender.h"
+#include "../drivers/dht11.h"
+#include "../utils/logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

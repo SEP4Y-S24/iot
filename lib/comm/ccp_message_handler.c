@@ -1,16 +1,16 @@
-
-#include "uart.h"
+#include "ccp_message_handler.h"
+#include "ccp_message_sender.h"
 #include "ccp_protocol.h"
-#include "buzzer.h"
+#include "../drivers/uart.h"
+#include "../drivers/buzzer.h"
+#include "../utils/logger.h"
+#include "../drivers/wifi.h"
+#include "../controllers/clock.h"
+#include "../controllers/message.h"
+#include "../controllers/alarm.h"
+#include "../encryption/cryptorator.h"
 #include <stdlib.h>
 #include <string.h>
-#include "logger.h"
-#include "wifi.h"
-#include "clock.h"
-#include "ccp_message_sender.h"
-#include "message.h"
-#include "alarm.h"
-#include "cryptorator.h"
 
 static void ccp_handle_time_at(char *message);
 static void ccp_handle_message_at(char *message);

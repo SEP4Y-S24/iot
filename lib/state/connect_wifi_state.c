@@ -1,18 +1,14 @@
-#ifndef NATIVE_TESTING
-#include <util/delay.h>
-#endif
-
 #include "connect_wifi_state.h"
-#include "wifi.h"
+#include "state_coordinator.h"
+#include "../drivers/wifi.h"
+#include "../drivers/periodic_task.h"
+#include "../utils/utils.h"
+#include "../utils/logger.h"
+#include "../comm/ccp_protocol.h"
 #include <stdlib.h>
 #include <stdint.h>
-#include <string.h>
-#include <utils.h>
 #include <stdbool.h>
-#include <state_coordinator.h>
-#include <periodic_task.h>
-#include "logger.h"
-#include "ccp_protocol.h"
+#include <string.h>
 
 static char recieveBuffer[CCP_MAX_MESSAGE_LENGTH];
 static uint8_t recieveBufferIndex;
@@ -211,7 +207,7 @@ State connect_wifi_state_switch(char *ssid, char *pass)
     }
 
     state_coordinator_wait_for_event(&wifi_connected);
-    
+
     periodic_task_init_a(NULL, 60000);
     log_debug("Connected to wifi");
 
