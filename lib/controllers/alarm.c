@@ -11,7 +11,6 @@
 #define max_alarm_count 32
 static alarm_t alarms[max_alarm_count];
 
-
 static uint8_t alarm_time_hour = 0;
 static uint8_t alarm_time_minute = 0;
 static uint8_t alarm_time_delay = 0;
@@ -28,6 +27,12 @@ void alarm_log_time(int h, int m, bool use_info)
 
 void alarm_init()
 {
+    alarm_is_created = false;
+    alarm_is_stoped = false;
+
+    alarm_time_hour = 0;
+    alarm_time_minute = 0;
+    alarm_time_delay = 0;
     buzzer_init();
     buttons_init();
     hc_sr04_init();
@@ -122,6 +127,7 @@ void alarm_check()
             if (button_pressed_1)
             {
                 log_debug("Alarm is stoped");
+                alarms[i].delay = 0;
                 break;
             }
         }

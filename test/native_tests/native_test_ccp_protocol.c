@@ -1,9 +1,9 @@
-#ifdef TEST_CCP_PROTOCOL
+#ifdef NATIVE_TEST_CCP_PROTOCOL
 
 #include <unity.h>
 #include <ccp_protocol.h>
 #include <stdio.h>
-#include <fff.h>
+#include "../fff.h"
 #include <wifi.h>
 #include <uart.h>
 
@@ -47,8 +47,9 @@ void ccp_test_parse_response_with_unknown_action_type()
     char raw_response[] = "XX|1|11|Hello World|";
 
     response test_response;
-    ccp_parse_response(raw_response, &test_response);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_response(raw_response, &test_response);
 
+    TEST_ASSERT_TRUE(CCP_PARSING_VALID == parsing_status);
     TEST_ASSERT_EQUAL_STRING("Hello World", test_response.body);
     TEST_ASSERT_TRUE(CCP_STATUS_OK == test_response.status_code);
     TEST_ASSERT_TRUE(CCP_AT_UNKNOWN == test_response.action_type);
@@ -59,7 +60,9 @@ void ccp_test_parse_response_with_unknown_status_code()
     char raw_response[] = "MS|9|11|Hello World|";
 
     response test_response;
-    ccp_parse_response(raw_response, &test_response);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_response(raw_response, &test_response);
+
+    TEST_ASSERT_TRUE(CCP_PARSING_VALID == parsing_status);
     TEST_ASSERT_EQUAL(CCP_AT_MS, test_response.action_type);
     TEST_ASSERT_EQUAL_STRING("Hello World", test_response.body);
     TEST_ASSERT_TRUE(CCP_STATUS_NUM_STATUS_CODES == test_response.status_code);
@@ -70,9 +73,28 @@ void ccp_test_parse_response_with_empty_body()
     char raw_response[] = "MS|1|0|";
 
     response test_response;
-    ccp_parse_response(raw_response, &test_response);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_response(raw_response, &test_response);
+    TEST_ASSERT_TRUE(CCP_PARSING_VALID == parsing_status);
     TEST_ASSERT_EQUAL(CCP_STATUS_OK, test_response.status_code);
     TEST_ASSERT_EQUAL_STRING("", test_response.body);
+}
+
+void ccp_test_parse_response_no_body_length()
+{
+    char raw_response[] = "MS|1||Hello World|";
+
+    response test_response;
+    CCP_PARSING_STATUS parsing_status = ccp_parse_response(raw_response, &test_response);
+    TEST_ASSERT_TRUE(CCP_PARSING_INVALID_WRONG_FORMAT == parsing_status);
+}
+
+void ccp_test_parse_response_only_action_type()
+{
+    char raw_response[] = "MS|||";
+
+    response test_response;
+    CCP_PARSING_STATUS parsing_status = ccp_parse_response(raw_response, &test_response);
+    TEST_ASSERT_TRUE(CCP_PARSING_INVALID_WRONG_FORMAT == parsing_status);
 }
 
 void ccp_test_parse_response_with_too_long_body()
@@ -80,8 +102,9 @@ void ccp_test_parse_response_with_too_long_body()
     char raw_response[] = "MS|1|100|Body length is set to be too long.|";
 
     response test_response;
-    ccp_parse_response(raw_response, &test_response);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_response(raw_response, &test_response);
 
+    TEST_ASSERT_TRUE(CCP_PARSING_INVALID_WRONG_FORMAT == parsing_status);
     TEST_ASSERT_TRUE(CCP_AT_MS == test_response.action_type);
     TEST_ASSERT_EQUAL(CCP_STATUS_OK, test_response.status_code);
     TEST_ASSERT_EQUAL_STRING("", test_response.body);
@@ -92,8 +115,9 @@ void ccp_test_parse_response_without_body()
     char raw_response[] = "MS|1|";
 
     response test_response;
-    ccp_parse_response(raw_response, &test_response);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_response(raw_response, &test_response);
 
+    TEST_ASSERT_TRUE(CCP_PARSING_INVALID_WRONG_FORMAT == parsing_status);
     TEST_ASSERT_EQUAL_STRING("", test_response.body);
 }
 
@@ -102,8 +126,9 @@ void ccp_test_parse_response_with_action_type()
     char raw_response[] = "MS|1|10|Hello World|";
 
     response test_response;
-    ccp_parse_response(raw_response, &test_response);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_response(raw_response, &test_response);
 
+    TEST_ASSERT_TRUE(CCP_PARSING_VALID == parsing_status);
     TEST_ASSERT_TRUE(CCP_AT_MS == test_response.action_type);
 }
 
@@ -112,8 +137,9 @@ void ccp_test_parse_response_with_status_code()
     char raw_response[] = "MS|1|10|Hello World|";
 
     response test_response;
-    ccp_parse_response(raw_response, &test_response);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_response(raw_response, &test_response);
 
+    TEST_ASSERT_TRUE(CCP_PARSING_VALID == parsing_status);
     TEST_ASSERT_TRUE(CCP_STATUS_OK == test_response.status_code);
 }
 
@@ -122,8 +148,9 @@ void ccp_test_parse_response_with_body()
     char raw_response[] = "MS|1|11|Hello World|";
 
     response test_response;
-    ccp_parse_response(raw_response, &test_response);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_response(raw_response, &test_response);
 
+    TEST_ASSERT_TRUE(CCP_PARSING_VALID == parsing_status);
     TEST_ASSERT_EQUAL_STRING("Hello World", test_response.body);
 }
 
@@ -132,8 +159,9 @@ void ccp_test_parse_request_with_unknown_action_type()
     char raw_request[] = "XX|11|Hello World|";
 
     request test_request;
-    ccp_parse_request(raw_request, &test_request);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_request(raw_request, &test_request);
 
+    TEST_ASSERT_TRUE(CCP_PARSING_VALID == parsing_status);
     TEST_ASSERT_TRUE(CCP_AT_UNKNOWN == test_request.action_type);
 }
 
@@ -142,8 +170,9 @@ void ccp_test_parse_request_with_empty_body()
     char raw_request[] = "CA|0|";
 
     request test_request;
-    ccp_parse_request(raw_request, &test_request);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_request(raw_request, &test_request);
 
+    TEST_ASSERT_TRUE(CCP_PARSING_VALID == parsing_status);
     TEST_ASSERT_EQUAL_STRING("", test_request.body);
 }
 
@@ -152,8 +181,9 @@ void ccp_test_parse_request_with_too_long_body()
     char raw_request[] = "CA|100|Hello World|";
 
     request test_request;
-    ccp_parse_request(raw_request, &test_request);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_request(raw_request, &test_request);
 
+    TEST_ASSERT_TRUE(CCP_PARSING_INVALID_WRONG_FORMAT == parsing_status);
     TEST_ASSERT_TRUE(CCP_AT_CA == test_request.action_type);
     TEST_ASSERT_EQUAL_STRING("", test_request.body);
 }
@@ -163,8 +193,9 @@ void ccp_test_parse_request_without_body()
     char raw_request[] = "CA|";
 
     request test_request;
-    ccp_parse_request(raw_request, &test_request);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_request(raw_request, &test_request);
 
+    TEST_ASSERT_TRUE(CCP_PARSING_INVALID_WRONG_FORMAT == parsing_status);
     TEST_ASSERT_EQUAL_STRING("", test_request.body);
 }
 
@@ -173,8 +204,9 @@ void ccp_test_parse_request_with_action_type()
     char raw_request[] = "CA|11|Hello World|";
 
     request test_request;
-    ccp_parse_request(raw_request, &test_request);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_request(raw_request, &test_request);
 
+    TEST_ASSERT_TRUE(CCP_PARSING_VALID == parsing_status);
     TEST_ASSERT_TRUE(CCP_AT_CA == test_request.action_type);
 }
 
@@ -183,8 +215,9 @@ void ccp_test_parse_request_with_body()
     char raw_request[] = "CA|11|Hello World|";
 
     request test_request;
-    ccp_parse_request(raw_request, &test_request);
+    CCP_PARSING_STATUS parsing_status = ccp_parse_request(raw_request, &test_request);
 
+    TEST_ASSERT_TRUE(CCP_PARSING_VALID == parsing_status);
     TEST_ASSERT_EQUAL_STRING("Hello World", test_request.body);
 }
 

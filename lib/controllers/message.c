@@ -1,6 +1,6 @@
 #include <external_screen.h>
 #include <string.h>
-static char message[90] = "No message received :(";
+static char message[90];
 
 void message_set_message(char *new_message){
     strcpy(message, new_message);

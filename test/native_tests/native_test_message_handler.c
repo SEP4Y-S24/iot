@@ -1,6 +1,6 @@
-#ifdef TEST_MESSAGE_HANDLER
+#ifdef NATIVE_TEST_MESSAGE_HANDLER
 #include "ccp_message_handler.h"
-#include <fff.h>
+#include "../fff.h"
 #include <unity.h>
 #include <logger.h>
 #include <wifi.h>
@@ -38,7 +38,7 @@ FAKE_VOID_FUNC(alarm_init);
 
 void test_ms_message_clock_message_is_set_and_response_is_sent_buzzer_beeps()
 {
-    char message[] = "MS|4|helo";
+    char message[] = "MS|4|helo|";
     ccp_message_handler_handle(message);
     TEST_ASSERT_EQUAL_STRING("helo", message_get_message());
     TEST_ASSERT_EQUAL(1, ccp_message_sender_send_response_fake.call_count);
@@ -49,7 +49,7 @@ void test_ms_message_clock_message_is_set_and_response_is_sent_buzzer_beeps()
 
 void test_tm_message_time_is_set()
 {
-    char message[] = "TM|1|4|1234";
+    char message[] = "TM|1|4|1234|";
     ccp_message_handler_handle(message);
     TEST_ASSERT_EQUAL(12, ds3231_write_hour_fake.arg0_val);
     TEST_ASSERT_EQUAL(34, ds3231_write_min_fake.arg0_val);
@@ -57,7 +57,7 @@ void test_tm_message_time_is_set()
 
 void test_handle_alarm_message()
 {
-    char message[] = "CA|4|1234";
+    char message[] = "CA|4|1234|";
     ccp_message_handler_handle(message);
     TEST_ASSERT_EQUAL(1, ccp_message_sender_send_response_fake.call_count);
     TEST_ASSERT_EQUAL(CCP_AT_CA, ccp_message_sender_send_response_fake.arg0_val);

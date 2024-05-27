@@ -1,2 +1,3 @@
-void humidity_temperature_get(char *message_buffer);
-void humidity_temperature_send();
+#pragma once
+
+void humidity_temperature_get_in_string_format(char *message_buffer);

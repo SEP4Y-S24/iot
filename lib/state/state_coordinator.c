@@ -13,29 +13,36 @@
 #include "logger.h"
 #include "key_verification_state.h"
 
-static void state_coordinator(State state)
-{
-    char *ip = IP_ADDRESS;
-    int port = PORT;
+static bool error;
+static State error_state;
+static State next_state;
 
+static void state_coordinator()
+{
     while (1)
     {
-        switch (state)
+        if (error)
+        {
+            next_state = error_state;
+            error = false;
+            error_state = WIFI_CONNECT_STATE;
+        }
+        switch (next_state)
         {
         case WIFI_CONNECT_STATE:
-            state_coordinator(connect_wifi_state_switch(SSID, PASSWORD));
+            next_state = connect_wifi_state_switch(SSID, PASSWORD);
             break;
         case SERVER_CONNECT_STATE:
-            state_coordinator(connect_server_state_switch(ip, port));
+            next_state = connect_server_state_switch(IP_ADDRESS, PORT);
             break;
         case AUTHENTICATION_STATE:
-            state_coordinator(authentication_state_switch(NULL));
+            next_state = authentication_state_switch(NULL);
             break;
         case KEY_VERIFICATION_STATE:
-            state_coordinator(key_verification_state_switch(""));
+            next_state = (key_verification_state_switch());
             break;
         case WORKING_STATE:
-            state_coordinator(working_state_switch(ip, port));
+            next_state = (working_state_switch());
             break;
         }
     }
@@ -43,7 +50,9 @@ static void state_coordinator(State state)
 
 void start()
 {
-    scheduler_init();
+    error = false;
+    error_state = WIFI_CONNECT_STATE;
+    next_state = WIFI_CONNECT_STATE;
     // --- NOTICE ---
     // Can be adjasted to mock time passing quicker. 60s = 1 minute, 1s = 1 second
 
@@ -53,7 +62,7 @@ void start()
     // alarm_create(10, 11);
 
     // scheduler_add_task(clock_update_time, clock_minute_interval); -- deprecated
-    //scheduler_add_task(display_time_from_clock, 60);
+    // scheduler_add_task(display_time_from_clock, 60);
     // clock_display_time();
 
     state_coordinator(WIFI_CONNECT_STATE);
@@ -61,9 +70,15 @@ void start()
 
 void state_coordinator_wait_for_event(bool *event)
 {
-    while (!(*event))
+    while (!(*event) && !error)
     {
         native_delay_ms(100);
     }
     log_debug("I am free now!");
+}
+
+void state_coordinator_set_error(bool err, State new_error_state)
+{
+    error = err;
+    error_state = new_error_state;
 }
