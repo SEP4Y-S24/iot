@@ -79,7 +79,7 @@ static void handle_key_exchange()
 {
     uint8_t public_key[33];
     key_echange_init();
-    key_exchange_generete_keys(); // generates public and private keys
+    key_exchange_generate_keys(); // generates public and private keys
     key_exchange_get_public_key(public_key);
     log_debug("Public key generated:");
     log_debug((char *)public_key);
