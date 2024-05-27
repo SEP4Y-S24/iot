@@ -20,7 +20,6 @@ int main()
 	scheduler_init();
 	display_controller_init();
 	external_screen_init();
-	// display_init();
 	i2c_init();
 
 	wifi_init(nothing_callback);

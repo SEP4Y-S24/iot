@@ -4,7 +4,6 @@
 #include "key_verification_state.h"
 #include "working_state.h"
 #include "authentication_state.h"
-#include "../drivers/display.h"
 #include "../controllers/clock.h"
 #include "../controllers/scheduler.h"
 #include "../controllers/alarm.h"
