@@ -9,3 +9,5 @@ typedef enum
 void display_controller_init();
 
 void display_controller_switch_state();
+
+void display_controller_reset_offset();
