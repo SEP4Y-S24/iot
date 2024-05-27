@@ -6,11 +6,14 @@
 #include "../drivers/wifi.h"
 #include "../drivers/periodic_task.h"
 #include "../utils/logger.h"
+#include "../utils/utils.h"
 #include <string.h>
 #include <stdio.h>
 #include <unity_internals.h>
 #include <stdlib.h>
+#include <stdint.h>
 
+DEFINE_FFF_GLOBALS;
 FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_set_mode_to_1);
 FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_set_mode_to_2);
 FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_set_mode_to_3);
@@ -26,7 +29,11 @@ FAKE_VALUE_FUNC0(WIFI_AP_CONNECTION, wifi_command_check_AP_connection);
 FAKE_VOID_FUNC1(log_debug, char *);
 FAKE_VOID_FUNC1(log_info, char *);
 
+FAKE_VALUE_FUNC2(int, utils_find_char_index_in_string, char *, char);
+
 FAKE_VOID_FUNC2(periodic_task_init_a, PERIODIC_TASK_CALLBACK, uint32_t);
+
+FAKE_VOID_FUNC1(state_coordinator_wait_for_event, bool *);
 
 void starting_with_specified_credentials_finishes_the_state()
 {
@@ -68,6 +75,8 @@ void setUp(void)
   RESET_FAKE(log_debug);
   RESET_FAKE(log_info);
   RESET_FAKE(periodic_task_init_a);
+  RESET_FAKE(utils_find_char_index_in_string);
+  RESET_FAKE(state_coordinator_wait_for_event);
 }
 
 void tearDown(void)

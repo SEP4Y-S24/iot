@@ -1,6 +1,6 @@
 name: Tests
 
-on: [push]
+on: [push, workflow_dispatch]
 
 jobs:
     build:
@@ -30,6 +30,13 @@ jobs:
               run: make setup-env
             - name: Run native tests
               run: make test-native
+
+            - name: Upload Test Coverage (gcov artifacts)
+              uses: actions/upload-artifact@v2
+              with:
+                name: gcov-reports
+                path: ./.pio/build/native_test/test/native_tests
+
             
             - name: Upload coverage to Codecov
               uses: codecov/codecov-action@v4

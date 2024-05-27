@@ -1,12 +1,15 @@
 #include "unity.h"
 #include "../fff.h"
+#include "../comm/ccp_protocol.h"
 #include "../drivers/periodic_task.h"
-#include "../controllers/periodic_request.h"
+#include "../state/periodic_request.h"
 #include "../controllers/humidity_temperature.h"
 
+DEFINE_FFF_GLOBALS;
 FAKE_VOID_FUNC2(periodic_task_init_b, PERIODIC_TASK_CALLBACK, uint32_t);
-FAKE_VOID_FUNC1(native_delay_ms, int);
-FAKE_VOID_FUNC0(humidity_temperature_send);
+FAKE_VOID_FUNC1(log_debug, char *);
+FAKE_VOID_FUNC1(humidity_temperature_get_in_string_format, char *);
+FAKE_VOID_FUNC2(ccp_message_sender_send_request, CCP_ACTION_TYPE, char *)
 
 void periodic_request_test_10_minutes_init()
 {
@@ -22,7 +25,7 @@ void periodic_request_test_10_minutes_simulate_task()
     PERIODIC_TASK_CALLBACK captured_task = periodic_task_init_b_fake.arg0_val;
     captured_task();
 
-    TEST_ASSERT_EQUAL_INT(1, humidity_temperature_send_fake.call_count);
+    TEST_ASSERT_EQUAL_INT(1, humidity_temperature_get_in_string_format_fake.call_count);
 }
 
 void periodic_request_test_10_minutes_delay()
@@ -49,8 +52,9 @@ void setUp(void)
     FFF_RESET_HISTORY();
 
     RESET_FAKE(periodic_task_init_b);
-    RESET_FAKE(native_delay_ms);
-    RESET_FAKE(humidity_temperature_send);
+    RESET_FAKE(ccp_message_sender_send_request);
+    RESET_FAKE(humidity_temperature_get_in_string_format);
+    RESET_FAKE(log_debug);
 }
 
 void tearDown(void)

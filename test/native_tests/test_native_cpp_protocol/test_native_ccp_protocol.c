@@ -5,6 +5,7 @@
 #include "../drivers/wifi.h"
 #include <stdio.h>
 
+DEFINE_FFF_GLOBALS;
 FAKE_VALUE_FUNC(WIFI_ERROR_MESSAGE_t, wifi_command_TCP_transmit, uint8_t *, uint16_t);
 FAKE_VOID_FUNC(uart_init, USART_t, uint32_t, UART_Callback_t);
 FAKE_VOID_FUNC(uart_send_blocking, USART_t, uint8_t);

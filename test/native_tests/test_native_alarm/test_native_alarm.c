@@ -2,14 +2,15 @@
 #include "../fff.h"
 #include "../drivers/periodic_task.h"
 #include "../drivers/buzzer.h"
-#include "../drivers/native.h"
 #include "../drivers/hc_sr04.h"
 #include "../drivers/buttons.h"
 #include "../drivers/ds3231.h"
+#include "../utils/native.h"
 #include "../utils/logger.h"
 #include "../controllers/clock.h"
 #include "../controllers/alarm.h"
 
+DEFINE_FFF_GLOBALS;
 FAKE_VOID_FUNC2(periodic_task_init_c, PERIODIC_TASK_CALLBACK, uint32_t);
 FAKE_VOID_FUNC1(log_debug, char *);
 FAKE_VOID_FUNC1(log_info, char *);

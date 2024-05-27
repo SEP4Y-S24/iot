@@ -13,6 +13,7 @@
 #include "../drivers/hc_sr04.h"
 #include "../drivers/buttons.h"
 
+DEFINE_FFF_GLOBALS;
 FAKE_VOID_FUNC1(log_info, char *);
 FAKE_VOID_FUNC1(log_debug, char *);
 FAKE_VALUE_FUNC2(WIFI_ERROR_MESSAGE_t, wifi_command_TCP_transmit, uint8_t *, uint16_t);
@@ -38,7 +39,7 @@ FAKE_VOID_FUNC0(alarm_init);
 
 void test_ms_message_clock_message_is_set_and_response_is_sent_buzzer_beeps()
 {
-    char message[] = "MS|4|hello|";
+    char message[] = "MS|5|hello|";
     ccp_message_handler_handle(message);
     TEST_ASSERT_EQUAL_STRING("hello", message_get_message());
     TEST_ASSERT_EQUAL(1, ccp_message_sender_send_response_fake.call_count);

@@ -10,6 +10,7 @@
 #include "../state/state_coordinator.h"
 #include "../utils/logger.h"
 
+DEFINE_FFF_GLOBALS;
 FAKE_VALUE_FUNC(WIFI_ERROR_MESSAGE_t, wifi_command_TCP_transmit, uint8_t *, uint16_t);
 FAKE_VOID_FUNC(uart_init, USART_t, uint32_t, UART_Callback_t);
 FAKE_VOID_FUNC(uart_send_blocking, USART_t, uint8_t);
@@ -26,7 +27,7 @@ FAKE_VALUE_FUNC2(WIFI_ERROR_MESSAGE_t, wifi_command_setup_server, uint16_t, UART
 FAKE_VOID_FUNC1(wifi_init, UART_Callback_t);
 FAKE_VALUE_FUNC0(WIFI_AP_CONNECTION, wifi_command_check_AP_connection);
 FAKE_VOID_FUNC(wifi_reassign_callback, WIFI_TCP_Callback_t, char *);
-FAKE_VOID_FUNC(authentication_state_set_authenticated, bool);
+FAKE_VOID_FUNC2(authentication_state_set_authenticated, bool, char *);
 FAKE_VOID_FUNC(authentication_state_set_waiting_for_key_verification, bool);
 FAKE_VOID_FUNC(key_verification_state_set_key_verified, bool);
 FAKE_VOID_FUNC(log_debug, char *);
