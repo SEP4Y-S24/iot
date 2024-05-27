@@ -13,7 +13,7 @@ static char humidity_temperature_buffer[32];
 
 void periodic_request_10_minutes_init()
 {
-    periodic_task_init_b(periodic_request_10_minutes, 10000);
+    periodic_task_init_b(periodic_request_10_minutes, 600000);
 }
 
 static void periodic_request_10_minutes()
@@ -39,5 +39,5 @@ static void periodic_request_nothing()
 
 void periodic_request_10_minutes_stop()
 {
-    periodic_task_init_b(periodic_request_nothing, 10000);
+    periodic_task_init_b(periodic_request_nothing, 600000);
 }
