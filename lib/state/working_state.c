@@ -9,15 +9,10 @@
 #include "periodic_task.h"
 #include "humidity_temperature.h"
 
-static void periodic_tasks_10_minutes();
-
 static char message_buffer[CCP_MAX_MESSAGE_LENGTH];
 
 static bool error;
 
-static void nothing()
-{
-}
 
 static void tcp_callback()
 {
@@ -35,18 +30,11 @@ State working_state_switch()
     ccp_message_sender_send_request(CCP_AT_TM, "");
     native_delay_ms(2000);
 
-    periodic_task_init_b(periodic_tasks_10_minutes, 10000);
+    periodic_request_10_minutes_init();
 
     state_coordinator_wait_for_event(&error);
 
-    periodic_task_init_b(nothing, 10000);
+    periodic_request_10_minutes_stop();
     return WORKING_STATE; //Does not matter cause it only return in case of error 
 }
 
-static void periodic_tasks_10_minutes()
-{
-
-    humidity_temperature_send();
-    native_delay_ms(2000);
-    // c02_send();
-}
