@@ -28,8 +28,9 @@ jobs:
 
             - name: Setup Environmetn Variables
               run: make setup-env
-            - name: Run native tests
-              run: make test-native
+
+            - name: Run Native Test
+              run: pio test -e native_test
 
             - name: Upload Test Coverage (gcov artifacts)
               uses: actions/upload-artifact@v2
