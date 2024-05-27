@@ -51,7 +51,7 @@ void wifi_send_command(const char *str, uint16_t timeOut_s)
     uart_send_string_blocking(USART_WIFI, strcat(sendbuffer, "\r\n"));
 
     // better wait sequence...
-    for (uint16_t i = 0; i < timeOut_s * 100UL; i++) // timeout after 20 sec
+    for (unsigned long i = 0; i < timeOut_s * 100UL; i++) // timeout after 20 sec
     {
         _delay_ms(10);
         if (strstr((char *)wifi_dataBuffer, "OK\r\n") != NULL || strstr((char *)wifi_dataBuffer, "ERROR\r\n") != NULL || strstr((char *)wifi_dataBuffer, "FAIL\r\n") != NULL)
