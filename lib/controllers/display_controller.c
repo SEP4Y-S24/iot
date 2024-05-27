@@ -1,7 +1,7 @@
 #include "display_controller.h"
 #include "message.h"
 #include "scheduler.h"
-#include "string.h"
+#include <string.h>
 #include "clock.h"
 #include "../drivers/periodic_task.h"
 #include "../drivers/buttons.h"
