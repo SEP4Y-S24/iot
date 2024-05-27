@@ -5,6 +5,7 @@
 #include "wifi.h"
 #include "../utils/logger.h"
 #include "../utils/utils.h"
+#include <stdint.h>
 
 const char *LINE_TERMINATOR = "|";
 void ccp_at_to_string(CCP_ACTION_TYPE at, char *action_type);
@@ -227,6 +228,15 @@ static CCP_PARSING_STATUS extract_body(char *message, char *body_ptr, int line_t
 {
     char body_length[10];
     int body_length_index = utils_find_nth_char_index_in_string(message, LINE_TERMINATOR[0], line_terminator_index);
+
+    int body_length_segment_length = utils_find_nth_char_index_in_string(message, LINE_TERMINATOR[0], line_terminator_index + 1) - body_length_index - 1;
+
+    if (body_length_segment_length <= 0)
+    {
+        body_ptr[0] = '\0';
+        return CCP_PARSING_INVALID_WRONG_FORMAT;
+    }
+
     strncpy(body_length, message + body_length_index + 1, utils_find_nth_char_index_in_string(message, LINE_TERMINATOR[0], line_terminator_index + 1));
     int body_length_int = atoi(body_length);
 

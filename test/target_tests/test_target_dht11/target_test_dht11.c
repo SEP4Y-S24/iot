@@ -17,12 +17,14 @@ void tearDown(void)
 
 void test_dht11_get_valid_values(void)
 {
+    // Arrange
     uint8_t humidity_int, humidity_dec, temperature_int, temperature_dec;
 
+    // Act
     DHT11_ERROR_MESSAGE_t result = dht11_get(&humidity_int, &humidity_dec, &temperature_int, &temperature_dec);
 
+    // Assert
     TEST_ASSERT_EQUAL(DHT11_OK, result);
-
     TEST_ASSERT_TRUE(humidity_int >= 45 && humidity_int <= 65);
     TEST_ASSERT_TRUE(temperature_int >= 20 && temperature_int <= 30);
 }

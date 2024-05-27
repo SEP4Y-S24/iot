@@ -29,7 +29,7 @@ int simple_rng(uint8_t *dest, unsigned size)
     return 1; // Indicate success
 }
 
-void key_exchange_generete_keys()
+void key_exchange_generate_keys()
 {
     uECC_Curve curve = uECC_secp256r1();
     uECC_set_rng(&simple_rng);
