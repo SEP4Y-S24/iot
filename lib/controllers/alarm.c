@@ -16,9 +16,6 @@ static uint8_t alarm_time_hour = 0;
 static uint8_t alarm_time_minute = 0;
 static uint8_t alarm_time_delay = 0;
 
-static bool alarm_is_created = false;
-static bool alarm_is_stoped = false;
-
 static void alarm_log_time(int h, int m, bool use_info)
 
 {
@@ -29,9 +26,6 @@ static void alarm_log_time(int h, int m, bool use_info)
 
 void alarm_init()
 {
-    alarm_is_created = false;
-    alarm_is_stoped = false;
-
     alarm_time_hour = 0;
     alarm_time_minute = 0;
     alarm_time_delay = 0;

@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 void humidity_temperature_get_in_string_format(char *message_buffer)
 {
     log_debug("Getting Temperature and Humidity...");
