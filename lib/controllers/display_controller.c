@@ -7,10 +7,13 @@
 #include "buttons.h"
 #include "logger.h"
 #include "scheduler.h"
+#include "string.h"
 #include "external_screen.h"
 
 static DISPLAY_CONTROLLER_STATE state = DISPLAY_STATE_TIME;
 static void display_time_from_clock_on_external_screen();
+static int offset;
+static char display_buffer[33];
 static void display_message();
 static void update_display()
 {
@@ -31,6 +34,7 @@ static void update_display()
 
 void display_controller_init()
 {
+    display_controller_reset_offset();
     scheduler_add_task(update_display, 1);
 }
 
@@ -41,6 +45,7 @@ void display_controller_switch_state()
     {
     case DISPLAY_STATE_MESSAGE:
         state = DISPLAY_STATE_TIME;
+        offset = 0;
         break;
     case DISPLAY_STATE_TIME:
         state = DISPLAY_STATE_MESSAGE;
@@ -58,7 +63,20 @@ static void display_time_from_clock_on_external_screen()
     external_screen_string(time_str);
 }
 
-static void display_message(){
+static void display_message()
+{
     char *message = message_get_message();
-    external_screen_string(message);
+    if (*(message + offset) == '\0')
+        display_controller_reset_offset();
+    strncpy(display_buffer, message + offset, 16);
+    external_screen_string(display_buffer);
+    if (strlen(message) > 16)
+    {
+        offset += 1;
+    }
+}
+
+void display_controller_reset_offset()
+{
+    offset = 0;
 }
