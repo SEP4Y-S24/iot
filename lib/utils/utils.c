@@ -1,3 +1,4 @@
+#include "utils.h"
 #include <string.h>
 
 int utils_find_char_index_in_string(char *string, char c)

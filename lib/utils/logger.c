@@ -1,7 +1,10 @@
-#include "pc_comm.h"
+#include "logger.h"
+#include "../drivers/pc_comm.h"
 #include <string.h>
 
-void format_message(char *message, char *buffer)
+static void log_callback(char c) {}
+
+static void format_message(char *message, char *buffer)
 {
     strcpy(buffer, message);
     strcat(buffer, "\n");
@@ -22,10 +25,7 @@ void log_debug(char *message)
 #endif
 }
 
-void log_callback(char c) {}
-
 void log_init()
 {
     pc_comm_init(9600, log_callback);
 }
-

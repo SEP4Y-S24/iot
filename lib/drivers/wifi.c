@@ -3,7 +3,7 @@
 #include "includes.h"
 #include "uart.h"
 #include <stdbool.h>
-#include "logger.h"
+#include "../utils/logger.h"
 #define WIFI_DATABUFFERSIZE 128
 static uint8_t wifi_dataBuffer[WIFI_DATABUFFERSIZE];
 static uint8_t wifi_dataBufferIndex;
@@ -49,7 +49,6 @@ void wifi_send_command(const char *str, uint16_t timeOut_s)
     uart_init(USART_WIFI, wifi_baudrate, wifi_command_callback);
 
     uart_send_string_blocking(USART_WIFI, strcat(sendbuffer, "\r\n"));
-
 
     // better wait sequence...
     for (uint16_t i = 0; i < timeOut_s * 100UL; i++) // timeout after 20 sec
@@ -395,7 +394,8 @@ WIFI_ERROR_MESSAGE_t wifi_command_reset()
     return wifi_command("AT+RST", 20);
 }
 
-void wifi_reassign_callback(WIFI_TCP_Callback_t new_callback, char *new_buffer) {
+void wifi_reassign_callback(WIFI_TCP_Callback_t new_callback, char *new_buffer)
+{
     callback_when_message_received_static = new_callback;
     wifi_clear_databuffer_and_index();
     received_message_buffer_static_pointer = new_buffer;

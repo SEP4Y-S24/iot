@@ -1,3 +1,4 @@
+#pragma once
 #include <inttypes.h>
 
 void hc_sr04_init(void);

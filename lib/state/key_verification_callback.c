@@ -1,7 +1,8 @@
-#include "ccp_protocol.h"
+#include "key_verification_callback.h"
 #include "key_verification_state.h"
+#include "../comm/ccp_protocol.h"
+#include "../utils/logger.h"
 #include <stdbool.h>
-#include "logger.h"
 
 void key_verification_callback(char *message)
 {

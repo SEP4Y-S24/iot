@@ -1,3 +1,3 @@
-void ccp_message_handler_handle(char * message_buffer);
+#pragma once
 
-void init();
+void ccp_message_handler_handle(char *message_buffer);

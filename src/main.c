@@ -1,15 +1,14 @@
-#include <uart.h>
-#include <connect_wifi_state.h>
+#include "../drivers/uart.h"
+#include "../drivers/wifi.h"
+#include "../drivers/i2cmaster.h"
+#include "../drivers/external_screen.h"
+#include "../controllers/scheduler.h"
+#include "../state/connect_wifi_state.h"
+#include "../state/state_coordinator.h"
+#include "../controllers/display_controller.h"
+#include "../utils/native.h"
+#include "../utils/logger.h"
 #include <stddef.h>
-#include <wifi.h>
-#include <state_coordinator.h>
-#include <logger.h>
-#include <external_screen.h>
-#include <util/delay.h>
-#include <display_controller.h>
-#include <i2cmaster.h>
-#include <scheduler.h>
-#include "native.h"
 
 void nothing_callback(uint8_t data)
 {
@@ -17,10 +16,10 @@ void nothing_callback(uint8_t data)
 
 int main()
 {
+	log_init();
 	scheduler_init();
 	display_controller_init();
 	external_screen_init();
-	log_init();
 	// display_init();
 	i2c_init();
 
