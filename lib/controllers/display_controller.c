@@ -1,14 +1,14 @@
-#include <stdio.h>
-#include <display_controller.h>
-#include "periodic_task.h"
-#include "clock.h"
+#include "display_controller.h"
 #include "message.h"
-#include "periodic_task.h"
-#include "buttons.h"
-#include "logger.h"
 #include "scheduler.h"
 #include "string.h"
-#include "external_screen.h"
+#include "clock.h"
+#include "../drivers/periodic_task.h"
+#include "../drivers/buttons.h"
+#include "../utils/logger.h"
+#include "../drivers/external_screen.h"
+#include <stdio.h>
+
 
 static DISPLAY_CONTROLLER_STATE state = DISPLAY_STATE_TIME;
 static void display_time_from_clock_on_external_screen();

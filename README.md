@@ -9,17 +9,23 @@
 - Sensors
   - DS3231 (RTC module)
   - DHT11 (Temperature and Humidity)
-  - MQ135 (Gas and CO2)
+  - HC-SR04 (Ultrasonic)
+  - MQ135 (Gas and CO2)*
+  - SCD40 (CO2)*
 - Peripherals 
   - ESP-01 (Wifi)
   - LCD 16x2 (Screen)
 
+*Simulated for now
 ## How to connect...
 
 1. Connect both devices to the same Wi-Fi
-
+   
 _Note: Use hot-spot or other network which does not require authorization_
 
-## Source of Information
+2. Authentificate with backend 
+3. Press middle button to see unique key for the clock
+4. Input said key in the front end
 
+## Source of Information
 - https://github.com/LauritsIvar/sep4_drivers/tree/hardware_by_ERL
