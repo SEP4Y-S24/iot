@@ -8,3 +8,4 @@ typedef struct schedule_task
 
 void scheduler_init();
 void scheduler_add_task(void (*task)(void), int interval);
+void scheduler_run_all_tasks();
