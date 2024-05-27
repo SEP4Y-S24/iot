@@ -1,10 +1,10 @@
 #include "periodic_request.h"
-#include "periodic_task.h"
-#include "humidity_temperature.h"
-#include "native.h"
-#include "logger.h"
-#include "ccp_message_sender.h"
-#include "ccp_protocol.h"
+#include "../drivers/periodic_task.h"
+#include "../controllers/humidity_temperature.h"
+#include "../utils/native.h"
+#include "../utils/logger.h"
+#include "../comm/ccp_message_sender.h"
+#include "../comm/ccp_protocol.h"
 
 static void periodic_request_10_minutes();
 static void get_data();
