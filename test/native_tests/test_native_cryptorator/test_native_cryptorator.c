@@ -25,11 +25,6 @@ void test_encryption_decryption()
 
     // Make a copy of the message for encryption
     char *encrypted_message = strdup(message);
-    if (encrypted_message == NULL)
-    {
-        fprintf(stderr, "Memory allocation failed\n");
-        return;
-    }
 
     // Encrypt the message
     cryptorator_encrypt(&encrypted_message);
@@ -53,11 +48,6 @@ void test_decryption_withIV()
 
     // Make a copy of the message for encryption
     char *encrypted_message = strdup(message);
-    if (encrypted_message == NULL)
-    {
-        fprintf(stderr, "Memory allocation failed\n");
-        return;
-    }
 
     // Encrypt the message
     cryptorator_encrypt(&encrypted_message);
