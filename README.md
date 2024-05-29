@@ -33,4 +33,6 @@ _Note: Use hot-spot or other network which does not require authorization_
 4. Input said key on the website
 
 ## Source of Information
-- https://github.com/LauritsIvar/sep4_drivers/tree/hardware_by_ERL
+- https://github.com/LauritsIvar/sep4_drivers/tree/hardware_by_ERL (for HC-SR04, DHT11 and ESP-01)
+- https://github.com/chrisramsay/i2cmaster (Peter Fleury's i2c library)
+- https://github.com/kokke/tiny-AES-c (for encryption)
