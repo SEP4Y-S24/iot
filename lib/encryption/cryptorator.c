@@ -42,16 +42,14 @@ void cryptorator_encrypt(char **message) {
         return;
     }
     *message = new_message;
-
+    
     // Move the original message to make space for the IV at the beginning
     memmove(*message + AES_BLOCKLEN, *message, message_len + 1);
-
     // Copy the IV to the beginning of the message buffer
     memcpy(*message, iv, AES_BLOCKLEN);
 
     // Initialize the AES context with the key and IV
     AES_init_ctx_iv(&ctx, (uint8_t*)key, (uint8_t*)iv);
-
     // Encrypt the data using AES in CBC mode
     AES_CBC_encrypt_buffer(&ctx, (uint8_t*)(*message + AES_BLOCKLEN), message_len);
 }
