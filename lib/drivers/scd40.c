@@ -1,3 +1,4 @@
+#ifndef NATIVE_TESTING
 // Mocking file for scd40.h until we have the actual sensor driver coded (if we do it)
 
 #include "scd40.h"
@@ -8,3 +9,4 @@ int scd40_read()
 
     return sensorValue;
 }
+#endif

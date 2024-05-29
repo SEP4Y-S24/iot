@@ -23,7 +23,6 @@ FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_enable_multiple_connections)
 FAKE_VALUE_FUNC0(WIFI_ERROR_MESSAGE_t, wifi_command_reset);
 FAKE_VALUE_FUNC2(WIFI_ERROR_MESSAGE_t, wifi_command_setup_server, uint16_t, UART_Callback_t);
 FAKE_VOID_FUNC1(wifi_init, UART_Callback_t);
-FAKE_VOID_FUNC2(wifi_reassign_callback, WIFI_TCP_Callback_t, char *);
 FAKE_VALUE_FUNC0(WIFI_AP_CONNECTION, wifi_command_check_AP_connection);
 
 FAKE_VOID_FUNC1(log_debug, char *);
