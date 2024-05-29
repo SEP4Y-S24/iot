@@ -3,9 +3,13 @@
 #include "../comm/ccp_protocol.h"
 #include "../utils/logger.h"
 #include <stdbool.h>
+#include <../encryption/cryptorator.h>
 
 void key_verification_callback(char *message)
 {
+#ifndef ENCRYPTION_DISABLED
+    cryptorator_decrypt(message);
+#endif
     log_debug("Key verification callback");
     request request;
     ccp_parse_request((char *)message, &request);

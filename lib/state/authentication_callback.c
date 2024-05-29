@@ -8,6 +8,9 @@
 
 void authentication_callback(char *message)
 {
+#ifndef ENCRYPTION_DISABLED
+    cryptorator_decrypt(message);
+#endif
     response response;
     ccp_parse_response((char *)message, &response);
 
