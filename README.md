@@ -18,15 +18,21 @@
   - LCD 16x2 (Screen)
 
 *Simulated for now
+
+## Prototype 
+![photo_2024-05-29_16-26-59](https://github.com/SEP4Y-S24/iot/assets/114725463/b3a906ec-1898-42b3-a3d4-dfaeff6712ee)
+
 ## How to connect...
 
 1. Connect both devices to the same Wi-Fi
    
 _Note: Use hot-spot or other network which does not require authorization_
 
-2. Authentificate with backend 
-3. Press middle button to see unique key for the clock
-4. Input said key in the front end
+2. Authenticate with backend 
+3. Press the middle button to see the unique key for the clock
+4. Input said key on the website
 
 ## Source of Information
-- https://github.com/LauritsIvar/sep4_drivers/tree/hardware_by_ERL
+- https://github.com/LauritsIvar/sep4_drivers/tree/hardware_by_ERL (for HC-SR04, DHT11 and ESP-01)
+- https://github.com/chrisramsay/i2cmaster (Peter Fleury's i2c library)
+- https://github.com/kokke/tiny-AES-c (for encryption)
