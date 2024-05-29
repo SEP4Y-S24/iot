@@ -41,6 +41,9 @@ void vli_print(uint8_t *vli, unsigned int size) {
 
 void strtobytes(const char* str, uint8_t* bytes, int count) {
   for (int c = 0; c < count; ++c) {
+    if (sscanf(str, "%2hhx", &bytes[c]) != 1) {
+      exit(1);
+    }
     str += 2;
   }
 }

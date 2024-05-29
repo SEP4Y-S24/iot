@@ -1,3 +1,4 @@
+#ifndef NATIVE_TESTING
 // Mocking file for mq135.h until we have the actual sensor driver coded (if we do it)
 
 #include "mq135.h"
@@ -9,3 +10,4 @@ float mq135_read()
 
     return sensorValue;
 }
+#endif
