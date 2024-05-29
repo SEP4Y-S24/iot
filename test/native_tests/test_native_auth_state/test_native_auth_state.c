@@ -2,15 +2,21 @@
 #include "../fff.h"
 #include "../drivers/wifi.h"
 #include "../drivers/periodic_task.h"
+#include "../drivers/ds3231.h"
 #include "../controllers/alarm.h"
+#include "../controllers/display_controller.h"
 #include "../comm/ccp_message_sender.h"
 #include "../comm/ccp_protocol.h"
 #include "../state/authentication_state.h"
 #include "../state/authentication_callback.h"
 #include "../state/state_coordinator.h"
 #include "../utils/logger.h"
+#include "../drivers/buttons.h"
 
 DEFINE_FFF_GLOBALS;
+
+char *external_screen_string = NULL;
+
 FAKE_VALUE_FUNC(WIFI_ERROR_MESSAGE_t, wifi_command_TCP_transmit, uint8_t *, uint16_t);
 FAKE_VOID_FUNC(uart_init, USART_t, uint32_t, UART_Callback_t);
 FAKE_VOID_FUNC(uart_send_blocking, USART_t, uint8_t);
@@ -33,6 +39,29 @@ FAKE_VOID_FUNC(key_verification_state_set_key_verified, bool);
 FAKE_VOID_FUNC(log_debug, char *);
 FAKE_VOID_FUNC(log_info, char *);
 FAKE_VOID_FUNC(ccp_message_sender_send_request, CCP_ACTION_TYPE, char *);
+
+FAKE_VOID_FUNC0(buzzer_beep);
+FAKE_VOID_FUNC0(buzzer_init);
+FAKE_VOID_FUNC0(buzzer_on);
+FAKE_VOID_FUNC0(buzzer_off);
+FAKE_VOID_FUNC2(periodic_task_init_c, PERIODIC_TASK_CALLBACK, uint32_t);
+FAKE_VOID_FUNC1(ds3231_write_hour, uint8_t);
+FAKE_VOID_FUNC1(ds3231_write_min, uint8_t);
+FAKE_VALUE_FUNC0(uint8_t, ds3231_read_hour);
+FAKE_VALUE_FUNC0(uint8_t, ds3231_read_min);
+FAKE_VOID_FUNC0(hc_sr04_init);
+FAKE_VALUE_FUNC0(uint16_t, hc_sr04_takeMeasurement);
+FAKE_VOID_FUNC0(buttons_init);
+FAKE_VALUE_FUNC0(uint8_t, buttons_1_pressed);
+FAKE_VALUE_FUNC0(uint8_t, buttons_2_pressed);
+FAKE_VALUE_FUNC0(uint8_t, buttons_3_pressed);
+FAKE_VOID_FUNC3(ccp_message_sender_send_response, CCP_ACTION_TYPE, CCP_STATUS_CODE, char *);
+FAKE_VOID_FUNC2(alarm_create, int, int);
+FAKE_VOID_FUNC2(alarm_delete, int, int);
+FAKE_VOID_FUNC0(alarm_init);
+
+// Mock periodic_task_init_a
+FAKE_VOID_FUNC2(periodic_task_init_a, PERIODIC_TASK_CALLBACK, uint32_t);
 
 void auth_state_send_request()
 {
@@ -83,6 +112,27 @@ void setUp(void)
     RESET_FAKE(log_debug);
     RESET_FAKE(log_info);
     RESET_FAKE(ccp_message_sender_send_request);
+
+    RESET_FAKE(buzzer_beep);
+    RESET_FAKE(buzzer_init);
+    RESET_FAKE(buzzer_on);
+    RESET_FAKE(buzzer_off);
+    RESET_FAKE(periodic_task_init_c);
+    RESET_FAKE(ds3231_write_hour);
+    RESET_FAKE(ds3231_write_min);
+    RESET_FAKE(ds3231_read_hour);
+    RESET_FAKE(ds3231_read_min);
+    RESET_FAKE(hc_sr04_init);
+    RESET_FAKE(hc_sr04_takeMeasurement);
+    RESET_FAKE(buttons_init);
+    RESET_FAKE(buttons_1_pressed);
+    RESET_FAKE(buttons_2_pressed);
+    RESET_FAKE(buttons_3_pressed);
+    RESET_FAKE(ccp_message_sender_send_response);
+    RESET_FAKE(alarm_create);
+    RESET_FAKE(alarm_delete);
+    RESET_FAKE(alarm_init);
+    RESET_FAKE(periodic_task_init_a); 
 }
 
 void tearDown(void)

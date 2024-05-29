@@ -4,7 +4,6 @@
 #include "key_verification_state.h"
 #include "working_state.h"
 #include "authentication_state.h"
-#include "../drivers/display.h"
 #include "../controllers/clock.h"
 #include "../controllers/scheduler.h"
 #include "../controllers/alarm.h"
@@ -53,18 +52,8 @@ void start()
     error = false;
     error_state = WIFI_CONNECT_STATE;
     next_state = WIFI_CONNECT_STATE;
-    // --- NOTICE ---
-    // Can be adjasted to mock time passing quicker. 60s = 1 minute, 1s = 1 second
 
-    // --- NOTICE ---
-    // If you want to test the alarm, uncomment the following lines
     alarm_init();
-    // alarm_create(10, 11);
-
-    // scheduler_add_task(clock_update_time, clock_minute_interval); -- deprecated
-    // scheduler_add_task(display_time_from_clock, 60);
-    // clock_display_time();
-
     state_coordinator(WIFI_CONNECT_STATE);
 }
 

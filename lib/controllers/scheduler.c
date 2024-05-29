@@ -6,7 +6,7 @@
 static uint64_t last_run_time;
 static schedule_task_t schedule_task_array[100];
 static int task_index;
-static void scheduler_run_all_tasks()
+void scheduler_run_all_tasks()
 {
     last_run_time++;
 

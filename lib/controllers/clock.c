@@ -1,6 +1,5 @@
 #include "clock.h"
 #include "../drivers/periodic_task.h" // Include the periodic task header
-#include "../drivers/display.h"       // Include the display header
 #include <stdio.h>
 #include <stdlib.h>
 
