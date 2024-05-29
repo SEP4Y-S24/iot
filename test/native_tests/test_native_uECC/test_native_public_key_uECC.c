@@ -32,7 +32,6 @@ extern int uECC_sign_with_k(const uint8_t *private_key,
                             uint8_t *signature,
                             uECC_Curve curve);
 
-
 void vli_print(uint8_t *vli, unsigned int size) {
     for(unsigned i=0; i<size; ++i) {
         printf("%02X ", (unsigned)vli[i]);
@@ -43,7 +42,7 @@ void vli_print(uint8_t *vli, unsigned int size) {
 void strtobytes(const char* str, uint8_t* bytes, int count) {
   for (int c = 0; c < count; ++c) {
     if (sscanf(str, "%2hhx", &bytes[c]) != 1) {
-      printf("Failed to read string to bytes");
+      printf("Failed to read string to bytes\n");
       exit(1);
     }
     str += 2;
@@ -87,6 +86,24 @@ void test_run_secp256k1() {
     }
 }
 
+void test_vli_print() {
+    uint8_t vli[5] = {0x01, 0x23, 0x45, 0x67, 0x89};
+    printf("Expected output: 01 23 45 67 89 \nActual output: ");
+    vli_print(vli, 5);
+    // There's no easy way to automatically test the output of printf,
+    // but we can visually inspect the output to ensure correctness.
+}
+
+void test_strtobytes() {
+    const char* hex_str = "0123456789abcdef";
+    uint8_t expected_bytes[8] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef};
+    uint8_t actual_bytes[8] = {0};
+
+    strtobytes(hex_str, actual_bytes, 8);
+
+    TEST_ASSERT_EQUAL_MEMORY_MESSAGE(expected_bytes, actual_bytes, 8, "strtobytes failed");
+}
+
 // Define empty setUp and tearDown functions to avoid linker errors
 void setUp(void) {
     // Do nothing
@@ -102,6 +119,8 @@ int main() {
 #if uECC_SUPPORTS_secp256k1
     RUN_TEST(test_run_secp256k1);
 #endif
+    RUN_TEST(test_vli_print);
+    RUN_TEST(test_strtobytes);
 
     return UNITY_END();
 }
