@@ -76,7 +76,7 @@ This action will happen periodically and will send the Humidity and Temperature 
 **Request:**
 
 | Action type | TH\| |
-| --- | --- |
+| ------------ | -------- |
 | Body length | 16\| |
 | Body | H-XX.YY-T-AA.BB\| |
 
