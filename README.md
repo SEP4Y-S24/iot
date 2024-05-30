@@ -32,17 +32,14 @@ _Note: Use hot-spot or other network which does not require authorization_
 3. Press the middle button to see the unique key for the clock
 4. Input said key on the website
 
-## More detailed connection explanation
+## Connection explanation
 
 First time connection:
-
 1) A clock connects to a server and handles encryption setup
 2) The clock sends to the server empty message with action type - AU(authentication)
 example: AU|0||
-
 3) The server generates a unique key and sends a it as a response with status code 3 Unauthenticated 
 Example: AU|20|x14sfpun6ldpgt1l6p82|
-
 4) The clock displays the unique key on a display
 5) A user logs in to the web app and inputs the unique key.
 6) The web app sends the unique key to the server
