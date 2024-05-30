@@ -38,7 +38,7 @@ void test_humidity_temperature_get_in_string_format_success(void)
     dht11_get_fake.custom_fake = dht11_get_successful_custom_fake;
 
     char expected_message[30];
-    sprintf(expected_message, "T%d.%d-H%d.%d", EXPECTED_TEMPERATURE_INT, EXPECTED_TEMPERATURE_DEC, EXPECTED_HUMIDITY_INT, EXPECTED_HUMIDITY_DEC);
+    sprintf(expected_message, "H-%d.%d-T-%d.%d", EXPECTED_HUMIDITY_INT, EXPECTED_HUMIDITY_DEC, EXPECTED_TEMPERATURE_INT, EXPECTED_TEMPERATURE_DEC);
 
     humidity_temperature_get_in_string_format(message_buffer);
 
