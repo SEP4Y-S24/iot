@@ -9,10 +9,10 @@
 void humidity_temperature_get_in_string_format(char *message_buffer)
 {
     log_debug("Getting Temperature and Humidity...");
-    uint8_t temperature_int, temperature_dec, humidity_int, humidity_dec;
+    uint8_t humidity_int, humidity_dec, temperature_int, temperature_dec;
     if (dht11_get(&humidity_int, &humidity_dec, &temperature_int, &temperature_dec) == DHT11_OK)
     {
-        sprintf(message_buffer, "T%d.%d-H%d.%d", temperature_int, temperature_dec, humidity_int, humidity_dec);
+        sprintf(message_buffer, "H-%d.%d-T-%d.%d", humidity_int, humidity_dec, temperature_int, temperature_dec);
     }
     else
     {
